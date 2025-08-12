@@ -47,7 +47,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 	{
 		if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // ╤сапрябЗ
 		{
-			throw iExceptions::ThreadLakeException::makeQueueFullException();
+			throw iExceptions::ThreadLake::TaskQueueFullException();
 		}
 		std::lock_guard<std::mutex> lock(queueMutex);
 		taskQueue.push(taskPkg);

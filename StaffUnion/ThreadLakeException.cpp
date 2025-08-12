@@ -3,22 +3,22 @@
 
 namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 {
-	ThreadLakeException::ThreadLakeException(const std::string& desp, const Foundation::Infomation& info) noexcept
+	ThreadLake::ThreadLake(const std::string& desp, const Foundation::Infomation& info) noexcept
 		: Foundation::iExceptionBase(desp, info)
 	{
 	}
 
-	ThreadLakeException ThreadLakeException::makeException(unsigned int exptCode)
+	ThreadLake ThreadLake::makeException(unsigned int exptCode)
 	{
-		return ThreadLakeException(
+		return ThreadLake(
 			visualize.thrdLakeExpt.data(),
 			{ iExptCodes.libID, exptCode, 0, 0, nullptr, nullptr }
 		);
 	}
 
-	ThreadLakeException ThreadLakeException::makeQueueFullException() noexcept
+	ThreadLake ThreadLake::TaskQueueFullException() noexcept
 	{
-		return ThreadLakeException(
+		return ThreadLake(
 			visualize.thrdLakeQueueFull.data(),
 			{ iExptCodes.libID, iExptCodes.threadQueueFull, 0, 0, nullptr, nullptr }
 		);

@@ -10,7 +10,7 @@
 namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 {
 	// 线程池异常
-	class ThreadLakeException : public Foundation::iExceptionBase
+	class ThreadLake : public Foundation::iExceptionBase
 	{
 		static struct Visualize
 		{
@@ -20,17 +20,17 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 		}visualize;
 
 	public:
-		ThreadLakeException(
+		ThreadLake(
 			const std::string& desp = visualize.thrdLakeExpt.data(),
 			const Foundation::Infomation& info = {}
 		) noexcept;
-		ThreadLakeException() = delete;
-		virtual ~ThreadLakeException() noexcept = default;
+		ThreadLake() = delete;
+		virtual ~ThreadLake() noexcept = default;
 
 
 		// 快速创建异常
-		static ThreadLakeException makeException(unsigned int exptCode);
+		static ThreadLake makeException(unsigned int exptCode);
 
-		static ThreadLakeException makeQueueFullException() noexcept;
+		static ThreadLake TaskQueueFullException() noexcept;
 	};
 }
