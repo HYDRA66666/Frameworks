@@ -1,0 +1,73 @@
+#pragma once
+#include "pch.h"
+#include "framework.h"
+
+
+
+namespace HYDRA15::Frameworks::StaffUnion::Utilities
+{
+	// 共享容器是线程安全的
+	//    - 标准调用不使用任何锁操作
+	//    - 允许多个共享调用同时进行，共享调用进行时禁止独占调用进行
+	//    - 独占调用进行时禁止任何其他调用进行
+	//    - 独占调用和共享调用的准入调度由锁的类型决定
+	// 模板参数：
+	//   - Container: 容器类型
+	//   - Lock: 锁类型，必须满足 std::mutex 的接口
+	// 调用使用示例：
+	//   - 无重载成员函数：call(&Container::func, args...)
+	//   - 有重载成员函数：call(static_cast<Ret (Container::*)(Args&&...)>(&Container::func), args...)，须在static_cast中指定函数指针重载的版本
+	template<class Container, class Lock>
+	class SharedContainerBase
+	{
+		Container container;
+		Lock lock;
+
+	public:
+
+		// 标准调用
+		template<typename F, typename... Args>
+		decltype(auto) call(F&& f, Args&&... args)
+		{
+				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+		}
+
+		template<typename F, typename... Args>
+		decltype(auto) static_call(F&& f, Args&&... args)
+		{
+				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+		}
+		
+		// 共享调用
+		template<typename F, typename... Args>
+		decltype(auto) call_shared(F&& f, Args&&... args)
+		{
+				std::shared_lock<Lock> guard(lock);
+				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+		}
+
+		template<typename F, typename... Args>
+		decltype(auto) static_call_shared(F&& f, Args&&... args)
+		{
+				std::shared_lock<Lock> guard(lock);
+				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+		}
+
+		// 独占调用
+		template<typename F, typename... Args>
+		decltype(auto) call_unique(F&& f, Args&&... args)
+		{
+				std::unique_lock<Lock> guard(lock);
+				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+		}
+
+		template<typename F, typename... Args>
+		decltype(auto) static_call_unique(F&& f, Args&&... args)
+		{
+				std::unique_lock<Lock> guard(lock);
+				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+		}
+	};
+
+
+}
