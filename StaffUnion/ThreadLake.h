@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -9,40 +9,40 @@
 
 namespace HYDRA15::Frameworks::StaffUnion
 {
-    // Ïß³Ì³Ø
+    // çº¿ç¨‹æ± 
     class ThreadLake :Background
     {
 
-        //ÈÎÎñ¶ÓÁĞ
+        //ä»»åŠ¡é˜Ÿåˆ—
     private:
-		std::queue <TaskPackage> taskQueue; //ÈÎÎñ¶ÓÁĞ
-        const size_t tskQueMaxSize = 0; //ÈÎÎñ¶ÓÁĞ×î´ó´óĞ¡£¬0±íÊ¾ÎŞÏŞÖÆ
+		std::queue <TaskPackage> taskQueue; //ä»»åŠ¡é˜Ÿåˆ—
+        const size_t tskQueMaxSize = 0; //ä»»åŠ¡é˜Ÿåˆ—æœ€å¤§å¤§å°ï¼Œ0è¡¨ç¤ºæ— é™åˆ¶
 		std::mutex queueMutex;
 		std::condition_variable queueCv;
 
-        //ºóÌ¨ÈÎÎñ
+        //åå°ä»»åŠ¡
         bool working = false;
         void work() override;
 
-        //½Ó¿Ú
+        //æ¥å£
     public:
         ThreadLake(int threadCount = 10, size_t tskQueMaxSize = 0);
         ThreadLake() = delete;
         ~ThreadLake();
 
-        //Ìá½»ÈÎÎñ
+        //æäº¤ä»»åŠ¡
         
-		// ·½·¨1£ºÌá½»ÈÎÎñº¯Êı std::packaged_task ºÍ»Øµ÷º¯Êı std::function£¬ÍÆ¼öÊ¹ÓÃ´Ë·½·¨£¬½¨ÒéÔÚÌá½»ÈÎÎñÖ®Ç°×ÔĞĞ»ñÈ¡ std::future
+		// æ–¹æ³•1ï¼šæäº¤ä»»åŠ¡å‡½æ•° std::packaged_task å’Œå›è°ƒå‡½æ•° std::functionï¼Œæ¨èä½¿ç”¨æ­¤æ–¹æ³•ï¼Œå»ºè®®åœ¨æäº¤ä»»åŠ¡ä¹‹å‰è‡ªè¡Œè·å– std::future
         template<typename ReturnType>
         auto submit(std::packaged_task<ReturnType()>& task, std::function<void()> callback = std::function<void()>())
             -> std::future<ReturnType>
         {
             auto pkgedTask = std::make_shared<std::packaged_task<ReturnType()>>(std::move(task));
 
-            // ²åÈëÈÎÎñ°ü
+            // æ’å…¥ä»»åŠ¡åŒ…
             {
                 std::lock_guard<std::mutex> lock(queueMutex);
-                if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // ¶ÓÁĞÒÑÂú
+                if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // é˜Ÿåˆ—å·²æ»¡
                 {
                     throw iExceptions::ThreadLake::TaskQueueFullException();
                 }
@@ -59,10 +59,10 @@ namespace HYDRA15::Frameworks::StaffUnion
             return pkgedTask->get_future();
         }
 
-        //·½·¨2£ºÖ±½ÓÌá½»ÈÎÎñ°ü
+        //æ–¹æ³•2ï¼šç›´æ¥æäº¤ä»»åŠ¡åŒ…
         void submit(TaskPackage& taskPkg);
 
-        // ·½·¨3£ºÌá½»Âãº¯ÊıÖ¸ÕëºÍ²ÎÊı£¬²»½¨ÒéÊ¹ÓÃ´Ë·½·¨£¬½öÁô×ö±¸ÓÃ
+        // æ–¹æ³•3ï¼šæäº¤è£¸å‡½æ•°æŒ‡é’ˆå’Œå‚æ•°ï¼Œä¸å»ºè®®ä½¿ç”¨æ­¤æ–¹æ³•ï¼Œä»…ç•™åšå¤‡ç”¨
         template<typename F, typename ... Args>
         auto submit(F&& f, Args &&...args)
             -> std::future<typename std::invoke_result<F, Args...>::type>
@@ -74,10 +74,10 @@ namespace HYDRA15::Frameworks::StaffUnion
                     std::bind(std::forward<F>(f), std::forward<Args>(args)...)
                 );
 
-            // ²åÈëÈÎÎñ°ü
+            // æ’å…¥ä»»åŠ¡åŒ…
             {
 				std::lock_guard<std::mutex> lock(queueMutex);
-                if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // ¶ÓÁĞÒÑÂú
+                if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // é˜Ÿåˆ—å·²æ»¡
                 {
                     throw iExceptions::ThreadLake::TaskQueueFullException();
 				}

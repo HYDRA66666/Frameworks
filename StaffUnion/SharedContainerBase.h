@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -6,17 +6,17 @@
 
 namespace HYDRA15::Frameworks::StaffUnion::Utilities
 {
-	// ¹²ÏíÈİÆ÷ÊÇÏß³Ì°²È«µÄ
-	//    - ±ê×¼µ÷ÓÃ²»Ê¹ÓÃÈÎºÎËø²Ù×÷
-	//    - ÔÊĞí¶à¸ö¹²Ïíµ÷ÓÃÍ¬Ê±½øĞĞ£¬¹²Ïíµ÷ÓÃ½øĞĞÊ±½ûÖ¹¶ÀÕ¼µ÷ÓÃ½øĞĞ
-	//    - ¶ÀÕ¼µ÷ÓÃ½øĞĞÊ±½ûÖ¹ÈÎºÎÆäËûµ÷ÓÃ½øĞĞ
-	//    - ¶ÀÕ¼µ÷ÓÃºÍ¹²Ïíµ÷ÓÃµÄ×¼Èëµ÷¶ÈÓÉËøµÄÀàĞÍ¾ö¶¨
-	// Ä£°å²ÎÊı£º
-	//   - Container: ÈİÆ÷ÀàĞÍ
-	//   - Lock: ËøÀàĞÍ£¬±ØĞëÂú×ã std::mutex µÄ½Ó¿Ú
-	// µ÷ÓÃÊ¹ÓÃÊ¾Àı£º
-	//   - ÎŞÖØÔØ³ÉÔ±º¯Êı£ºcall(&Container::func, args...)
-	//   - ÓĞÖØÔØ³ÉÔ±º¯Êı£ºcall(static_cast<Ret (Container::*)(Args&&...)>(&Container::func), args...)£¬ĞëÔÚstatic_castÖĞÖ¸¶¨º¯ÊıÖ¸ÕëÖØÔØµÄ°æ±¾
+	// å…±äº«å®¹å™¨æ˜¯çº¿ç¨‹å®‰å…¨çš„
+	//    - æ ‡å‡†è°ƒç”¨ä¸ä½¿ç”¨ä»»ä½•é”æ“ä½œ
+	//    - å…è®¸å¤šä¸ªå…±äº«è°ƒç”¨åŒæ—¶è¿›è¡Œï¼Œå…±äº«è°ƒç”¨è¿›è¡Œæ—¶ç¦æ­¢ç‹¬å è°ƒç”¨è¿›è¡Œ
+	//    - ç‹¬å è°ƒç”¨è¿›è¡Œæ—¶ç¦æ­¢ä»»ä½•å…¶ä»–è°ƒç”¨è¿›è¡Œ
+	//    - ç‹¬å è°ƒç”¨å’Œå…±äº«è°ƒç”¨çš„å‡†å…¥è°ƒåº¦ç”±é”çš„ç±»å‹å†³å®š
+	// æ¨¡æ¿å‚æ•°ï¼š
+	//   - Container: å®¹å™¨ç±»å‹
+	//   - Lock: é”ç±»å‹ï¼Œå¿…é¡»æ»¡è¶³ std::mutex çš„æ¥å£
+	// è°ƒç”¨ä½¿ç”¨ç¤ºä¾‹ï¼š
+	//   - æ— é‡è½½æˆå‘˜å‡½æ•°ï¼šcall(&Container::func, args...)
+	//   - æœ‰é‡è½½æˆå‘˜å‡½æ•°ï¼šcall(static_cast<Ret (Container::*)(Args&&...)>(&Container::func), args...)ï¼Œé¡»åœ¨static_castä¸­æŒ‡å®šå‡½æ•°æŒ‡é’ˆé‡è½½çš„ç‰ˆæœ¬
 	template<class Container, class Lock>
 	class SharedContainerBase
 	{
@@ -26,7 +26,7 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 	public:
 		virtual ~SharedContainerBase() = default;
 
-		// ±ê×¼µ÷ÓÃ
+		// æ ‡å‡†è°ƒç”¨
 		template<typename F, typename... Args>
 		decltype(auto) call(F&& f, Args&&... args)
 		{
@@ -39,7 +39,7 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
 		}
 		
-		// ¹²Ïíµ÷ÓÃ
+		// å…±äº«è°ƒç”¨
 		template<typename F, typename... Args>
 		decltype(auto) call_shared(F&& f, Args&&... args)
 		{
@@ -54,7 +54,7 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
 		}
 
-		// ¶ÀÕ¼µ÷ÓÃ
+		// ç‹¬å è°ƒç”¨
 		template<typename F, typename... Args>
 		decltype(auto) call_unique(F&& f, Args&&... args)
 		{

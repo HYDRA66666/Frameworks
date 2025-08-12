@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "WriteFirstMutex.h"
 
 namespace HYDRA15::Frameworks::StaffUnion::Utilities

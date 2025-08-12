@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "iExceptionBase.h"
 
 
@@ -22,7 +22,7 @@ namespace HYDRA15::Frameworks::Foundation
 			exptInfo.subType
 		);
 
-		// ÆôÓÃÕ»¸ú×ÙÖ§³Ö
+		// å¯ç”¨æ ˆè·Ÿè¸ªæ”¯æŒ
 #ifdef LIB_IEXPT_STACKTRACE_ENABLE
 		whatStr += std::format(
 			baseStackTraceFormat,

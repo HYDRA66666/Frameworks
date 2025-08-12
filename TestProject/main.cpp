@@ -1,4 +1,4 @@
-#include "StaffUnion/ThreadLake.h"
+ï»¿#include "StaffUnion/ThreadLake.h"
 #include <iostream>
 #include <Windows.h>
 
@@ -19,7 +19,7 @@ int main()
 	auto future2 = lake.submit(task2, [] { std::cout << "Task 2 completed.\n"; });
 	auto future3 = lake.submit(foo, 4, 5);
 
-	Sleep(1000); // µÈ´ýÒ»¶ÎÊ±¼äÒÔÈ·±£ËùÓÐÈÎÎñÍê³É
+	Sleep(1000); // ç­‰å¾…ä¸€æ®µæ—¶é—´ä»¥ç¡®ä¿æ‰€æœ‰ä»»åŠ¡å®Œæˆ
 	std::cout << "Result of Task 1: " << future1.get() << std::endl;
 	std::cout << "Result of Task 2: " << future2.get() << std::endl;
 	std::cout << "Result of Task 3: " << future3.get() << std::endl;

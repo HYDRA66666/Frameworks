@@ -1,15 +1,15 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "Background.h"
 
 namespace HYDRA15::Frameworks::StaffUnion
 {
 	void Background::work_shell()
 	{
-		// µÈ´ıËùÓĞÏß³Ì×¼±¸¾ÍĞ÷
+		// ç­‰å¾…æ‰€æœ‰çº¿ç¨‹å‡†å¤‡å°±ç»ª
 		checkpoint.arrive_and_wait();
-		// Ö´ĞĞ¹¤×÷
+		// æ‰§è¡Œå·¥ä½œ
 		work();
-		// µÈ´ıËùÓĞÏß³ÌÍê³É¹¤×÷
+		// ç­‰å¾…æ‰€æœ‰çº¿ç¨‹å®Œæˆå·¥ä½œ
 		checkpoint.arrive();
 	}
 

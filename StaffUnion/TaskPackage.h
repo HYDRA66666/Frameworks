@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -8,6 +8,6 @@ namespace HYDRA15::Frameworks::StaffUnion
 	struct TaskPackage
 	{
 		Task task;
-		Task callback;	// ÈÎÎñÍê³ÉºóµÄ»Øµ÷
+		Task callback;	// ä»»åŠ¡å®Œæˆåçš„å›è°ƒ
 	};
 }

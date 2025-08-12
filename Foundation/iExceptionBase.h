@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -7,24 +7,24 @@
 
 namespace HYDRA15::Frameworks::Foundation
 {
-	// Òì³£´¦ÀíµÄ»ù´¡
-	// Ïà±È±ê×¼¿âÒì³££¬¶îÍâ¼ÇÂ¼ÁË£º
-	//    - ÃèÊö×Ö·û´®
-	//    - Òì³£ĞÅÏ¢
+	// å¼‚å¸¸å¤„ç†çš„åŸºç¡€
+	// ç›¸æ¯”æ ‡å‡†åº“å¼‚å¸¸ï¼Œé¢å¤–è®°å½•äº†ï¼š
+	//    - æè¿°å­—ç¬¦ä¸²
+	//    - å¼‚å¸¸ä¿¡æ¯
 	class iExceptionBase :public std::exception
 	{
 		StaticString baseWhatStrFormat = "iException: {0} ( 0x{1:08X} : 0x{2:08X} )\n";
 
 	protected:
-		// ¼ÇÂ¼µÄĞÅÏ¢
+		// è®°å½•çš„ä¿¡æ¯
 		const Infomation exptInfo;
 		const std::string description;
 
-		// what×Ö·û´®»º´æ
+		// whatå­—ç¬¦ä¸²ç¼“å­˜
 		mutable std::string whatStr;
 
 	public:
-		// ¹¹ÔìºÍÎö¹¹
+		// æ„é€ å’Œææ„
 		iExceptionBase() noexcept = delete;
 		iExceptionBase(const std::string& desp, const Infomation& info = {}) noexcept;
 		virtual ~iExceptionBase() noexcept = default;
@@ -32,12 +32,12 @@ namespace HYDRA15::Frameworks::Foundation
 		// what()
 		virtual const char* what() const noexcept override;
 
-		// »ñÈ¡ºÍĞ´ÈëĞÅÏ¢
+		// è·å–å’Œå†™å…¥ä¿¡æ¯
 		const Infomation& getExptInfo() const noexcept;
 		const std::string& getDescription() const noexcept;
 
 
-		// ÆôÓÃÕ»¸ú×ÙÖ§³Ö
+		// å¯ç”¨æ ˆè·Ÿè¸ªæ”¯æŒ
 #ifdef LIB_IEXPT_STACKTRACE_ENABLE
 	private:
 		std::stacktrace stackTrace;

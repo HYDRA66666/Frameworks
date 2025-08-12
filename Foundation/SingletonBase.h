@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -6,10 +6,10 @@
 
 namespace HYDRA15::Frameworks::Foundation
 {
-	// ĞèÒªµ¥ÀıÄ£Ê½µÄ×ÓÀàÓ¦µ±£º
-	//		- public¼Ì³Ğ´ËÀà
-	//		- ½«´ËÀàÉùÃ÷ÎªÓÑÔªÀà
-	// ×ÓÀà½«ÔÚÊ×´Îµ÷ÓÃ getInstance Ê±±»ÊµÀı»¯
+	// éœ€è¦å•ä¾‹æ¨¡å¼çš„å­ç±»åº”å½“ï¼š
+	//		- publicç»§æ‰¿æ­¤ç±»
+	//		- å°†æ­¤ç±»å£°æ˜ä¸ºå‹å…ƒç±»
+	// å­ç±»å°†åœ¨é¦–æ¬¡è°ƒç”¨ getInstance æ—¶è¢«å®ä¾‹åŒ–
 	template <class T>
 	class SingletonBase
 	{

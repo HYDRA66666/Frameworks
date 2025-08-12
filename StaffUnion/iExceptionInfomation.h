@@ -1,16 +1,16 @@
-#pragma once
+Ôªø#pragma once
 #include "pch.h"
 #include "framework.h"
 
 
 namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 {
-	// “Ï≥£¥˙¬Î
+	// ÂºÇÂ∏∏‰ª£Á†Å
 	static struct iExceptionCodes
 	{
 		iExceptionCode libID = 0xA1;
 
-		// œﬂ≥Ã≥ÿ
+		// Á∫øÁ®ãÊ±†
 		iExceptionCode threadLake = 0xA00;
 		iExceptionCode threadQueueFull = 0xA01;
 	} iExptCodes;

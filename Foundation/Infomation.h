@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -6,7 +6,7 @@
 namespace HYDRA15::Frameworks::Foundation
 {
 
-	// ÓÃÓÚ½»»»ĞÅÏ¢µÄÒ»×é±ê×¼»¯µÄÊı¾İ  
+	// ç”¨äºäº¤æ¢ä¿¡æ¯çš„ä¸€ç»„æ ‡å‡†åŒ–çš„æ•°æ®  
 	class Infomation
 	{
 	public:

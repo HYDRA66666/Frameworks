@@ -1,4 +1,4 @@
-#include "pch.h"
+ï»¿#include "pch.h"
 #include "ThreadLake.h"
 
 namespace HYDRA15::Frameworks::StaffUnion
@@ -9,18 +9,18 @@ namespace HYDRA15::Frameworks::StaffUnion
 
 		while (true)
 		{
-			// È¡ÈÎÎñ
+			// å–ä»»åŠ¡
 			{
 				std::unique_lock<std::mutex> lock(queueMutex);
 				if (working && taskQueue.empty())
 					queueCv.wait(lock, [this] { return !taskQueue.empty() || !working; });
-				if (!working)	// Èç¹û¹¤×÷½áÊø£¬ÍË³öÑ­»·
+				if (!working)	// å¦‚æœå·¥ä½œç»“æŸï¼Œé€€å‡ºå¾ªç¯
 					return;
 				taskPkg = std::move(taskQueue.front());
 				taskQueue.pop();
 			}
 
-			// Ö´ĞĞÈÎÎñ
+			// æ‰§è¡Œä»»åŠ¡
 			if (taskPkg.task)
 				taskPkg.task();
 			if (taskPkg.callback)
@@ -39,18 +39,18 @@ namespace HYDRA15::Frameworks::StaffUnion
 	ThreadLake::~ThreadLake()
 	{
 		working = false;
-		queueCv.notify_all(); // Í¨ÖªËùÓĞµÈ´ıµÄÏß³Ì
-		wait_for_end(); // µÈ´ıËùÓĞÏß³Ì½áÊø
+		queueCv.notify_all(); // é€šçŸ¥æ‰€æœ‰ç­‰å¾…çš„çº¿ç¨‹
+		wait_for_end(); // ç­‰å¾…æ‰€æœ‰çº¿ç¨‹ç»“æŸ
 	}
 
 	void ThreadLake::submit(TaskPackage& taskPkg)
 	{
-		if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // ¶ÓÁĞÒÑÂú
+		if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // é˜Ÿåˆ—å·²æ»¡
 		{
 			throw iExceptions::ThreadLake::TaskQueueFullException();
 		}
 		std::lock_guard<std::mutex> lock(queueMutex);
 		taskQueue.push(taskPkg);
-		queueCv.notify_one(); // Í¨ÖªÒ»¸öµÈ´ıµÄÏß³Ì
+		queueCv.notify_one(); // é€šçŸ¥ä¸€ä¸ªç­‰å¾…çš„çº¿ç¨‹
 	}
 }

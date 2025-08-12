@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "pch.h"
 #include "framework.h"
 
@@ -9,7 +9,7 @@
 
 namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 {
-	// Ïß³Ì³ØÒì³£
+	// çº¿ç¨‹æ± å¼‚å¸¸
 	class ThreadLake : public Foundation::iExceptionBase
 	{
 		static struct Visualize
@@ -28,7 +28,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 		virtual ~ThreadLake() noexcept = default;
 
 
-		// ¿ìËÙ´´½¨Òì³£
+		// å¿«é€Ÿåˆ›å»ºå¼‚å¸¸
 		static ThreadLake makeException(unsigned int exptCode);
 
 		static ThreadLake TaskQueueFullException() noexcept;
