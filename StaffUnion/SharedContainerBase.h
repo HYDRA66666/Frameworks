@@ -24,6 +24,7 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 		Lock lock;
 
 	public:
+		virtual ~SharedContainerBase() = default;
 
 		// 标准调用
 		template<typename F, typename... Args>

@@ -13,7 +13,7 @@ namespace HYDRA15::Frameworks::Foundation
 	//    - 异常信息
 	class iExceptionBase :public std::exception
 	{
-		StaticString baseWhatStrFormat = "iException: {0} ( {1:08X} : {2:08X} )\n";
+		StaticString baseWhatStrFormat = "iException: {0} ( 0x{1:08X} : 0x{2:08X} )\n";
 
 	protected:
 		// 记录的信息

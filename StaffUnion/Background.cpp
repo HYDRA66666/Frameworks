@@ -23,7 +23,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 		checkpoint.arrive_and_wait();
 	}
 	
-	Background::Background(int bkgThrCount) 
+	Background::Background(unsigned int bkgThrCount) 
 		: checkpoint(bkgThrCount + 1)
 	{
 		threads.resize(bkgThrCount);
@@ -31,15 +31,5 @@ namespace HYDRA15::Frameworks::StaffUnion
 			i = std::make_shared<std::thread>(&Background::work_shell, this);
 		for (auto& item : threads)
 			item->detach();
-
-		/*for (int i = 0; i < bkgThrCount; i++)
-			threads.push_back(
-				std::make_shared<std::thread>(&Background::work_shell, this)
-			);
-		for (auto& item : threads)item->detach();*/
-	}
-
-	Background::Background() :Background(1)
-	{
 	}
 }

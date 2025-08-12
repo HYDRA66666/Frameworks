@@ -147,10 +147,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Background.h" />
+    <ClInclude Include="iExceptionInfomation.h" />
     <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="TaskPackage.h" />
     <ClInclude Include="ThreadLake.h" />
+    <ClInclude Include="ThreadLakeException.h" />
     <ClInclude Include="WriteFirstMutex.h" />
   </ItemGroup>
   <ItemGroup>
@@ -161,6 +164,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ThreadLake.cpp" />
+    <ClCompile Include="ThreadLakeException.cpp" />
     <ClCompile Include="WriteFirstMutex.cpp" />
   </ItemGroup>
   <ItemGroup>

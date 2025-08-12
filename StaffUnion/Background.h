@@ -28,8 +28,8 @@ namespace HYDRA15::Frameworks::StaffUnion
         void wait_for_end();
 
         // 构造函数，参数为异步线程数量，默认为1
-        Background(int bkgThrCount);
-        Background();
+        Background(unsigned int bkgThrCount = 1);
+        Background() = delete;
 		virtual ~Background() = default;
 		Background(const Background&) = delete;
 		Background& operator=(const Background&) = delete;

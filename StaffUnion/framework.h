@@ -13,3 +13,9 @@
 #define StaticString static constexpr std::string_view
 #define iExceptionCode static constexpr unsigned int
 
+
+namespace HYDRA15::Frameworks::StaffUnion
+{
+	
+
+}

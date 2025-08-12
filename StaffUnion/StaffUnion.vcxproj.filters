@@ -34,6 +34,15 @@
     <ClInclude Include="WriteFirstMutex.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="iExceptionInfomation.h">
+      <Filter>iExceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLakeException.h">
+      <Filter>iExceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="TaskPackage.h">
+      <Filter>Threads</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -43,6 +52,12 @@
       <Filter>Utilities</Filter>
     </ClCompile>
     <ClCompile Include="Background.cpp">
+      <Filter>Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLakeException.cpp">
+      <Filter>iExceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLake.cpp">
       <Filter>Threads</Filter>
     </ClCompile>
   </ItemGroup>
