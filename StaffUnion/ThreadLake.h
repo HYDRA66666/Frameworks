@@ -32,23 +32,31 @@ namespace HYDRA15::Frameworks::StaffUnion
 
         //提交任务
         
-		// 方法1：提交任务函数 std::packaged_task 和回调函数 std::function，推荐使用此方法
+		// 方法1：提交任务函数 std::packaged_task 和回调函数 std::function，推荐使用此方法，建议在提交任务之前自行获取 std::future
         template<typename ReturnType>
-        auto submit(std::packaged_task<ReturnType()>& task, std::function<void()> callback = {})
+        auto submit(std::packaged_task<ReturnType()>& task, std::function<void()> callback = std::function<void()>())
             -> std::future<ReturnType>
         {
-            auto task = std::make_shared<std::packaged_task<ReturnType()>>(std::move(task));
+            auto pkgedTask = std::make_shared<std::packaged_task<ReturnType()>>(std::move(task));
+
+            // 插入任务包
             {
                 std::lock_guard<std::mutex> lock(queueMutex);
                 if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
                     throw iExceptions::ThreadLakeException::makeQueueFullException();
                 }
-                taskQueue.push({ std::function<void()>(),std::function<void()>([task] { (*task)(); }) });
+
+                taskQueue.push(
+                    { 
+                        std::function<void()>([pkgedTask] { (*pkgedTask)(); }),
+                        callback 
+                    }
+                )；
                 queueCv.notify_one();
             }
 
-            return task->get_future();
+            return pkgedTask->get_future();
         }
 
         //方法2：直接提交任务包
@@ -61,15 +69,24 @@ namespace HYDRA15::Frameworks::StaffUnion
         {
             using return_type = typename std::invoke_result<F, Args...>::type;
 
-            auto task = std::make_shared<std::packaged_task<return_type()>>(std::bind(std::forward<F>(f), std::forward<Args>(args)...));
+            auto task = 
+                std::make_shared<std::packaged_task<return_type()>>(
+                    std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+                );
 
+            // 插入任务包
             {
 				std::lock_guard<std::mutex> lock(queueMutex);
                 if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
                     throw iExceptions::ThreadLakeException::makeQueueFullException();
 				}
-                taskQueue.push({ std::function<void()>(),std::function<void()>([task] { (*task)(); }) });
+                taskQueue.push(
+                    { 
+                        std::function<void()>([task] { (*task)(); }), 
+                        std::function<void()>() 
+                    }
+                );
                 queueCv.notify_one();
             }
 
