@@ -40,9 +40,6 @@
     <ClInclude Include="ThreadLakeException.h">
       <Filter>iExceptions</Filter>
     </ClInclude>
-    <ClInclude Include="TaskPackage.h">
-      <Filter>Threads</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

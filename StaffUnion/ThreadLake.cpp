@@ -3,13 +3,15 @@
 
 namespace HYDRA15::Frameworks::StaffUnion
 {
-	void ThreadLake::work()
+    void ThreadLake::work(Background::ThreadInfo& info)
 	{
 		TaskPackage taskPkg;
+        info.state = Background::ThreadInfo::State::idle;
 
 		while (true)
 		{
 			// 取任务
+            info.state = Background::ThreadInfo::State::waiting;
 			{
 				std::unique_lock<std::mutex> lock(queueMutex);
 				if (working && taskQueue.empty())
@@ -21,6 +23,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 			}
 
 			// 执行任务
+            info.state = Background::ThreadInfo::State::working;
 			if (taskPkg.task)
 				taskPkg.task();
 			if (taskPkg.callback)
@@ -43,7 +46,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 		wait_for_end(); // 等待所有线程结束
 	}
 
-	void ThreadLake::submit(TaskPackage& taskPkg)
+	void ThreadLake::submit(const TaskPackage& taskPkg)
 	{
 		if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
 		{

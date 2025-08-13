@@ -151,7 +151,6 @@
     <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TaskPackage.h" />
     <ClInclude Include="ThreadLake.h" />
     <ClInclude Include="ThreadLakeException.h" />
     <ClInclude Include="WriteFirstMutex.h" />

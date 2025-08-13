@@ -22,7 +22,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	public:
 		ThreadLake(
 			const std::string& desp = visualize.thrdLakeExpt.data(),
-			const Foundation::Infomation& info = {}
+            const Foundation::iExceptionCode& code = iExceptions::iExptCodes.threadLake
 		) noexcept;
 		ThreadLake() = delete;
 		virtual ~ThreadLake() noexcept = default;

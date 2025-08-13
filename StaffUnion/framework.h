@@ -12,11 +12,5 @@
 
 // 常用类型定义
 #define StaticString static constexpr std::string_view
-#define iExceptionCode static constexpr unsigned int
+#define StaticUInt static constexpr unsigned int
 
-
-namespace HYDRA15::Frameworks::StaffUnion
-{
-	
-
-}

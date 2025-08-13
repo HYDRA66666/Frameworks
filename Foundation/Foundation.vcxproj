@@ -145,7 +145,7 @@
   <ItemGroup>
     <ClInclude Include="iExceptionBase.h" />
     <ClInclude Include="framework.h" />
-    <ClInclude Include="iExceptionBaseInfomation.h" />
+    <ClInclude Include="LibID.h" />
     <ClInclude Include="Message.h" />
     <ClInclude Include="Infomation.h" />
     <ClInclude Include="pch.h" />

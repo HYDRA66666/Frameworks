@@ -4,8 +4,8 @@
 
 namespace HYDRA15::Frameworks::Foundation
 {
-	iExceptionBase::iExceptionBase(const std::string& desp, const Infomation& info) noexcept
-		:exptInfo(info), description(desp)
+	iExceptionBase::iExceptionBase(const std::string& desp, const iExceptionCode& id, const iExceptionCode& code) noexcept
+        :description(desp), libID(id), exptCode(code)
 #ifdef LIB_IEXPT_STACKTRACE_ENABLE
 		, stackTrace(std::stacktrace::current())
 #endif // LIB_IEXPT_STACKTRACE_ENABLE
@@ -18,8 +18,8 @@ namespace HYDRA15::Frameworks::Foundation
 		whatStr = std::format(
 			baseWhatStrFormat,
 			description,
-			exptInfo.type,
-			exptInfo.subType
+			libID,
+			exptCode
 		);
 
 		// 启用栈跟踪支持
@@ -31,21 +31,6 @@ namespace HYDRA15::Frameworks::Foundation
 #endif // LIB_IEXPT_STACKTRACE_ENABLE
 
 		return whatStr.c_str();
-	}
-
-	const Infomation& iExceptionBase::getExptInfo() const noexcept
-	{
-		return exptInfo;
-	}
-
-	const std::string& iExceptionBase::getDescription() const noexcept
-	{
-		return description;
-	}
-
-	const std::stacktrace& iExceptionBase::getStackTrace() const noexcept
-	{
-		return stackTrace;
 	}
 
 

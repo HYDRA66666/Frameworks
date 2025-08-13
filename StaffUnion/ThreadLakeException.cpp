@@ -3,8 +3,8 @@
 
 namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 {
-	ThreadLake::ThreadLake(const std::string& desp, const Foundation::Infomation& info) noexcept
-		: Foundation::iExceptionBase(desp, info)
+	ThreadLake::ThreadLake(const std::string& desp, const Foundation::iExceptionCode& code) noexcept
+		: Foundation::iExceptionBase(desp, Foundation::LibInfomation::libID.StaffUnion, code)
 	{
 	}
 
@@ -12,7 +12,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	{
 		return ThreadLake(
 			visualize.thrdLakeExpt.data(),
-			{ Foundation::iExptLibID.StaffUnion, exptCode, 0, 0, nullptr, nullptr }
+            exptCode
 		);
 	}
 
@@ -20,7 +20,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	{
 		return ThreadLake(
 			visualize.thrdLakeQueueFull.data(),
-			{ Foundation::iExptLibID.StaffUnion, iExptCodes.threadQueueFull, 0, 0, nullptr, nullptr }
+            iExptCodes.threadQueueFull
 		);
 	}
 

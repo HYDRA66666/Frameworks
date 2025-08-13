@@ -3,15 +3,24 @@
 #include "framework.h"
 
 #include "Background.h"
-#include "TaskPackage.h"
 #include "ThreadLakeException.h"
 
 
 namespace HYDRA15::Frameworks::StaffUnion
 {
+
     // 线程池
     class ThreadLake :Background
     {
+        // 任务和任务包定义
+    public:
+        template<typename ReturnType = void>
+        using Task = std::function<ReturnType()>;
+        struct TaskPackage
+        {
+            Task<> task;
+            Task<> callback;	// 任务完成后的回调
+        };
 
         //任务队列
     private:
@@ -22,7 +31,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 
         //后台任务
         bool working = false;
-        void work() override;
+        virtual void work(Background::ThreadInfo& info) override;
 
         //接口
     public:
@@ -32,12 +41,12 @@ namespace HYDRA15::Frameworks::StaffUnion
 
         //提交任务
         
-		// 方法1：提交任务函数 std::packaged_task 和回调函数 std::function，推荐使用此方法，建议在提交任务之前自行获取 std::future
+		// 方法1：提交任务函数 std::function 和回调函数 std::function，推荐使用此方法
         template<typename ReturnType>
-        auto submit(std::packaged_task<ReturnType()>& task, std::function<void()> callback = std::function<void()>())
+        auto submit(Task<ReturnType>& task, Task<> callback = Task<>())
             -> std::future<ReturnType>
         {
-            auto pkgedTask = std::make_shared<std::packaged_task<ReturnType()>>(std::move(task));
+            auto pkgedTask = std::make_shared<std::packaged_task<ReturnType()>>(task);
 
             // 插入任务包
             {
@@ -49,7 +58,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 
                 taskQueue.push(
                     {
-                        std::function<void()>([pkgedTask] { (*pkgedTask)(); }),
+                        Task<>([pkgedTask] { (*pkgedTask)(); }),
                         callback
                     }
                 );
@@ -60,7 +69,7 @@ namespace HYDRA15::Frameworks::StaffUnion
         }
 
         //方法2：直接提交任务包
-        void submit(TaskPackage& taskPkg);
+        void submit(const TaskPackage& taskPkg);
 
         // 方法3：提交裸函数指针和参数，不建议使用此方法，仅留做备用
         template<typename F, typename ... Args>
@@ -83,8 +92,8 @@ namespace HYDRA15::Frameworks::StaffUnion
 				}
                 taskQueue.push(
                     { 
-                        std::function<void()>([task] { (*task)(); }), 
-                        std::function<void()>() 
+                        Task<>([task] { (*task)(); }), 
+                        Task<>() 
                     }
                 );
                 queueCv.notify_one();
