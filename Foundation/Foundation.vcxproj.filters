@@ -33,6 +33,9 @@
     <ClInclude Include="SingletonBase.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="iExceptionBaseInfomation.h">
+      <Filter>iExceptionBase</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

@@ -21,10 +21,9 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{0066c510-d48b-47b1-a5ab-0fc0d083e855}</ProjectGuid>
-    <RootNamespace>StaffUnion</RootNamespace>
+    <ProjectGuid>{5fc1063a-95aa-4e8a-afae-fc2c37405553}</ProjectGuid>
+    <RootNamespace>Archivist</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
-    <ProjectName>StaffUnion</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -146,35 +145,16 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Background.h" />
-    <ClInclude Include="iExceptionInfomation.h" />
-    <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="TaskPackage.h" />
-    <ClInclude Include="ThreadLake.h" />
-    <ClInclude Include="ThreadLakeException.h" />
-    <ClInclude Include="WriteFirstMutex.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Background.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="ThreadLake.cpp" />
-    <ClCompile Include="ThreadLakeException.cpp" />
-    <ClCompile Include="WriteFirstMutex.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Foundation\Foundation.vcxproj">
-      <Project>{ab9a5021-5404-4c2c-839c-ffd07f4fc75a}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\Judge\Judge.vcxproj">
-      <Project>{1dec8a9a-fbb6-4c4d-8b58-1e716300ae51}</Project>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -22,9 +22,6 @@
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="iExceptionInfomation.h">
-      <Filter>iException</Filter>
-    </ClInclude>
     <ClInclude Include="iException.h">
       <Filter>iException</Filter>
     </ClInclude>

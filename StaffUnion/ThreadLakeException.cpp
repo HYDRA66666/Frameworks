@@ -12,7 +12,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	{
 		return ThreadLake(
 			visualize.thrdLakeExpt.data(),
-			{ iExptCodes.libID, exptCode, 0, 0, nullptr, nullptr }
+			{ Foundation::iExptLibID.StaffUnion, exptCode, 0, 0, nullptr, nullptr }
 		);
 	}
 
@@ -20,7 +20,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	{
 		return ThreadLake(
 			visualize.thrdLakeQueueFull.data(),
-			{ iExptCodes.libID, iExptCodes.threadQueueFull, 0, 0, nullptr, nullptr }
+			{ Foundation::iExptLibID.StaffUnion, iExptCodes.threadQueueFull, 0, 0, nullptr, nullptr }
 		);
 	}
 
