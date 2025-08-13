@@ -140,8 +140,14 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Archivist\Archivist.vcxproj">
+      <Project>{5fc1063a-95aa-4e8a-afae-fc2c37405553}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">
       <Project>{ab9a5021-5404-4c2c-839c-ffd07f4fc75a}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\Judge\Judge.vcxproj">
+      <Project>{1dec8a9a-fbb6-4c4d-8b58-1e716300ae51}</Project>
     </ProjectReference>
     <ProjectReference Include="..\StaffUnion\StaffUnion.vcxproj">
       <Project>{0066c510-d48b-47b1-a5ab-0fc0d083e855}</Project>

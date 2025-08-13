@@ -33,13 +33,13 @@ namespace HYDRA15::Frameworks::StaffUnion
         class ThreadItem
         {
         public:
-            std::thread thread; // 线程对象
+            std::shared_ptr<std::thread> thread; // 线程对象
             ThreadInfo info; // 线程信息
         };
 
     private:
         std::barrier<> checkpoint;  //启动和结束同步
-        std::list<std::shared_ptr<ThreadItem>> threads; // 异步线程组
+        std::list<ThreadItem> threads; // 异步线程组
 		void work_shell(ThreadInfo& info); // 封装了启动与结束同步的工作函数
 
     public:
@@ -62,7 +62,7 @@ namespace HYDRA15::Frameworks::StaffUnion
     public:
         class iterator
         {
-            using list_iter = std::list<std::shared_ptr<ThreadItem>>::iterator;
+            using list_iter = std::list<ThreadItem>::iterator;
             list_iter it;
         public:
             iterator(list_iter iter);

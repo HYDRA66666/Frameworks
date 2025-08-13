@@ -12,12 +12,12 @@ namespace HYDRA15::Frameworks::StaffUnion
 		work(info);
         info.state = ThreadInfo::State::finishing;
 		// 等待所有线程完成工作
-		checkpoint.arrive();
+		auto t = checkpoint.arrive();
 	}
 
 	void Background::start()
 	{
-		checkpoint.arrive();
+        auto t = checkpoint.arrive();
 	}
 
 	void Background::wait_for_end()
@@ -30,9 +30,9 @@ namespace HYDRA15::Frameworks::StaffUnion
 	{
 		threads.resize(bkgThrCount);
 		for (auto& i :threads)
-            i->thread = std::thread(&Background::work_shell, this, std::ref(i->info));
+            i.thread = std::make_shared<std::thread>(&Background::work_shell, this, std::ref(i.info));
 		for (auto& item : threads)
-            item->thread.detach();
+            item.thread->detach();
 	}
 
     Background::iterator::iterator(list_iter iter)
@@ -43,7 +43,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 
     Background::iterator& Background::iterator::operator++()
     {
-        ++it;
+        it++;
         return *this;
     }
 
@@ -54,7 +54,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 
     Background::ThreadInfo& Background::iterator::operator*() const
     {
-        return (*it)->info;
+        return it->info;
     }
 
     Background::iterator Background::begin()

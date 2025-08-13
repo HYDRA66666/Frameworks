@@ -13,9 +13,9 @@ using namespace HYDRA15::Frameworks::StaffUnion;
 int main()
 {
 	ThreadLake lake(4, 10);
-	auto task1 = std::packaged_task<int()>(std::bind(foo, 1, 2));
+	auto task1 = ThreadLake::Task<int>(std::bind(foo, 1, 2));
 	auto future1 = lake.submit(task1, [] { std::cout << "Task 1 completed.\n"; });
-	auto task2 = std::packaged_task<int()>(std::bind(foo, 3, 4));
+	auto task2 = ThreadLake::Task<int>(std::bind(foo, 3, 4));
 	auto future2 = lake.submit(task2, [] { std::cout << "Task 2 completed.\n"; });
 	auto future3 = lake.submit(foo, 4, 5);
 
