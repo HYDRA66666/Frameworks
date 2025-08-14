@@ -8,7 +8,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 	{
 	}
 
-	ThreadLake ThreadLake::makeException(unsigned int exptCode)
+	ThreadLake ThreadLake::make_exception(unsigned int exptCode)
 	{
 		return ThreadLake(
 			visualize.thrdLakeExpt.data(),
@@ -16,7 +16,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 		);
 	}
 
-	ThreadLake ThreadLake::TaskQueueFullException() noexcept
+	ThreadLake ThreadLake::TaskQueueFull() noexcept
 	{
 		return ThreadLake(
 			visualize.thrdLakeQueueFull.data(),

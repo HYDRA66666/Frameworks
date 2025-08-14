@@ -30,43 +30,58 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 		template<typename F, typename... Args>
 		decltype(auto) call(F&& f, Args&&... args)
 		{
-				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+			return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
 		}
 
 		template<typename F, typename... Args>
 		decltype(auto) static_call(F&& f, Args&&... args)
 		{
-				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+			return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
 		}
+
+        // 锁调用
+        template<typename F, typename... Args>
+        decltype(auto) call_locked(F&& f, Args&&... args)
+        {
+            std::lock_guard<Lock> guard(lock);
+            return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+        }
+
+        template<typename F, typename... Args>
+        decltype(auto) static_call_locked(F&& f, Args&&... args)
+        {
+            std::lock_guard<Lock> guard(lock);
+            return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+        }
 		
 		// 共享调用
 		template<typename F, typename... Args>
 		decltype(auto) call_shared(F&& f, Args&&... args)
 		{
-				std::shared_lock<Lock> guard(lock);
-				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+			std::shared_lock<Lock> guard(lock);
+			return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
 		}
 
 		template<typename F, typename... Args>
 		decltype(auto) static_call_shared(F&& f, Args&&... args)
 		{
-				std::shared_lock<Lock> guard(lock);
-				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+			std::shared_lock<Lock> guard(lock);
+			return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
 		}
 
 		// 独占调用
 		template<typename F, typename... Args>
 		decltype(auto) call_unique(F&& f, Args&&... args)
 		{
-				std::unique_lock<Lock> guard(lock);
-				return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
+			std::unique_lock<Lock> guard(lock);
+			return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
 		}
 
 		template<typename F, typename... Args>
 		decltype(auto) static_call_unique(F&& f, Args&&... args)
 		{
-				std::unique_lock<Lock> guard(lock);
-				return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
+			std::unique_lock<Lock> guard(lock);
+			return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
 		}
 	};
 

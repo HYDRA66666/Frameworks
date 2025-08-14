@@ -16,7 +16,7 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 		{
 			StaticString thrdLakeExpt = "ThreadLake Exception";
 
-			StaticString thrdLakeQueueFull = "ThreadLake: Task queue is full.";
+			StaticString thrdLakeQueueFull = "ThreadLake: Task queue is full";
 		}visualize;
 
 	public:
@@ -29,8 +29,8 @@ namespace HYDRA15::Frameworks::StaffUnion::iExceptions
 
 
 		// 快速创建异常
-		static ThreadLake makeException(unsigned int exptCode);
+		static ThreadLake make_exception(unsigned int exptCode);
 
-		static ThreadLake TaskQueueFullException() noexcept;
+		static ThreadLake TaskQueueFull() noexcept;
 	};
 }

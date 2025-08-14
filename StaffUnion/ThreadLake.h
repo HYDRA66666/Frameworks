@@ -53,7 +53,7 @@ namespace HYDRA15::Frameworks::StaffUnion
                 std::lock_guard<std::mutex> lock(queueMutex);
                 if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
-                    throw iExceptions::ThreadLake::TaskQueueFullException();
+                    throw iExceptions::ThreadLake::TaskQueueFull();
                 }
 
                 taskQueue.push(
@@ -88,7 +88,7 @@ namespace HYDRA15::Frameworks::StaffUnion
 				std::lock_guard<std::mutex> lock(queueMutex);
                 if(tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
-                    throw iExceptions::ThreadLake::TaskQueueFullException();
+                    throw iExceptions::ThreadLake::TaskQueueFull();
 				}
                 taskQueue.push(
                     { 

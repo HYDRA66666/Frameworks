@@ -1,22 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="头文件">
+    <Filter Include="Registry">
+      <UniqueIdentifier>{f5b6ef4c-aa9b-48f7-9d59-a61eb29c5631}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iExceptions">
+      <UniqueIdentifier>{a3be5c7a-8a12-4340-b4ef-814d8d3ea71e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
-      <Filter>头文件</Filter>
+      <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="pch.h">
-      <Filter>头文件</Filter>
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>Registry</Filter>
+    </ClInclude>
+    <ClInclude Include="RegistryException.h">
+      <Filter>iExceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="iExceptionInfomation.h">
+      <Filter>iExceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="RegiestTablet.h">
+      <Filter>Registry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
-      <Filter>头文件</Filter>
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="RegistryException.cpp">
+      <Filter>iExceptions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

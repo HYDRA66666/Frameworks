@@ -9,5 +9,11 @@
 
 // 添加要在此处预编译的标头
 
+// 标准库
+#include <unordered_map>
+#include <mutex>
+#include <concepts>
+#include <stacktrace>
+#include <shared_mutex>
 
 #endif //PCH_H
