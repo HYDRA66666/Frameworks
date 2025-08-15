@@ -10,11 +10,12 @@ namespace HYDRA15::Frameworks::Archivist
     // 注册机模板
     //   - L: 锁类型，默认为 std::mutex，通过锁类型调整读写调度行为
     // 提供三种注册方法：
-    //   - 主动注册：用户提供键值对，若键存在则会报错。
-    //   - 被动注册：用户提供值，注册机返回新键。
-    //   - 懒惰注册：用户不提供任何内容，注册机返回一个键，并使用空构造创建值。
+    //   - 主动注册：用户提供键值对，若键存在则会报错
+    //   - 被动注册：用户提供值，注册机返回新键
+    //   - 懒惰注册：用户不提供任何内容，注册机返回一个键，并使用空构造创建值
     // 键需满足 可自增、可比较、可哈希
-    // 对传入的值默认采用移动构造，不可移动构造时使用拷贝构造，用户也可通过参数标志位指定使用拷贝构造。
+    // 对传入的值默认采用移动构造，不可移动构造时使用拷贝构造，用户也可通过参数标志位指定使用拷贝构造
+    // 键和值均存储在注册机内部，如有需要可以将键和值的类型设置为指针类型
     template<typename K, typename V, typename L>
     class Registry
     {
@@ -53,14 +54,12 @@ namespace HYDRA15::Frameworks::Archivist
             
             if constexpr (std::is_integral_v<K>) // 如果是整形键，考虑溢出
             {
-                if (currentKey != std::numeric_limits<K>::max())
-                    currentKey++;
                 while(currentKey!=std::numeric_limits<K>::max() && regTab.contains(currentKey))
                     currentKey++;
-                if(currentKey == std::numeric_limits<K>::max() ) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
+                if (currentKey == std::numeric_limits<K>::max() && regTab.contains(currentKey)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
                 {
                     currentKey = startKey;
-                    while (regTab.contains(currentKey))
+                    while (currentKey != std::numeric_limits<K>::max() && regTab.contains(currentKey))
                         currentKey++;
                     if (currentKey == std::numeric_limits<K>::max()) // 找不到空缺位置，则抛出异常
                         throw iExceptions::Registry::KeyOverflow();
@@ -68,7 +67,6 @@ namespace HYDRA15::Frameworks::Archivist
             }
             else // 非整形不考虑溢出，自行解决溢出问题
             {
-                currentKey++;
                 while(regTab.contains(currentKey))
                     currentKey++;
             }
