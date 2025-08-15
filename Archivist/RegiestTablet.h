@@ -140,6 +140,7 @@ namespace HYDRA15::Frameworks::Archivist
                 this->lock.unlock();
 
             return currentKey;
+
         }
     };
 }
