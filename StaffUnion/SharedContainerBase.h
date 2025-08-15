@@ -21,10 +21,14 @@ namespace HYDRA15::Frameworks::StaffUnion::Utilities
 	class SharedContainerBase
 	{
 		Container container;
-		Lock lock;
+
+    protected:
+        Lock lock;  // 将锁对象暴露给外部，以实现更高级的操作
 
 	public:
 		virtual ~SharedContainerBase() = default;
+
+        
 
 		// 标准调用
 		template<typename F, typename... Args>

@@ -52,24 +52,27 @@ namespace HYDRA15::Frameworks::Archivist
             if(maxSize > 0 && regTab.size() >= maxSize)
                 throw iExceptions::Registry::TabletFull();
             
-            if constexpr (std::is_integral_v<K>) // 如果是整形键，考虑溢出
-            {
-                while(currentKey!=std::numeric_limits<K>::max() && regTab.contains(currentKey))
-                    currentKey++;
-                if (currentKey == std::numeric_limits<K>::max() && regTab.contains(currentKey)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
-                {
-                    currentKey = startKey;
-                    while (currentKey != std::numeric_limits<K>::max() && regTab.contains(currentKey))
-                        currentKey++;
-                    if (currentKey == std::numeric_limits<K>::max()) // 找不到空缺位置，则抛出异常
-                        throw iExceptions::Registry::KeyOverflow();
-                }
-            }
-            else // 非整形不考虑溢出，自行解决溢出问题
-            {
-                while(regTab.contains(currentKey))
-                    currentKey++;
-            }
+            // 旧逻辑存在反复上锁影响性能的问题，已弃用
+            //if constexpr (std::is_integral_v<K>) // 如果是整形键，考虑溢出
+            //{
+            //    while(currentKey!=std::numeric_limits<K>::max() && regTab.contains(currentKey))
+            //        currentKey++;
+            //    if (currentKey == std::numeric_limits<K>::max() && regTab.contains(currentKey)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
+            //    {
+            //        currentKey = startKey;
+            //        while (currentKey != std::numeric_limits<K>::max() && regTab.contains(currentKey))
+            //            currentKey++;
+            //        if (currentKey == std::numeric_limits<K>::max()) // 找不到空缺位置，则抛出异常
+            //            throw iExceptions::Registry::KeyOverflow();
+            //    }
+            //}
+            //else // 非整形不考虑溢出，自行解决溢出问题
+            //{
+            //    while(regTab.contains(currentKey))
+            //        currentKey++;
+            //}
+
+            currentKey = regTab.find_key(currentKey, startKey);
 
             regTab[currentKey] = std::move(value);
             return currentKey;

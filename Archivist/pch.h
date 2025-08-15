@@ -15,5 +15,6 @@
 #include <concepts>
 #include <stacktrace>
 #include <shared_mutex>
+#include <functional>
 
 #endif //PCH_H

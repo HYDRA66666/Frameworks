@@ -3,6 +3,7 @@
 #include "framework.h"
 
 #include "StaffUnion/SharedContainerBase.h"
+#include "RegistryException.h"
 
 namespace HYDRA15::Frameworks::Archivist
 {
@@ -15,13 +16,13 @@ namespace HYDRA15::Frameworks::Archivist
     // 注册表是线程安全的，由锁的类型决定读写调度行为
     // 对于值，传入时默认采用移动构造，不可移动构造时使用拷贝构造，用户也可通过参数标志位指定使用拷贝构造
     template<typename K, typename V, typename L = std::mutex>
-    class RegistryTablet : StaffUnion::Utilities::SharedContainerBase<std::unordered_map<K,V>,L>
+    class RegistryTablet : protected StaffUnion::Utilities::SharedContainerBase<std::unordered_map<K,V>,L>
     {
     public:
         using Container = std::unordered_map<K, V>;
         using Size = std::unordered_map<K, V>::size_type;
 
-        // 增删改查
+        // 写入操作
         V& operator[](const K& key)
         {
             if constexpr (SharedLockable<L>)
@@ -32,20 +33,6 @@ namespace HYDRA15::Frameworks::Archivist
             else
                 return this->call_locked(
                     static_cast<V & (Container::*)(const K&)>(&Container::operator[]),
-                    key
-                );
-        }
-
-        bool contains(const K& key)
-        {
-            if constexpr (SharedLockable<L>)
-                return this->call_shared(
-                    static_cast<bool (Container::*)(const K&)>(&Container::contains),
-                    key
-                );
-            else
-                return this->call_locked(
-                    static_cast<bool (Container::*)(const K&)const>(&Container::contains),
                     key
                 );
         }
@@ -76,6 +63,7 @@ namespace HYDRA15::Frameworks::Archivist
                 );
         }
 
+        // 查询操作
         bool empty()
         {
             if constexpr (SharedLockable<L>)
@@ -85,6 +73,20 @@ namespace HYDRA15::Frameworks::Archivist
             else
                 return this->call_locked(
                     static_cast<bool(Container::*)()const>(&Container::empty)
+                );
+        }
+
+        bool contains(const K& key)
+        {
+            if constexpr (SharedLockable<L>)
+                return this->call_shared(
+                    static_cast<bool (Container::*)(const K&)const>(&Container::contains),
+                    key
+                );
+            else
+                return this->call_locked(
+                    static_cast<bool (Container::*)(const K&)const>(&Container::contains),
+                    key
                 );
         }
 
@@ -108,6 +110,42 @@ namespace HYDRA15::Frameworks::Archivist
           
         }
 
+        // 特殊操作
+        K find_key(K currentKey, const K& startKey)
+        {
+            if constexpr (SharedLockable<L>)
+                this->lock.lock_shared();
+            else
+                this->lock.lock();
 
+            if constexpr (std::is_integral_v<K>) // 如果是整形键，考虑溢出
+            {
+                if (currentKey != std::numeric_limits<K>::max())
+                    currentKey++;   // 默认currentKey已使用
+                while (currentKey != std::numeric_limits<K>::max() && this->call(static_cast<bool (Container::*)(const K&)const>(&Container::contains), currentKey))
+                    currentKey++;
+                if (currentKey == std::numeric_limits<K>::max() && this->call(static_cast<bool (Container::*)(const K&)const>(&Container::contains), currentKey)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
+                {
+                    currentKey = startKey;
+                    while (currentKey != std::numeric_limits<K>::max() && this->call(static_cast<bool (Container::*)(const K&)const>(&Container::contains), currentKey))
+                        currentKey++;
+                    if (currentKey == std::numeric_limits<K>::max()) // 找不到空缺位置，则抛出异常
+                        throw iExceptions::Registry::KeyOverflow();
+                }
+            }
+            else // 非整形不考虑溢出，自行解决溢出问题
+            {
+                currentKey++; // 默认currentKey已使用
+                while (this->call(static_cast<bool (Container::*)(const K&)const>(&Container::contains), currentKey))
+                    currentKey++;
+            }
+
+            if constexpr (SharedLockable<L>)
+                this->lock.unlock_shared();
+            else
+                this->lock.unlock();
+
+            return currentKey;
+        }
     };
 }
