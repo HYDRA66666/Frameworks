@@ -1,6 +1,7 @@
 ﻿#include <iostream>
 #include <string>
 #include <mutex>
+#include <shared_mutex>
 #include "../Archivist/Registry.h"
 
 using namespace HYDRA15::Frameworks::Archivist;
@@ -13,7 +14,7 @@ void PrintResult(const std::string& testName, const std::string& expected, const
 }
 
 int main() {
-    Registry<unsigned int, std::string, std::mutex> reg(100, 10); // 起始键100，最大容量10
+    Registry<unsigned int, std::string, std::shared_mutex> reg(100, 10); // 起始键100，最大容量10
 
     // 主动注册
     try {

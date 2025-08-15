@@ -113,9 +113,6 @@ namespace HYDRA15::Frameworks::Archivist
         // 特殊操作
         K find_key(K currentKey, const K& startKey)
         {
-            if constexpr (SharedLockable<L>)
-                this->lock.lock_shared();
-            else
                 this->lock.lock();
 
             if constexpr (std::is_integral_v<K>) // 如果是整形键，考虑溢出
@@ -140,9 +137,6 @@ namespace HYDRA15::Frameworks::Archivist
                     currentKey++;
             }
 
-            if constexpr (SharedLockable<L>)
-                this->lock.unlock_shared();
-            else
                 this->lock.unlock();
 
             return currentKey;
