@@ -15,7 +15,8 @@ namespace HYDRA15::Frameworks::Archivist
     //   - 懒惰注册：用户不提供任何内容，注册机返回一个键，并使用空构造创建值
     // 键需满足 可自增、可比较、可哈希
     // 对传入的值默认采用移动构造，不可移动构造时使用拷贝构造，用户也可通过参数标志位指定使用拷贝构造
-    // 键和值均存储在注册机内部，如有需要可以将键和值的类型设置为指针类型
+    // 对于懒惰注册，值在注册表内部原地构造创建
+    // 键和值均在注册表内部存储，如有需要可自行指定键和值的类型为指针类型
     template<typename K, typename V, typename L>
     class Registry
     {
@@ -38,16 +39,22 @@ namespace HYDRA15::Frameworks::Archivist
         Registry() = delete;
 
         // 注册
-        void regist(const K& key, V&& value)
+        void regist(const K& key, V&& value, bool usingCopyConstruct = false)
         {
             if(maxSize > 0 && regTab.size() >= maxSize)
                 throw iExceptions::Registry::TabletFull();
             if (regTab.contains(key))
                 throw iExceptions::Registry::KeyExists();
-            regTab[key] = std::move(value);
+
+            if (usingCopyConstruct)
+                regTab[key] = value; // 使用拷贝构造
+            else if constexpr (std::is_move_constructible_v<V>)
+                regTab[key] = std::move(value);
+            else
+                regTab[key] = value;
         }
 
-        K regist(V&& value = V())
+        K regist(V&& value, bool usingCopyConstruct = false)
         {
             if(maxSize > 0 && regTab.size() >= maxSize)
                 throw iExceptions::Registry::TabletFull();
@@ -74,7 +81,25 @@ namespace HYDRA15::Frameworks::Archivist
 
             currentKey = regTab.find_key(currentKey, startKey);
 
-            regTab[currentKey] = std::move(value);
+            if(usingCopyConstruct)
+                regTab[currentKey] = value; // 使用拷贝构造
+            else if constexpr (std::is_move_constructible_v<V>)
+                regTab[currentKey] = std::move(value); // 使用移动构造
+            else
+                regTab[currentKey] = value; // 使用拷贝构造
+                
+
+            return currentKey;
+        }
+
+        K regist()
+        {
+            if (maxSize > 0 && regTab.size() >= maxSize)
+                throw iExceptions::Registry::TabletFull();
+
+            currentKey = regTab.find_key(currentKey, startKey);
+
+            regTab[currentKey];
             return currentKey;
         }
 
