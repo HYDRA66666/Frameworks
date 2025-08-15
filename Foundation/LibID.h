@@ -28,5 +28,6 @@ namespace HYDRA15::Frameworks::Foundation::LibInfomation
         StaticUInt Sentry = 0xC02;          // 守护线程
         StaticUInt Librarian = 0xC03;       // 数据库
 
+
     }libID;
 }
