@@ -145,7 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="RegiestTablet.h" />
+    <ClInclude Include="RegistryTablet.h" />
     <ClInclude Include="RegistryException.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="iExceptionInfomation.h" />

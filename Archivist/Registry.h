@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "framework.h"
 
-#include "RegiestTablet.h"
+#include "RegistryTablet.h"
 #include "RegistryException.h"  
 
 namespace HYDRA15::Frameworks::Archivist

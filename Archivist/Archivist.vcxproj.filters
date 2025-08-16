@@ -28,7 +28,7 @@
     <ClInclude Include="iExceptionInfomation.h">
       <Filter>iExceptions</Filter>
     </ClInclude>
-    <ClInclude Include="RegiestTablet.h">
+    <ClInclude Include="RegistryTablet.h">
       <Filter>Registry</Filter>
     </ClInclude>
   </ItemGroup>
