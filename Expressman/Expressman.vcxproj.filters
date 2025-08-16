@@ -5,6 +5,12 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
     </Filter>
+    <Filter Include="MessageCenter">
+      <UniqueIdentifier>{07582ff9-34b9-414e-a73c-d9a7b53c5e1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="iExceptions">
+      <UniqueIdentifier>{50a6067d-31b8-4fd9-9dba-1c3884221893}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -12,6 +18,9 @@
     </ClInclude>
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="MessageCenter.h">
+      <Filter>MessageCenter</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
