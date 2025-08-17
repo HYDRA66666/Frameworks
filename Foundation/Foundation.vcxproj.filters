@@ -60,6 +60,12 @@
     <ClInclude Include="LibID.h">
       <Filter>LibInfo</Filter>
     </ClInclude>
+    <ClInclude Include="Entry.h">
+      <Filter>Archivist</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivistException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -79,6 +85,12 @@
     </ClCompile>
     <ClCompile Include="LabourerException.cpp">
       <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="ArchivistException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Entry.cpp">
+      <Filter>Archivist</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

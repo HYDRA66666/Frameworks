@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "pch.h"
 #include "framework.h"
+#include "pch.h"
 
 #include "iExceptionBase.h"
 #include "LibID.h"

@@ -25,6 +25,10 @@
 #include <barrier>
 #include <queue>
 #include <future>
+#include <any>
+#include <deque>
+#include <initializer_list>
+#include <variant>
 
 
 #endif //PCH_H
