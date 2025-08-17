@@ -4,17 +4,23 @@
     <Filter Include="framework">
       <UniqueIdentifier>{2aea1dff-b788-41de-bfaa-24026cc97b41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Intel">
-      <UniqueIdentifier>{24823330-8e3d-4765-bf52-7f9ff8427ead}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Utilities">
       <UniqueIdentifier>{aaf992c7-0cd6-4da8-b262-cfd6e1c6949c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="iExceptionBase">
+    <Filter Include="Referee">
       <UniqueIdentifier>{00a54bc1-c3a7-470e-8cba-2618baa31708}</UniqueIdentifier>
     </Filter>
-    <Filter Include="LibInfomation">
-      <UniqueIdentifier>{c320a396-2f36-4f4e-be66-ed183f27bf96}</UniqueIdentifier>
+    <Filter Include="Labourer">
+      <UniqueIdentifier>{17a57186-f7ad-4460-a514-73703e7fbdbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Exceptions">
+      <UniqueIdentifier>{092d2006-8916-4472-b18b-408a399d5b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LibInfo">
+      <UniqueIdentifier>{8d44b619-2d3a-4e40-8cbe-9181d3b4938c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Archivist">
+      <UniqueIdentifier>{fdc4cf69-cb31-42da-b712-da7163256903}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -24,20 +30,29 @@
     <ClInclude Include="pch.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="Infomation.h">
-      <Filter>Intel</Filter>
-    </ClInclude>
-    <ClInclude Include="Message.h">
-      <Filter>Intel</Filter>
-    </ClInclude>
     <ClInclude Include="iExceptionBase.h">
-      <Filter>iExceptionBase</Filter>
+      <Filter>Referee</Filter>
     </ClInclude>
     <ClInclude Include="SingletonBase.h">
       <Filter>Utilities</Filter>
     </ClInclude>
+    <ClInclude Include="SharedContainerBase.h">
+      <Filter>Labourer</Filter>
+    </ClInclude>
+    <ClInclude Include="iMutexies.h">
+      <Filter>Labourer</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>Labourer</Filter>
+    </ClInclude>
+    <ClInclude Include="ThreadLake.h">
+      <Filter>Labourer</Filter>
+    </ClInclude>
+    <ClInclude Include="LabourerException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
     <ClInclude Include="LibID.h">
-      <Filter>LibInfomation</Filter>
+      <Filter>LibInfo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -45,7 +60,19 @@
       <Filter>framework</Filter>
     </ClCompile>
     <ClCompile Include="iExceptionBase.cpp">
-      <Filter>iExceptionBase</Filter>
+      <Filter>Referee</Filter>
+    </ClCompile>
+    <ClCompile Include="iMutexies.cpp">
+      <Filter>Labourer</Filter>
+    </ClCompile>
+    <ClCompile Include="Background.cpp">
+      <Filter>Labourer</Filter>
+    </ClCompile>
+    <ClCompile Include="ThreadLake.cpp">
+      <Filter>Labourer</Filter>
+    </ClCompile>
+    <ClCompile Include="LabourerException.cpp">
+      <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

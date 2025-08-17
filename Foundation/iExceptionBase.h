@@ -2,13 +2,13 @@
 #include "pch.h"
 #include "framework.h"
 
-namespace HYDRA15::Frameworks::Foundation
+namespace HYDRA15::Foundation::Referee
 {
 	// 异常处理的基础
 	// 相比标准库异常，额外记录了：
 	//    - 描述字符串
 	//    - 异常信息
-
+    //    - （可选）调用栈
     using iExceptionCode = unsigned int;
 	class iExceptionBase :public std::exception
 	{

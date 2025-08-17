@@ -22,6 +22,9 @@
 #include <shared_mutex>
 #include <thread>
 #include <stacktrace>
+#include <barrier>
+#include <queue>
+#include <future>
 
 
 #endif //PCH_H

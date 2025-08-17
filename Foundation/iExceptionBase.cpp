@@ -2,7 +2,7 @@
 #include "iExceptionBase.h"
 
 
-namespace HYDRA15::Frameworks::Foundation
+namespace HYDRA15::Foundation::Referee
 {
 	iExceptionBase::iExceptionBase(const std::string& desp, const iExceptionCode& id, const iExceptionCode& code) noexcept
         :description(desp), libID(id), exptCode(code)

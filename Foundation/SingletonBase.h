@@ -2,9 +2,7 @@
 #include "pch.h"
 #include "framework.h"
 
-#include "iExceptionBasicHandler.h"
-
-namespace HYDRA15::Frameworks::Foundation
+namespace HYDRA15::Foundation
 {
 	// 需要单例模式的子类应当：
 	//		- public继承此类
