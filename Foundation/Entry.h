@@ -51,9 +51,10 @@ namespace HYDRA15::Foundation::Archivist
         // 访问数据
         Entry& operator[](int key);
         Entry& operator[](const std::string& key);
+        Entry& operator[](const char* key);
         template<typename T>
         operator T();
-
+        
     };
 
     template<typename T>

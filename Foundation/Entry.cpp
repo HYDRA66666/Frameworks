@@ -71,6 +71,11 @@ namespace HYDRA15::Foundation::Archivist
         }
     }
 
+    Entry& Entry::operator[](const char* key)
+    {
+        return operator[](std::string(key));
+    }
+
     
 
 }
