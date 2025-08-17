@@ -1,10 +1,5 @@
 ﻿#pragma once
 
-// 此库包含该解决方案的基础设施
-// 主要内容：
-//    - iException：异常处理框架
-//    - SingletonBase：单例模板
-
 #define WIN32_LEAN_AND_MEAN             // 从 Windows 头文件中排除极少使用的内容
 
 

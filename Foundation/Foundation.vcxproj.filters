@@ -81,4 +81,7 @@
       <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="document.md" />
+  </ItemGroup>
 </Project>
