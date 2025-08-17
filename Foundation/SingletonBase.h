@@ -2,7 +2,7 @@
 #include "pch.h"
 #include "framework.h"
 
-namespace HYDRA15::Foundation
+namespace HYDRA15::Foundation::Assistant
 {
 	// 需要单例模式的子类应当：
 	//		- public继承此类

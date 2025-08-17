@@ -4,9 +4,6 @@
     <Filter Include="framework">
       <UniqueIdentifier>{2aea1dff-b788-41de-bfaa-24026cc97b41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Utilities">
-      <UniqueIdentifier>{aaf992c7-0cd6-4da8-b262-cfd6e1c6949c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Referee">
       <UniqueIdentifier>{00a54bc1-c3a7-470e-8cba-2618baa31708}</UniqueIdentifier>
     </Filter>
@@ -22,6 +19,15 @@
     <Filter Include="Archivist">
       <UniqueIdentifier>{fdc4cf69-cb31-42da-b712-da7163256903}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assistant">
+      <UniqueIdentifier>{aaf992c7-0cd6-4da8-b262-cfd6e1c6949c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Secretary">
+      <UniqueIdentifier>{4fa52ffe-fb05-4cbc-8eda-a5bb11d795e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Expressman">
+      <UniqueIdentifier>{650c7452-e161-4c43-bb6f-8230e595777c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -34,7 +40,7 @@
       <Filter>Referee</Filter>
     </ClInclude>
     <ClInclude Include="SingletonBase.h">
-      <Filter>Utilities</Filter>
+      <Filter>Assistant</Filter>
     </ClInclude>
     <ClInclude Include="SharedContainerBase.h">
       <Filter>Labourer</Filter>
