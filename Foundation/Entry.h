@@ -6,7 +6,12 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
-
+    // 结构化数据的节点，可以储存：
+    //   - 任何数据类型，作为终点使用
+    //   - 特定容器类型，作为节点使用
+    //      - 整数映射（std::unordered_map<int, Entry>）
+    //      - 字符串映射（std::unordered_map<std::string, Entry>）
+    //      - 双端队列（std::deque<Entry>）
     class Entry
     {
         enum class Type
