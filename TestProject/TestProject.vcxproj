@@ -140,9 +140,6 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Archivist\Archivist.vcxproj">
-      <Project>{5fc1063a-95aa-4e8a-afae-fc2c37405553}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Foundation\Foundation.vcxproj">
       <Project>{ab9a5021-5404-4c2c-839c-ffd07f4fc75a}</Project>
     </ProjectReference>
