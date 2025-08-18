@@ -3,6 +3,9 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
+
+
+/****************************************  DEPRECATED  ****************************************
     Entry::Entry(std::initializer_list<IntPair> list)
         : type(Type::intMap), data(IntMap(list.begin(), list.end()))
     {
@@ -83,7 +86,7 @@ namespace HYDRA15::Foundation::Archivist
         return operator[](std::string(key));
     }
 
-
+************************************************************************************************/
 
 
 

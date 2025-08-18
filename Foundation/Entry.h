@@ -12,6 +12,10 @@ namespace HYDRA15::Foundation::Archivist
     //      - 整数映射（std::unordered_map<long long int, Entry>）
     //      - 字符串映射（std::unordered_map<std::string, Entry>）
     //      - 双端队列（std::deque<Entry>）
+
+
+
+/****************************************  DEPRECATED  ****************************************
     class Entry
     {
         enum class Type
@@ -88,7 +92,7 @@ namespace HYDRA15::Foundation::Archivist
         }
     }
 
-
+**********************************************************************************************/
 
 
 
