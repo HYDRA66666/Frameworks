@@ -39,7 +39,7 @@ namespace HYDRA15::Foundation::Archivist
         data = deque;
     }
 
-    Entry& Entry::operator[](int key)
+    Entry& Entry::operator[](long long int key)
     {
         switch (type)
         {
@@ -50,6 +50,13 @@ namespace HYDRA15::Foundation::Archivist
         case Type::intMap: [[likely]]
             return std::any_cast<IntMap&>(data)[key];
         case Type::dequeList: [[likely]]
+            if (key < 0)
+                throw Exceptions::Archivist::EntryInvalidContainerOperation();
+            if (key >= std::any_cast<DequeList&>(data).size())
+                if (key < std::any_cast<DequeList&>(data).max_size() - 1)
+                    std::any_cast<DequeList&>(data).resize(key + 1);
+                else
+                    throw Exceptions::Archivist::EntryInvalidContainerOperation();
             return std::any_cast<DequeList&>(data)[key];
         default:
             throw Exceptions::Archivist::EntryInvalidContainerOperation();
