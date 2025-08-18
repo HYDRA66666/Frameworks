@@ -3,13 +3,13 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
-    Entry::Entry(std::initializer_list<std::pair<int, Entry>> list)
+    Entry::Entry(std::initializer_list<IntPair> list)
         : type(Type::intMap), data(IntMap(list.begin(), list.end()))
     {
        
     }
 
-    Entry::Entry(std::initializer_list<std::pair<std::string, Entry>> list)
+    Entry::Entry(std::initializer_list<StringPair> list)
         : type(Type::stringMap), data(StringMap(list.begin(), list.end()))
     {
 
@@ -76,6 +76,8 @@ namespace HYDRA15::Foundation::Archivist
         return operator[](std::string(key));
     }
 
-    
+
+
+
 
 }

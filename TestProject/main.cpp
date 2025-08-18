@@ -10,9 +10,6 @@ int main() {
     // 创建一个双端队列的Entry
     Entry dequeList{ "Entry()", 2 };
 
-    double a = stringMap["key1"];
-    int b = dequeList[1];
-    std::cout << a << " " << b << std::endl;
-
+    
     return 0;
 }

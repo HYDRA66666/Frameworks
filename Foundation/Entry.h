@@ -9,14 +9,14 @@ namespace HYDRA15::Foundation::Archivist
     // 结构化数据的节点，可以储存：
     //   - 任何数据类型，作为终点使用
     //   - 特定容器类型，作为节点使用
-    //      - 整数映射（std::unordered_map<int, Entry>）
+    //      - 整数映射（std::unordered_map<long long int, Entry>）
     //      - 字符串映射（std::unordered_map<std::string, Entry>）
     //      - 双端队列（std::deque<Entry>）
     class Entry
     {
         enum class Type
         {
-            empty,
+            empty = 0,
             endpoint,
             intMap,
             stringMap,
@@ -27,16 +27,19 @@ namespace HYDRA15::Foundation::Archivist
 
     public:
         // 使用的数据结构
-        using IntMap = std::unordered_map<int, Entry>;
+        using IntPair = std::pair<long long int, Entry>;
+        using StringPair = std::pair<std::string, Entry>;
+        using IntMap = std::unordered_map<long long int, Entry>;
         using StringMap = std::unordered_map<std::string, Entry>;
         using DequeList = std::deque<Entry>;
+
 
         Entry() = default;
         Entry(const Entry& other) = default;
 
         // 通过初始化列表构造
-        Entry(std::initializer_list<std::pair<int, Entry>> list);
-        Entry(std::initializer_list<std::pair<std::string, Entry>> list);
+        Entry(std::initializer_list<IntPair> list);
+        Entry(std::initializer_list<StringPair> list);
         explicit Entry(std::initializer_list<Entry> list);
 
         // 通过容器构造
@@ -54,9 +57,9 @@ namespace HYDRA15::Foundation::Archivist
         Entry& operator[](const char* key);
         template<typename T>
         operator T();
-        
     };
 
+    // 模板函数实现
     template<typename T>
     inline Entry::Entry(const T& t)
         :type(Type::endpoint), data(t)
@@ -84,5 +87,9 @@ namespace HYDRA15::Foundation::Archivist
             throw Exceptions::Archivist::EntryDataTypeMismatch();
         }
     }
+
+
+
+
 
 }
