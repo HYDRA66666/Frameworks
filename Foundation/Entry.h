@@ -70,9 +70,32 @@ namespace HYDRA15::Foundation::Archivist
         template<typename T>
         operator T();
 
+        // 通用键容器
+        class Key
+        {
+            enum class Type
+            {
+                intKey,
+                stringKey,
+                uIntKey,
+            } type;
+            std::any data;
+
+            friend class Entry;
+
+            // 构造函数
+        public:
+            explicit Key(long long int key);
+            explicit Key(size_t key);
+            explicit Key(const std::string& key);
+            Key() = delete;
+            Key(const Key& other) = default;
+        };
+
         // 访问容器数据
         Entry& operator[](long long int key);       // IntMap
         Entry& operator[](const std::string& key);  // StringMap
+        Entry& operator[](const Key& key);          // Key类型，支持任意类型的键
         //Entry& operator[](const char* key);         // StringMap
         //Entry& operator[](const Entry& key);        // 兼容任意类型的键
 
@@ -92,6 +115,8 @@ namespace HYDRA15::Foundation::Archivist
         bool empty() const;
         void clear();
     };
+
+
 
 
     // 模板函数实现

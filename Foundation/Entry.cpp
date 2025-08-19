@@ -96,6 +96,57 @@ namespace HYDRA15::Foundation::Archivist
         }
     }
 
+    Entry& Entry::operator[](const Key& key)
+    {
+        switch (type)
+        {
+        case Type::empty: [[unlikely]]
+            switch (key.type)
+            {
+            case Key::Type::intKey:
+                data = IntMap();
+                type = Type::intMap;
+                return std::any_cast<IntMap>(data)[std::any_cast<long long int>(key.data)];
+
+            case Key::Type::stringKey:
+                data = StringMap();
+                type = Type::stringMap;
+                return std::any_cast<StringMap>(data)[std::any_cast<std::string>(key.data)];
+
+            case Key::Type::uIntKey:
+                data = DequeList(std::any_cast<size_t>(key.data) + 1);
+                type = Type::dequeList;
+                return std::any_cast<DequeList>(data)[std::any_cast<size_t>(key.data)];
+            }
+
+        case Type::endpoint:
+            throw Exceptions::Archivist::EntryNotContainer();
+
+        case Type::intMap:
+            if (key.type != Key::Type::intKey)
+                throw Exceptions::Archivist::EntryKeyTypeMismatch();
+            return std::any_cast<IntMap&>(data)[std::any_cast<long long int>(key.data)];
+
+        case Type::stringMap:
+            if (key.type != Key::Type::stringKey)
+                throw Exceptions::Archivist::EntryKeyTypeMismatch();
+            return std::any_cast<StringMap&>(data)[std::any_cast<std::string>(key.data)];
+
+        case Type::dequeList:
+            if (key.type != Key::Type::uIntKey)
+                throw Exceptions::Archivist::EntryKeyTypeMismatch();
+            if (std::any_cast<size_t>(key.data) >= std::any_cast<DequeList&>(data).size())
+                throw Exceptions::Archivist::EntryBadKey();
+            return std::any_cast<DequeList&>(data)[std::any_cast<size_t>(key.data)];
+
+        case Type::queue:
+            throw Exceptions::Archivist::EntryInvalidContainerOperation();
+
+        default:
+            throw Exceptions::Archivist::make_exception(Exceptions::iExptCodes.entry);
+        }
+    }
+
     //Entry& Entry::operator[](const char* key)
     //{
     //    return (*this)[std::string(key)];
@@ -321,6 +372,23 @@ namespace HYDRA15::Foundation::Archivist
             throw Exceptions::Archivist::EntryInvalidContainerOperation();
         }
     }
+
+    Entry::Key::Key(long long int key)
+        : type(Type::intKey), data(key)
+    {
+    }
+
+    Entry::Key::Key(const std::string& key)
+        : type(Type::stringKey), data(key)
+    {
+    }
+
+    Entry::Key::Key(size_t key)
+        : type(Type::uIntKey), data(key)
+    {
+    }
+
+
 /****************************************  DEPRECATED  ****************************************
     Entry::Entry(std::initializer_list<IntPair> list)
         : type(Type::intMap), data(IntMap(list.begin(), list.end()))
