@@ -33,4 +33,19 @@ namespace HYDRA15::Foundation::Exceptions
         return Archivist(visualize.entryInvalidContainerOperation.data(), iExptCodes.entryInvalidContainerOperation);
     }
 
+    Archivist Archivist::EntryKeyTypeMismatch() noexcept
+    {
+        return Archivist(visualize.entryKeyTypeMismatch.data(), iExptCodes.entryKeyTypeMismatch);
+    }
+
+    Archivist Archivist::EntryContainerIsEmpty() noexcept
+    {
+        return Archivist(visualize.entryContainerIsEmpty.data(),iExptCodes.entryContainerIsEmpty);
+    }
+
+    Archivist Archivist::EntryBadKey() noexcept
+    {
+        return Archivist(visualize.entryBadKey.data(),iExptCodes.entryBadKey);
+    }
+
 }

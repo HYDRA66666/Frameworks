@@ -17,6 +17,9 @@ namespace HYDRA15::Foundation::Exceptions
         StaticUInt entryDataTypeMismatch = 0xA02;
         StaticUInt entryNotContainer = 0xA03;
         StaticUInt entryInvalidContainerOperation = 0xA04;
+        StaticUInt entryKeyTypeMismatch = 0xA05;
+        StaticUInt entryContainerIsEmpty = 0xA06;
+        StaticUInt entryBadKey = 0xA07;
     }iExptCodes;
 
     static struct Visualize
@@ -27,6 +30,9 @@ namespace HYDRA15::Foundation::Exceptions
         StaticString entryDataTypeMismatch = "Entry: Data type mismatch, this Entry does not have the expected data type";
         StaticString entryNotContainer = "Entry: Not container, this Entry is not a container";
         StaticString entryInvalidContainerOperation = "Entry: Container operation is invalid, this Entry does not support such container operation";
+        StaticString entryKeyTypeMismatch = "Entry: Key type mismatch, the key type does not work with current container";
+        StaticString entryContainerIsEmpty = "Entry: Container is empty";
+        StaticString entryBadKey = "Entry: Bad key, the specific key is not exist";
     }visualize;
 
     class Archivist :public Referee::iExceptionBase
@@ -46,7 +52,8 @@ namespace HYDRA15::Foundation::Exceptions
         static Archivist EntryDataTypeMismatch() noexcept;
         static Archivist EntryNotContainer() noexcept;
         static Archivist EntryInvalidContainerOperation() noexcept;
-
-
+        static Archivist EntryKeyTypeMismatch() noexcept;
+        static Archivist EntryContainerIsEmpty() noexcept;
+        static Archivist EntryBadKey() noexcept;
     };
 }
