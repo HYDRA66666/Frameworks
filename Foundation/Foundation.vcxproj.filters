@@ -66,6 +66,9 @@
     <ClInclude Include="ArchivistException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Entry2.h">
+      <Filter>Archivist</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

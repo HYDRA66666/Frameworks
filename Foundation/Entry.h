@@ -75,10 +75,11 @@ namespace HYDRA15::Foundation::Archivist
         {
             enum class Type
             {
+                empty = 0,
                 intKey,
                 stringKey,
                 uIntKey,
-            } type;
+            } type = Type::empty;
             std::any data;
 
             friend class Entry;
@@ -88,8 +89,12 @@ namespace HYDRA15::Foundation::Archivist
             explicit Key(long long int key);
             explicit Key(size_t key);
             explicit Key(const std::string& key);
-            Key() = delete;
+            Key();
             Key(const Key& other) = default;
+
+            // 访问数据
+            template<typename T>
+            operator T();
         };
 
         // 访问容器数据
@@ -114,6 +119,10 @@ namespace HYDRA15::Foundation::Archivist
         // 清空与检查
         bool empty() const;
         void clear();
+
+        // 类型相关
+        Type get_entry_type() const;
+        const std::type_info& get_data_type() const;
     };
 
 
@@ -129,6 +138,17 @@ namespace HYDRA15::Foundation::Archivist
 
     template<typename T>
     inline Entry::operator T()
+    {
+        try {
+            return std::any_cast<T>(data);
+        }
+        catch (const std::bad_any_cast&) {
+            throw Exceptions::Archivist::EntryDataTypeMismatch();
+        }
+    }
+
+    template<typename T>
+    inline Entry::Key::operator T()
     {
         try {
             return std::any_cast<T>(data);

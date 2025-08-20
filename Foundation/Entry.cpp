@@ -117,6 +117,9 @@ namespace HYDRA15::Foundation::Archivist
                 data = DequeList(std::any_cast<size_t>(key.data) + 1);
                 type = Type::dequeList;
                 return std::any_cast<DequeList>(data)[std::any_cast<size_t>(key.data)];
+
+            default:
+                throw Exceptions::Archivist::EntryBadKey();
             }
 
         case Type::endpoint:
@@ -373,6 +376,16 @@ namespace HYDRA15::Foundation::Archivist
         }
     }
 
+    Entry::Type Entry::get_entry_type() const
+    {
+        return type;
+    }
+
+    const std::type_info& Entry::get_data_type() const
+    {
+        return data.type();
+    }
+
     Entry::Key::Key(long long int key)
         : type(Type::intKey), data(key)
     {
@@ -383,10 +396,17 @@ namespace HYDRA15::Foundation::Archivist
     {
     }
 
+    Entry::Key::Key()
+        :type(Type::empty), data()
+    {
+    }
+
     Entry::Key::Key(size_t key)
         : type(Type::uIntKey), data(key)
     {
     }
+
+   
 
 
 /****************************************  DEPRECATED  ****************************************
