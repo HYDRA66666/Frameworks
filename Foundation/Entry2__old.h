@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include "framework.h"
 #include "pch.h"
 
@@ -6,12 +6,12 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
-    // ½á¹¹»¯Êı¾İµÄ½Úµã£¬¿ÉÒÔ´¢´æ£º
-    //   - ÈÎºÎÊı¾İÀàĞÍ£¬×÷ÎªÖÕµãÊ¹ÓÃ
-    //   - ÌØ¶¨ÈİÆ÷ÀàĞÍ£¬×÷Îª½ÚµãÊ¹ÓÃ
-    //      - Ó³Éä£¨std::unordered_map<Entry, Entry>£©
-    //      - ÁĞ±í£¨std::deque<Entry>£©
-    //      - ¶ÓÁĞ£¨std::queue<Entry>£©
+    // ç»“æ„åŒ–æ•°æ®çš„èŠ‚ç‚¹ï¼Œå¯ä»¥å‚¨å­˜ï¼š
+    //   - ä»»ä½•æ•°æ®ç±»å‹ï¼Œä½œä¸ºç»ˆç‚¹ä½¿ç”¨
+    //   - ç‰¹å®šå®¹å™¨ç±»å‹ï¼Œä½œä¸ºèŠ‚ç‚¹ä½¿ç”¨
+    //      - æ˜ å°„ï¼ˆstd::unordered_map<Entry, Entry>ï¼‰
+    //      - åˆ—è¡¨ï¼ˆstd::deque<Entry>ï¼‰
+    //      - é˜Ÿåˆ—ï¼ˆstd::queue<Entry>ï¼‰
     class Entry
     {
     public:
@@ -24,13 +24,13 @@ namespace HYDRA15::Foundation::Archivist
             queue
         };
 
-        // ºËĞÄÊı¾İ
+        // æ ¸å¿ƒæ•°æ®
     private:
         Type type = Type::empty;
         std::any data;
         std::any assistData;
 
-        // Êı¾İÀàĞÍ
+        // æ•°æ®ç±»å‹
     private:
         using Pair = std::pair<Entry, Entry>;
         using ListAssist = size_t;
@@ -38,48 +38,48 @@ namespace HYDRA15::Foundation::Archivist
     public: 
         using Map = std::unordered_map<Entry, Entry>;
 
-        // ¹¹Ôì
+        // æ„é€ 
     public:
-        // »ù±¾¹¹Ôì
+        // åŸºæœ¬æ„é€ 
         Entry() = default;
         Entry(const Entry& other) = default;
         virtual ~Entry() = default;
 
-        // Í¨¹ı³õÊ¼»¯ÁĞ±í¹¹Ôì£¬½«¹¹ÔìÎª¶ÔÓ¦µÄÈİÆ÷
+        // é€šè¿‡åˆå§‹åŒ–åˆ—è¡¨æ„é€ ï¼Œå°†æ„é€ ä¸ºå¯¹åº”çš„å®¹å™¨
         Entry(std::initializer_list<Pair> list);
         explicit Entry(std::initializer_list<Entry> list);
 
-        // Í¨¹ıÈÎÒâÊı¾İ¹¹Ôì£¬ÎŞÂÛÊı¾İÈçºÎ£¬½«¹¹Ôì³É¶ÔÓ¦µÄÊı¾İÀàĞÍ
+        // é€šè¿‡ä»»æ„æ•°æ®æ„é€ ï¼Œæ— è®ºæ•°æ®å¦‚ä½•ï¼Œå°†æ„é€ æˆå¯¹åº”çš„æ•°æ®ç±»å‹
         template<typename T>
         Entry(const T& t);
 
-        // Ö±½Ó³õÊ¼»¯Îª¶ÔÓ¦µÄÀàĞÍ
+        // ç›´æ¥åˆå§‹åŒ–ä¸ºå¯¹åº”çš„ç±»å‹
         Entry(Type t);
 
-        // ·ÃÎÊÈİÆ÷Êı¾İ
-        Entry& operator[](const Entry& key);          // KeyÀàĞÍ£¬Ö§³ÖÈÎÒâÀàĞÍµÄ¼ü
+        // è®¿é—®å®¹å™¨æ•°æ®
+        Entry& operator[](const Entry& key);          // Keyç±»å‹ï¼Œæ”¯æŒä»»æ„ç±»å‹çš„é”®
 
-        // ÈİÆ÷ĞŞ¸ÄÓëĞÅÏ¢
+        // å®¹å™¨ä¿®æ”¹ä¸ä¿¡æ¯
     public:
-        // ´óĞ¡Ïà¹Ø
+        // å¤§å°ç›¸å…³
         size_t size() const;
         void resize(size_t size);
 
-        // Ôö¼õÔªËØ
+        // å¢å‡å…ƒç´ 
         void push(const Entry& entry);
         void pop();
         Entry& front();
         Entry& back();
 
-        // Çå¿ÕÓë¼ì²é
+        // æ¸…ç©ºä¸æ£€æŸ¥
         bool empty() const;
         void clear();
 
-        // ÀàĞÍÏà¹Ø
+        // ç±»å‹ç›¸å…³
         Type get_entry_type() const;
         const std::type_info& get_data_type() const;
 
-        // µü´úÆ÷Ö§³Ö
+        // è¿­ä»£å™¨æ”¯æŒ
         Map::iterator begin();
         Map::iterator end();
     };

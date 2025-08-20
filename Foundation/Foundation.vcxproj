@@ -144,9 +144,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArchivistException.h" />
+    <ClInclude Include="ArchivistException__old.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="Entry.h" />
-    <ClInclude Include="Entry2.h" />
+    <ClInclude Include="Entry__old.h" />
+    <ClInclude Include="Entry2__old.h" />
+    <ClInclude Include="AnyKey.h" />
     <ClInclude Include="iExceptionBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="iMutexies.h" />
@@ -158,9 +161,10 @@
     <ClInclude Include="ThreadLake.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ArchivistException.cpp" />
+    <ClCompile Include="ArchivistException__old.cpp" />
     <ClCompile Include="Background.cpp" />
-    <ClCompile Include="Entry.cpp" />
+    <ClCompile Include="Entry__old.cpp" />
+    <ClCompile Include="Entry2__old.cpp" />
     <ClCompile Include="iExceptionBase.cpp" />
     <ClCompile Include="iMutexies.cpp" />
     <ClCompile Include="LabourerException.cpp" />

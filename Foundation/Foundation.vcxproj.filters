@@ -60,13 +60,22 @@
     <ClInclude Include="LibID.h">
       <Filter>LibInfo</Filter>
     </ClInclude>
-    <ClInclude Include="Entry.h">
+    <ClInclude Include="Entry__old.h">
+      <Filter>Archivist</Filter>
+    </ClInclude>
+    <ClInclude Include="ArchivistException__old.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Entry2__old.h">
+      <Filter>Archivist</Filter>
+    </ClInclude>
+    <ClInclude Include="AnyKey.h">
       <Filter>Archivist</Filter>
     </ClInclude>
     <ClInclude Include="ArchivistException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="Entry2.h">
+    <ClInclude Include="Entry.h">
       <Filter>Archivist</Filter>
     </ClInclude>
   </ItemGroup>
@@ -89,10 +98,13 @@
     <ClCompile Include="LabourerException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="ArchivistException.cpp">
+    <ClCompile Include="ArchivistException__old.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Entry.cpp">
+    <ClCompile Include="Entry__old.cpp">
+      <Filter>Archivist</Filter>
+    </ClCompile>
+    <ClCompile Include="Entry2__old.cpp">
       <Filter>Archivist</Filter>
     </ClCompile>
   </ItemGroup>
