@@ -60,15 +60,6 @@
     <ClInclude Include="LibID.h">
       <Filter>LibInfo</Filter>
     </ClInclude>
-    <ClInclude Include="Entry__old.h">
-      <Filter>Archivist</Filter>
-    </ClInclude>
-    <ClInclude Include="ArchivistException__old.h">
-      <Filter>Exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="Entry2__old.h">
-      <Filter>Archivist</Filter>
-    </ClInclude>
     <ClInclude Include="Index.h">
       <Filter>Archivist</Filter>
     </ClInclude>
@@ -98,13 +89,10 @@
     <ClCompile Include="LabourerException.cpp">
       <Filter>Exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="ArchivistException__old.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="Entry__old.cpp">
+    <ClCompile Include="Entry.cpp">
       <Filter>Archivist</Filter>
     </ClCompile>
-    <ClCompile Include="Entry2__old.cpp">
+    <ClCompile Include="Index.cpp">
       <Filter>Archivist</Filter>
     </ClCompile>
   </ItemGroup>

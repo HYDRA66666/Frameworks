@@ -10,7 +10,7 @@ namespace HYDRA15::Foundation::Archivist
     // 结构化数据的节点，可以储存：
     //   - 任何数据类型，作为终点使用
     //   - 特定容器类型，作为节点使用
-    //      - 映射（std::unordered_map<Index, Entry>）
+    //      - 映射（std::unordered_map<IndexBase, Entry>）
     //      - 列表（std::deque<Entry>）
     //      - 队列（std::queue<Entry>）
     class Entry
@@ -27,12 +27,12 @@ namespace HYDRA15::Foundation::Archivist
         };
 
     private:
-        using Pair = std::pair<Index, Entry>;
+        using Pair = std::pair<std::unique_ptr<IndexBase>, Entry>;
         using ListAssist = size_t; // 存储列表的大小
         using QueueAssist = std::pair<size_t, size_t>; // 存储队列的前后索引
 
     public:
-        using Map = std::unordered_map<Index, Entry>;
+        using Map = std::unordered_map<std::unique_ptr<IndexBase>, Entry>;
         using List = std::deque<Entry>;
         using Queue = std::queue<Entry>;
 
@@ -62,6 +62,7 @@ namespace HYDRA15::Foundation::Archivist
         // 直接初始化为对应的空类型
         Entry(Type t);
 
+
         // 访问
     public:
         // 访问终点数据
@@ -69,6 +70,20 @@ namespace HYDRA15::Foundation::Archivist
         operator T();
 
         // 访问容器数据
-        Entry& operator[](const Index& key); // Key类型，支持任意类型的键
+        Entry& operator[](const IndexBase& key); // Key类型，支持任意类型的键
+
+
+        // 修改容器
+    public:
+
     };
+
+
+    // 模板函数实现
+    template<typename T>
+    Entry::Entry(const T& t)
+        : type(Type::endpoint), data(t)
+    {
+        
+    }
 }

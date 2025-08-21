@@ -9,6 +9,8 @@ namespace HYDRA15::Foundation::Archivist
     class IndexBase
     {
     public:
+        IndexBase() = default;
+        IndexBase(const IndexBase& other) = default;
         virtual ~IndexBase() = default;
 
         // 核心功能：判等、比较和哈希
@@ -19,28 +21,28 @@ namespace HYDRA15::Foundation::Archivist
     };
 
     template<typename T>
-    class Index : public IndexBase
+    class IndexImpl : public IndexBase
     {
         T data = T();
 
     public:
-        Index(const T& t) : data(t) {}
+        IndexImpl(const T& t) : data(t) {}
 
         bool operator==(const IndexBase& other) const override
         {
-            const auto* otherIndex = dynamic_cast<const Index<T>*>(&other);
+            const auto* otherIndex = dynamic_cast<const IndexImpl<T>*>(&other);
             return otherIndex && data == otherIndex->data;
         }
 
         bool operator<(const IndexBase& other) const override
         {
-            const auto* otherIndex = dynamic_cast<const Index<T>*>(&other);
+            const auto* otherIndex = dynamic_cast<const IndexImpl<T>*>(&other);
             return otherIndex && data < otherIndex->data;
         }
 
         bool operator>(const IndexBase& other) const override
         {
-            const auto* otherIndex = dynamic_cast<const Index<T>*>(&other);
+            const auto* otherIndex = dynamic_cast<const IndexImpl<T>*>(&other);
             return otherIndex && data > otherIndex->data;
         }
 
@@ -48,6 +50,12 @@ namespace HYDRA15::Foundation::Archivist
         {
             return std::hash<T>()(data);
         }
+    };
+
+    template<typename T>
+    auto Index(const T& t) -> std::unique_ptr<IndexBase>
+    {
+        return std::make_unique<IndexImpl<T>>(t);
     };
 
 }
