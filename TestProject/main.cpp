@@ -7,5 +7,5 @@ using namespace HYDRA15::Foundation::Archivist;
 
 int main() {
 
-    return 0;
+    
 }

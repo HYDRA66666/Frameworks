@@ -1,5 +1,5 @@
 ﻿#include "pch.h"
-#include "Entry.h"
+#include "Index.h"
 
 namespace HYDRA15::Foundation::Archivist
 {

@@ -51,7 +51,12 @@ namespace HYDRA15::Foundation::Archivist
             return std::hash<T>()(data);
         }
 
-        operator T() const
+        operator T&()
+        {
+            return data;
+        }
+
+        operator const T&() const
         {
             return data;
         }
