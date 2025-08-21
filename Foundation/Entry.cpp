@@ -14,7 +14,7 @@ namespace HYDRA15::Foundation::Archivist
                 k = static_cast<RealIndex>(static_cast<int>(key));
                 converted = true;
             }
-            catch (Exceptions::Archivist& e)
+            catch (Exceptions::Archivist)
             {
             }
         }
@@ -24,7 +24,7 @@ namespace HYDRA15::Foundation::Archivist
                 k = static_cast<RealIndex>(static_cast<unsigned int>(key));
                 converted = true;
             }
-            catch (Exceptions::Archivist& e)
+            catch (Exceptions::Archivist)
             {
             }
         }
@@ -34,7 +34,7 @@ namespace HYDRA15::Foundation::Archivist
                 k = static_cast<RealIndex>(static_cast<long long>(key));
                 converted = true;
             }
-            catch (Exceptions::Archivist& e)
+            catch (Exceptions::Archivist)
             {
             }
         }
@@ -44,7 +44,7 @@ namespace HYDRA15::Foundation::Archivist
                 k = static_cast<RealIndex>(static_cast<RealIndex>(key));
                 converted = true;
             }
-            catch (Exceptions::Archivist& e)
+            catch (Exceptions::Archivist)
             {
             }
         }

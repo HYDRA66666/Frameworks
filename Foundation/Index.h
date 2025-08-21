@@ -6,6 +6,40 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
+    // 可以存储任意索引类型的容器
+    // 提供核心功能：判等、比较和哈希，这些功能需要实际类型拥有对应的运算符
+    // Index 类可直接作为 map 的索引使用
+    // 
+    // 为方便查看，Index的声明简要如下：
+    //class Index
+    //{
+    //public:
+    //    Index() = delete;
+    //    Index(const Index& other) = default;
+
+    //    // 通过 IndexBase 派生类或任意类型构造
+    //    template<typename T>
+    //        requires std::derived_from<T, IndexBase>
+    //    Index(const T& t);
+    //    template<typename T>
+    //        requires (!std::derived_from<T, IndexBase>)
+    //    Index(T t);
+
+    //    bool operator==(const Index& other) const;
+    //    bool operator<(const Index& other) const;
+    //    bool operator>(const Index& other) const;
+    //    size_t hash() const;
+
+    //    // 获取数据
+    //    template<typename T>
+    //        requires (!std::derived_from<T, IndexBase>)
+    //    operator T& ();
+    //    template<typename T>
+    //        requires (!std::derived_from<T, IndexBase>)
+    //    operator const T& () const;
+    //};
+
+
     class IndexBase
     {
     public:
@@ -86,11 +120,11 @@ namespace HYDRA15::Foundation::Archivist
         }
 
 
-
         bool operator==(const Index& other) const;
         bool operator<(const Index& other) const;
         bool operator>(const Index& other) const;
         size_t hash() const;
+
 
         template<typename T>
             requires (!std::derived_from<T, IndexBase>)
