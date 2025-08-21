@@ -3,13 +3,9 @@
 
 namespace HYDRA15::Foundation::Archivist
 {
-    Entry& Entry::list_access(const IndexBase& key)
+    Entry& Entry::list_access(const Index& key)
     {
-        const Index* index = dynamic_cast<const Index*>(&key);
-        if (!index)
-            throw Exceptions::Archivist::IndexTypeMismatch();
-
-        if (RealIndex(*index) >= std::any_cast<RealIndex>(data))
+        if (RealIndex(key) >= std::any_cast<RealIndex>(data))
             throw Exceptions::Archivist::EntryElementNotFound();
 
         return map[key];
@@ -49,7 +45,7 @@ namespace HYDRA15::Foundation::Archivist
     {
         if(std::any_cast<RealIndex>(data) == 0)
             throw Exceptions::Archivist::EntryContainerEmpty();
-        return map[Index(0)];
+        return map[Index(RealIndex(0))];
     }
 
     Entry& Entry::list_back()
@@ -159,7 +155,7 @@ namespace HYDRA15::Foundation::Archivist
        };
    }
 
-   Entry& Entry::operator[](const IndexBase& key)
+   Entry& Entry::operator[](const Index& key)
    {
        switch (type)
        {
@@ -253,6 +249,44 @@ namespace HYDRA15::Foundation::Archivist
        case Type::queue:
            queue_pop();
            return;
+
+       default:
+           throw Exceptions::Archivist::EntryInvalidContainerOperation();
+       }
+   }
+
+   Entry& Entry::front()
+   {
+       switch (type)
+       {
+       case Type::empty:
+       case Type::endpoint:
+           throw Exceptions::Archivist::EntryNotContainer();
+
+       case Type::list:
+           return list_front();
+
+       case Type::queue:
+           return queue_front();
+
+       default:
+           throw Exceptions::Archivist::EntryInvalidContainerOperation();
+       }
+   }
+
+   Entry& Entry::back()
+   {
+       switch (type)
+       {
+       case Type::empty:
+       case Type::endpoint:
+           throw Exceptions::Archivist::EntryNotContainer();
+
+       case Type::list:
+           return list_back();
+
+       case Type::queue:
+           return queue_back();
 
        default:
            throw Exceptions::Archivist::EntryInvalidContainerOperation();

@@ -24,4 +24,29 @@ namespace HYDRA15::Foundation::Archivist
     }
 
 
+    Index::Index(const Index& other)
+        : pidxb(other.pidxb)
+    {
+    }
+
+    bool Index::operator==(const Index& other) const
+    {
+        return pidxb->operator==(*other.pidxb);
+    }
+
+    bool Index::operator<(const Index& other) const
+    {
+        return pidxb->operator<(*other.pidxb);
+    }
+
+    bool Index::operator>(const Index& other) const
+    {
+        return pidxb->operator>(*other.pidxb);
+    }
+
+    size_t Index::hash() const
+    {
+        return pidxb->hash();
+    }
+
 }

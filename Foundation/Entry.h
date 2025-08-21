@@ -27,12 +27,12 @@ namespace HYDRA15::Foundation::Archivist
         };
 
     private:
-        using QueueAssist = std::pair<size_t, size_t>;  // 存储队列 首项索引 和 尾项索引+1
         using RealIndex = size_t;   // 实际索引类型
+        using Index = Archivist::Index;
+        using QueueAssist = std::pair<RealIndex, RealIndex>;  // 存储队列 首项索引 和 尾项索引+1
 
     public:
-        using Map = std::unordered_map<IndexBase, Entry>;
-        using Index = IndexImpl<RealIndex>;
+        using Map = std::unordered_map<Index, Entry>;
 
 
         // 核心数据
@@ -43,7 +43,7 @@ namespace HYDRA15::Foundation::Archivist
 
         // 辅助函数
     private:
-        Entry& list_access(const IndexBase& key);
+        Entry& list_access(const Index& key);
         void list_resize(RealIndex size);
         void list_push(const Entry& entry);
         Entry& list_front();
@@ -80,7 +80,7 @@ namespace HYDRA15::Foundation::Archivist
 
         // 访问容器数据
         Entry& operator[](RealIndex key);
-        Entry& operator[](const IndexBase& key); // Key类型，支持任意类型的键
+        Entry& operator[](const Index& key);
 
 
         // 容器修改与信息
