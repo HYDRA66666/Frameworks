@@ -42,7 +42,15 @@ namespace HYDRA15::Foundation::Archivist
 
         // 辅助函数
     private:
+        Entry& list_access(IndexBase key);
+        void list_resize(ListAssist size);
+        Entry& list_front();
+        Entry& list_back();
 
+        void queue_push(const Entry& entry);
+        void queue_pop();
+        Entry& queue_front();
+        Entry& queue_back();
 
         // 构造
     public:

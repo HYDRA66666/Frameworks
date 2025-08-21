@@ -14,7 +14,7 @@ namespace HYDRA15::Foundation::Exceptions
 
         // 索引
         StaticUInt index = 0xA00;
-
+        StaticUInt indexTypeMismatch = 0xA01;
 
         // 条目
         StaticUInt entry = 0xB00;
@@ -22,7 +22,8 @@ namespace HYDRA15::Foundation::Exceptions
         StaticUInt entryNotEndpoint = 0xB02;
         StaticUInt entryNotContainer = 0xB03;
         StaticUInt entryDataTypeMismatch = 0xB04;
-        StaticUInt entryInvalidContainerOperation = 0xB05
+        StaticUInt entryInvalidContainerOperation = 0xB05;
+        StaticUInt EntryElementNotFound = 0xB06
 ;
     }iExptCodes;
 
@@ -52,13 +53,17 @@ namespace HYDRA15::Foundation::Exceptions
         static Archivist make_exception(const Referee::iExceptionCode& exptCode = iExptCodes.archivist) noexcept;
 
         // 索引
+        static Archivist IndexUnknownExpt();
+        static Archivist IndexTypeMismatch();
+
         // 条目
-        static Archivist EntryUnknownExpt();
-        static Archivist EntryEmpty();
-        static Archivist EntryNotEndpoint();
-        static Archivist EntryNotContainer();
-        static Archivist EntryDataTypeMismatch();
-        static Archivist EntryInvalidContainerOperation();
+        static Archivist EntryUnknownExpt() noexcept;
+        static Archivist EntryEmpty() noexcept;
+        static Archivist EntryNotEndpoint() noexcept;
+        static Archivist EntryNotContainer() noexcept;
+        static Archivist EntryDataTypeMismatch() noexcept;
+        static Archivist EntryInvalidContainerOperation() noexcept;
+        static Archivist EntryElementNotFound() noexcept;
     };
 
 
