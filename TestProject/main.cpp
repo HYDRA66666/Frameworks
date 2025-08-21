@@ -13,6 +13,7 @@ int main() {
 
     top[0][std::string("int")] = 42;
     top[0][std::string("string")] = std::string("Hello, World!");
+    top[0][-1] = 3.14;
 
     top[1].push(std::string("Queue Entry 1"));
     top[1].push(std::string("Queue Entry 2"));
@@ -23,6 +24,7 @@ int main() {
     
     std::cout << "int: " << int(top[0][std::string("int")]) << std::endl;
     std::cout << "string: " << std::string(top[0][std::string("string")]) << std::endl;
+    std::cout << "float: " << double(top[0][-1]) << std::endl;
 
     std::cout << "Queue Front: " << std::string(top[1].front()) << std::endl;
     top[1].pop();

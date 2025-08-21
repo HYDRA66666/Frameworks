@@ -10,9 +10,11 @@ namespace HYDRA15::Foundation::Archivist
     // 结构化数据的节点，可以储存：
     //   - 任何数据类型，作为终点使用
     //   - 特定容器类型，作为节点使用
-    //      - 映射（std::unordered_map<IndexBase, Entry>）
+    //      - 映射（std::unordered_map<Index, Entry>）
     //      - 列表（std::deque<Entry>）
     //      - 队列（std::queue<Entry>）
+    // 注意：
+    //   - c风格的字符串会被当作指针处理，字符串需要使用std::string或其他类似类型
     class Entry
     {
         // 类型定义
@@ -79,7 +81,6 @@ namespace HYDRA15::Foundation::Archivist
         Map get_container() const;
 
         // 访问容器数据
-        Entry& operator[](RealIndex key);
         Entry& operator[](const Index& key);
 
 

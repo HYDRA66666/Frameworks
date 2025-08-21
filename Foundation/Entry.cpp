@@ -5,10 +5,62 @@ namespace HYDRA15::Foundation::Archivist
 {
     Entry& Entry::list_access(const Index& key)
     {
-        if (RealIndex(key) >= std::any_cast<RealIndex>(data))
+        RealIndex k;
+        bool converted = false;
+
+        if (!converted)
+        {
+            try {
+                k = static_cast<RealIndex>(static_cast<int>(key));
+                converted = true;
+            }
+            catch (Exceptions::Archivist& e)
+            {
+            }
+        }
+        if(!converted)
+        {
+            try {
+                k = static_cast<RealIndex>(static_cast<unsigned int>(key));
+                converted = true;
+            }
+            catch (Exceptions::Archivist& e)
+            {
+            }
+        }
+        if(!converted)
+        {
+            try {
+                k = static_cast<RealIndex>(static_cast<long long>(key));
+                converted = true;
+            }
+            catch (Exceptions::Archivist& e)
+            {
+            }
+        }
+        if (!converted)
+        {
+            try {
+                k = static_cast<RealIndex>(static_cast<RealIndex>(key));
+                converted = true;
+            }
+            catch (Exceptions::Archivist& e)
+            {
+            }
+        }
+
+        if(!converted)
+            throw Exceptions::Archivist::IndexTypeMismatch();
+
+        if (k >= std::any_cast<RealIndex>(data))
             throw Exceptions::Archivist::EntryElementNotFound();
 
-        return map[key];
+        return map[k];
+
+        //if (static_cast<RealIndex>(key) >= std::any_cast<RealIndex>(data))
+        //    throw Exceptions::Archivist::EntryElementNotFound();
+
+        //return map[key];
     }
 
     void Entry::list_resize(RealIndex size)
@@ -132,27 +184,6 @@ namespace HYDRA15::Foundation::Archivist
    Entry::Map Entry::get_container() const
    {
        return map;
-   }
-
-   Entry& Entry::operator[](RealIndex key)
-   {
-       switch (type)
-       {
-       case Type::empty:
-       case Type::endpoint:
-           throw Exceptions::Archivist::EntryNotContainer();
-
-       case Type::map:
-       case Type::queue:
-           throw Exceptions::Archivist::EntryInvalidContainerOperation();
-
-       case Type::list:
-           return list_access(Index(key));
-
-       default:
-           throw Exceptions::Archivist::EntryUnknownExpt();
-
-       };
    }
 
    Entry& Entry::operator[](const Index& key)
