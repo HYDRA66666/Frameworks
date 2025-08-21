@@ -149,7 +149,7 @@
     <ClInclude Include="Entry.h" />
     <ClInclude Include="Entry__old.h" />
     <ClInclude Include="Entry2__old.h" />
-    <ClInclude Include="AnyKey.h" />
+    <ClInclude Include="Index.h" />
     <ClInclude Include="iExceptionBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="iMutexies.h" />
