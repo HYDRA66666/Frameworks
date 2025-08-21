@@ -158,6 +158,7 @@
     <ClInclude Include="ThreadLake.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ArchivistException.cpp" />
     <ClCompile Include="Background.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="iExceptionBase.cpp" />

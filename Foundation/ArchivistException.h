@@ -19,8 +19,10 @@ namespace HYDRA15::Foundation::Exceptions
         // 条目
         StaticUInt entry = 0xB00;
         StaticUInt entryEmpty = 0xB01;
-        StaticUInt entryNotContainer = 0xB02;
-        StaticUInt entryDataTypeMismatch = 0xB03
+        StaticUInt entryNotEndpoint = 0xB02;
+        StaticUInt entryNotContainer = 0xB03;
+        StaticUInt entryDataTypeMismatch = 0xB04;
+        StaticUInt entryInvalidContainerOperation = 0xB05
 ;
     }iExptCodes;
 
@@ -49,6 +51,14 @@ namespace HYDRA15::Foundation::Exceptions
         // 快速创建异常
         static Archivist make_exception(const Referee::iExceptionCode& exptCode = iExptCodes.archivist) noexcept;
 
+        // 索引
+        // 条目
+        static Archivist EntryUnknownExpt();
+        static Archivist EntryEmpty();
+        static Archivist EntryNotEndpoint();
+        static Archivist EntryNotContainer();
+        static Archivist EntryDataTypeMismatch();
+        static Archivist EntryInvalidContainerOperation();
     };
 
 

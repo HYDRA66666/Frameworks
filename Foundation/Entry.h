@@ -27,19 +27,18 @@ namespace HYDRA15::Foundation::Archivist
         };
 
     private:
-        using Pair = std::pair<IndexBase, Entry>;
-        using ListAssist = size_t; // 存储列表的大小
-        using QueueAssist = std::pair<size_t, size_t>; // 存储队列的前后索引
-        using Map = std::unordered_map<IndexBase, Entry>;
-        using List = std::deque<Entry>;
-        using Queue = std::queue<Entry>;
+        using ListAssist = size_t;                      // 存储列表的大小
+        using QueueAssist = std::pair<size_t, size_t>;  // 存储队列 首项索引 和 尾项索引+1
+
+    public:
+        using Map = std::unordered_map<IndexBase, Entry>; // 所有容器类型都用map来实现
 
 
         // 核心数据
     private:
         Type type = Type::empty;
         std::any data;
-        std::any assistData;
+        Map map;
 
         // 辅助函数
     private:
@@ -64,7 +63,10 @@ namespace HYDRA15::Foundation::Archivist
     public:
         // 访问终点数据
         template<typename T>
-        operator T();
+        operator T&();
+
+        // 直接获取容器数据
+        Map get_container() const;
 
         // 访问容器数据
         Entry& operator[](const IndexBase& key); // Key类型，支持任意类型的键
@@ -99,5 +101,19 @@ namespace HYDRA15::Foundation::Archivist
         : type(Type::endpoint), data(t)
     {
         
+    }
+
+    template<typename T>
+    inline Entry::operator T&()
+    {
+        if (type != Type::endpoint)
+            throw Exceptions::Archivist::EntryNotEndpoint();
+
+        try{
+            return std::any_cast<T&>(data);
+        }
+        catch (...){
+            throw Exceptions::Archivist::EntryDataTypeMismatch();
+        }
     }
 }

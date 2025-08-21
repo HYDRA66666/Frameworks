@@ -9,23 +9,48 @@ namespace HYDRA15::Foundation::Archivist
        {
            case Type::map:
                type = Type::map;
-               data = Map();
                return;
 
            case Type::list:
                type = Type::list;
-               data = List();
-               assistData = ListAssist(0);
+               data = ListAssist(0);
                return;
 
            case Type::queue:
                type = Type::queue;
-               data = Queue();
-               assistData = QueueAssist(0, 0);
+               data = QueueAssist(0, 0);
                return;
 
            default:
                return;
+       }
+   }
+
+   Entry::Map Entry::get_container() const
+   {
+       return map;
+   }
+
+   Entry& Entry::operator[](const IndexBase& key)
+   {
+       switch (type)
+       {
+       case Type::empty:
+       case Type::endpoint:
+           throw Exceptions::Archivist::EntryNotContainer();
+
+       case Type::map:
+           
+
+       case Type::list:
+           
+
+       case Type::queue:
+           throw Exceptions::Archivist::EntryInvalidContainerOperation();
+
+       default:
+           throw Exceptions::Archivist::EntryUnknownExpt();
+
        }
    }
 

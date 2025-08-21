@@ -95,6 +95,9 @@
     <ClCompile Include="Index.cpp">
       <Filter>Archivist</Filter>
     </ClCompile>
+    <ClCompile Include="ArchivistException.cpp">
+      <Filter>Exceptions</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="document.md" />
