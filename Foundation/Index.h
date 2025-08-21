@@ -49,8 +49,8 @@ namespace HYDRA15::Foundation::Archivist
 
         // 核心功能：判等、比较和哈希
         virtual bool operator==(const IndexBase& other) const;
-        virtual bool operator<(const IndexBase& other) const;
-        virtual bool operator>(const IndexBase& other) const;
+        virtual bool operator<(const IndexBase& other) const = 0;
+        virtual bool operator>(const IndexBase& other) const = 0;
         virtual size_t hash() const;
     };
 
