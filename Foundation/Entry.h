@@ -27,12 +27,10 @@ namespace HYDRA15::Foundation::Archivist
         };
 
     private:
-        using Pair = std::pair<std::unique_ptr<IndexBase>, Entry>;
+        using Pair = std::pair<IndexBase, Entry>;
         using ListAssist = size_t; // 存储列表的大小
         using QueueAssist = std::pair<size_t, size_t>; // 存储队列的前后索引
-
-    public:
-        using Map = std::unordered_map<std::unique_ptr<IndexBase>, Entry>;
+        using Map = std::unordered_map<IndexBase, Entry>;
         using List = std::deque<Entry>;
         using Queue = std::queue<Entry>;
 
@@ -42,6 +40,9 @@ namespace HYDRA15::Foundation::Archivist
         Type type = Type::empty;
         std::any data;
         std::any assistData;
+
+        // 辅助函数
+    private:
 
 
         // 构造
@@ -54,10 +55,6 @@ namespace HYDRA15::Foundation::Archivist
         // 通过任意数据构造，无论数据是否为容器，都将构造为终点
         template<typename T>
         Entry(const T& t);
-
-        // 通过初始化列表构造
-        explicit Entry(std::initializer_list<Pair> list);
-        explicit Entry(std::initializer_list<Entry> list);
 
         // 直接初始化为对应的空类型
         Entry(Type t);
@@ -73,8 +70,25 @@ namespace HYDRA15::Foundation::Archivist
         Entry& operator[](const IndexBase& key); // Key类型，支持任意类型的键
 
 
-        // 修改容器
+        // 容器修改与信息
     public:
+        // 大小相关
+        size_t size() const;
+        void resize(size_t size);
+
+        // 增减元素
+        void push(const Entry& entry);
+        void pop();
+        Entry& front();
+        Entry& back();
+
+        // 清空与检查
+        bool empty() const;
+        void clear();
+
+        // 类型相关
+        Type get_entry_type() const;
+        const std::type_info& get_data_type() const;
 
     };
 

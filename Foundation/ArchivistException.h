@@ -20,6 +20,7 @@ namespace HYDRA15::Foundation::Exceptions
         StaticUInt entry = 0xB00;
         StaticUInt entryEmpty = 0xB01;
         StaticUInt entryNotContainer = 0xB02;
+        StaticUInt entryDataTypeMismatch = 0xB03
 ;
     }iExptCodes;
 

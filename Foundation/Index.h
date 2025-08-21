@@ -14,10 +14,10 @@ namespace HYDRA15::Foundation::Archivist
         virtual ~IndexBase() = default;
 
         // 核心功能：判等、比较和哈希
-        virtual bool operator==(const IndexBase& other) const = 0;
-        virtual bool operator<(const IndexBase& other) const = 0;
-        virtual bool operator>(const IndexBase& other) const = 0;
-        virtual size_t hash() const = 0;
+        virtual bool operator==(const IndexBase& other) const;
+        virtual bool operator<(const IndexBase& other) const;
+        virtual bool operator>(const IndexBase& other) const;
+        virtual size_t hash() const;
     };
 
     template<typename T>
@@ -50,13 +50,13 @@ namespace HYDRA15::Foundation::Archivist
         {
             return std::hash<T>()(data);
         }
+
+        operator T() const
+        {
+            return data;
+        }
     };
 
-    template<typename T>
-    auto Index(const T& t) -> std::unique_ptr<IndexBase>
-    {
-        return std::make_unique<IndexImpl<T>>(t);
-    };
 
 }
 
