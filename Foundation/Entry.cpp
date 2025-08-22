@@ -8,46 +8,20 @@ namespace HYDRA15::Foundation::Archivist
         RealIndex k;
         bool converted = false;
 
-        if (!converted)
-        {
-            try {
-                k = static_cast<RealIndex>(static_cast<int>(key));
-                converted = true;
-            }
-            catch (Exceptions::Archivist)
-            {
-            }
+        // 尝试解析常规整型
+#define TRY(Type) \
+        try { \
+            k = static_cast<RealIndex>(static_cast<Type>(key)); \
+            converted = true; \
+        } catch (Exceptions::Archivist&) { \
         }
-        if(!converted)
-        {
-            try {
-                k = static_cast<RealIndex>(static_cast<unsigned int>(key));
-                converted = true;
-            }
-            catch (Exceptions::Archivist)
-            {
-            }
-        }
-        if(!converted)
-        {
-            try {
-                k = static_cast<RealIndex>(static_cast<long long>(key));
-                converted = true;
-            }
-            catch (Exceptions::Archivist)
-            {
-            }
-        }
-        if (!converted)
-        {
-            try {
-                k = static_cast<RealIndex>(static_cast<RealIndex>(key));
-                converted = true;
-            }
-            catch (Exceptions::Archivist)
-            {
-            }
-        }
+
+        TRY(int);
+        TRY(unsigned int);
+        TRY(long long);
+        TRY(unsigned long long);
+
+#undef TRY
 
         if(!converted)
             throw Exceptions::Archivist::IndexTypeMismatch();
@@ -57,10 +31,6 @@ namespace HYDRA15::Foundation::Archivist
 
         return map[k];
 
-        //if (static_cast<RealIndex>(key) >= std::any_cast<RealIndex>(data))
-        //    throw Exceptions::Archivist::EntryElementNotFound();
-
-        //return map[key];
     }
 
     void Entry::list_resize(RealIndex size)
@@ -156,6 +126,12 @@ namespace HYDRA15::Foundation::Archivist
             return map[Index(std::numeric_limits<RealIndex>::max())];
         else
             return map[Index(assist.second - 1)];
+    }
+
+    Entry::Entry(Entry&& other)
+        : type(other.type), data(std::move(other.data)), map(std::move(other.map))
+    {
+        other.type = Type::empty;
     }
 
     Entry::Entry(Type t)
@@ -329,8 +305,10 @@ namespace HYDRA15::Foundation::Archivist
        switch (type)
        {
        case Type::empty:
+           return true;
+
        case Type::endpoint:
-           throw Exceptions::Archivist::EntryNotContainer();
+           return false;
 
        case Type::map:
        case Type::list:
@@ -347,8 +325,11 @@ namespace HYDRA15::Foundation::Archivist
        switch (type)
        {
        case Type::empty:
+           return;
+
        case Type::endpoint:
-           throw Exceptions::Archivist::EntryNotContainer();
+           type = Type::empty;
+           data = std::any();
 
        case Type::map:
            map.clear();
@@ -380,5 +361,124 @@ namespace HYDRA15::Foundation::Archivist
            throw Exceptions::Archivist::EntryNotEndpoint();
 
        return data.type();
+   }
+   Entry::ListIndex Entry::to_list_index(const Index& key)
+   {
+       return static_cast<ListIndex>(key);
+   }
+
+   Entry::iterator::iterator(Entry& e, bool isBegin)
+       : entry(e), index(0), isMap(e.type == Type::map)
+   {
+       if(!isBegin)
+       {
+           it = entry.map.end();
+           return;
+       }
+
+       if (isMap)
+           it = entry.map.begin();
+       else
+           it = entry.map.find(Index(index));
+   }
+
+   Entry::iterator& Entry::iterator::operator++()
+   {
+       if (isMap)
+           it++;
+       else
+       {
+           index++;
+           it = entry.map.find(Index(index));
+       }
+       return *this;
+   }
+
+   Entry::Pair& Entry::iterator::operator*() const
+   {
+       return *it;
+   }
+
+   bool Entry::iterator::operator==(const iterator& other) const
+   {
+       return it == other.it;
+   }
+
+   Entry::iterator Entry::begin()
+   {
+       switch (type)
+       {
+       case Type::empty:
+       case Type::endpoint:
+           throw Exceptions::Archivist::EntryNotContainer();
+
+       case Type::queue:
+           throw Exceptions::Archivist::EntryInvalidContainerOperation();
+
+       default:
+           break;
+       }
+
+       return Entry::iterator(*this, true);
+   }
+
+   Entry::iterator Entry::end()
+   {
+       switch (type)
+       {
+       case Type::empty:
+       case Type::endpoint:
+           throw Exceptions::Archivist::EntryNotContainer();
+
+       default:
+           break;
+       }
+
+       return Entry::iterator(*this, false);
+   }
+
+   std::string Entry::info() const
+   {
+       switch (type)
+       {
+       case Type::empty:
+           return std::format(visualize.empty);
+
+       case Type::endpoint:
+           // 尝试识别常见类型
+#define TRY(Type) \
+           try { \
+               auto v = std::any_cast<Type>(data); \
+               return std::format(visualize.knownEndpoint, typeid(Type).name(), v); \
+           } catch (std::bad_any_cast&) { \
+           }
+
+           TRY(int);
+           TRY(unsigned int);
+           TRY(long long);
+           TRY(unsigned long long);
+           TRY(float);
+           TRY(double);
+           TRY(char);
+           TRY(unsigned char);
+           TRY(bool);
+           TRY(std::string);
+
+#undef TRY
+
+           return std::format(visualize.unknownEndpoint, data.type().name());
+
+       case Type::map:
+           return std::format(visualize.map, map.size());
+
+       case Type::list:
+           return std::format(visualize.list, map.size());
+
+       case Type::queue:
+           return std::format(visualize.queue, map.size());
+
+       default:
+           throw Exceptions::Archivist::EntryUnknownExpt();
+       }
    }
 }

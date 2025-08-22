@@ -39,6 +39,8 @@ namespace HYDRA15::Foundation::Labourer
     public:
         ThreadLake(int threadCount, size_t tskQueMaxSize = 0);
         ThreadLake() = delete;
+        ThreadLake(const ThreadLake&) = delete;
+        ThreadLake(ThreadLake&&) = delete;
         ~ThreadLake();
 
         //提交任务

@@ -35,6 +35,8 @@ namespace HYDRA15::Foundation::Archivist
 
     public:
         using Map = std::unordered_map<Index, Entry>;
+        using Pair = std::pair<const Index, Entry>;
+        using ListIndex = RealIndex;
 
 
         // 核心数据
@@ -61,11 +63,14 @@ namespace HYDRA15::Foundation::Archivist
         // 基本构造
         Entry() = default;
         Entry(const Entry& other) = default;
+        Entry(Entry&& other);
+        Entry& operator=(const Entry& other) = default;
+        Entry& operator=(Entry&& other) = default;
         virtual ~Entry() = default;
 
         // 通过任意数据构造，无论数据是否为容器，都将构造为终点
         template<typename T>
-        Entry(const T& t);
+        Entry(T&& t);
 
         // 直接初始化为对应的空类型
         Entry(Type t);
@@ -97,6 +102,7 @@ namespace HYDRA15::Foundation::Archivist
         Entry& back();
 
         // 清空与检查
+        // 作用于终点Entry时与Entry的数据相关
         bool empty() const;
         void clear();
 
@@ -104,15 +110,59 @@ namespace HYDRA15::Foundation::Archivist
         Type get_entry_type() const;
         const std::type_info& get_data_type() const;
 
+        // 数据转换
+        static ListIndex to_list_index(const Index& key);
+
+        
+        // 迭代器
+    public:
+        // 逻辑：
+        //   - 如果Entry为map类型，直接返回引用map的迭代器
+        //   - 如果Entry为list类型，返回一个迭代器，按照索引的顺序遍历map中的元素
+        class iterator
+        {
+            // 核心数据
+        private:
+            Entry& entry;
+            Entry::RealIndex index;
+            Entry::Map::iterator it;
+            bool isMap;
+
+            // 构造
+        private:
+            iterator(Entry& e, bool isBegin);
+            friend class Entry;
+
+            // 迭代器操作
+        public:
+            iterator& operator++();
+            Entry::Pair& operator*() const;
+            bool operator==(const iterator& other) const;
+        };
+        friend class iterator;
+        
+        iterator begin();
+        iterator end();
+
+
+        // 简单输出辅助
+        static struct Visualize
+        {
+            StaticString empty = "[Empty Entry object]";
+            StaticString knownEndpoint = "[Entry Endpoint of type: {}, data: {}]";
+            StaticString unknownEndpoint = "[Entry Endpoint of unknown type: {}]";
+            StaticString map = "[Entry Map with {} elements]";
+            StaticString list = "[Entry List with {} elements]";
+            StaticString queue = "[Entry Queue with {} elements]";
+        }visualize;
+
+        std::string info() const;
     };
 
-
-    // 模板函数实现
     template<typename T>
-    Entry::Entry(const T& t)
-        : type(Type::endpoint), data(t)
+    inline Entry::Entry(T&& t)
+        : type(Type::endpoint), data(std::forward<T>(t))
     {
-        
     }
 
     template<typename T>

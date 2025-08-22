@@ -53,6 +53,7 @@ namespace HYDRA15::Foundation::Labourer
         // 构造函数，参数为异步线程数量，默认为1
     public:
         Background(unsigned int bkgThrCount = 1);
+        Background(Background&&) = delete;
         Background() = delete;
         virtual ~Background() = default;
         Background(const Background&) = delete;

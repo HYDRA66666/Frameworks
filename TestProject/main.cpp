@@ -3,30 +3,21 @@
 
 #include "Foundation/Index.h"
 #include "Foundation/Entry.h"
+#include "Foundation/ThreadLake.h"
+#include "Foundation/iExceptionBase.h"
 using namespace HYDRA15::Foundation::Archivist;
 
 int main() {
-    Entry top(Entry::Type::list);
+    Entry entry(Entry::Type::map);
+    entry[std::string("int")] = 42;
+    entry[std::string("double")] = 3.14;
+    entry[std::string("string")] = std::string("Hello World");
+    entry[1] = Entry(Entry::Type::list);
+    entry[2] = Entry(Entry::Type::queue);
+    entry[3] = Entry(Entry::Type::map);
+    entry[0] = std::make_shared<HYDRA15::Foundation::Labourer::ThreadLake>(4);
 
-    top.push(Entry(Entry::Type::map));
-    top.push(Entry(Entry::Type::queue));
-
-    top[0][std::string("int")] = 42;
-    top[0][std::string("string")] = std::string("Hello, World!");
-    top[0][-1] = 3.14;
-
-    top[1].push(std::string("Queue Entry 1"));
-    top[1].push(std::string("Queue Entry 2"));
-
-    std::cout << "Top Entry Size: " << top.size() << std::endl;
-    std::cout << "First Map Entry (int): " << top[0][std::string("int")].get_data_type().name() << std::endl;
-    std::cout << "First Map Entry (string): " << top[0][std::string("string")].get_data_type().name() << std::endl;
-    
-    std::cout << "int: " << int(top[0][std::string("int")]) << std::endl;
-    std::cout << "string: " << std::string(top[0][std::string("string")]) << std::endl;
-    std::cout << "float: " << double(top[0][-1]) << std::endl;
-
-    std::cout << "Queue Front: " << std::string(top[1].front()) << std::endl;
-    top[1].pop();
-    std::cout << "Queue Front after pop: " << std::string(top[1].front()) << std::endl;
+    for(auto& it : entry) {
+        std::cout << "Key: " << it.first.info() << ", Value: " << it.second.info() << std::endl;
+    }
 }

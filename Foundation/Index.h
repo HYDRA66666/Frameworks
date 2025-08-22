@@ -145,6 +145,15 @@ namespace HYDRA15::Foundation::Archivist
                 throw Exceptions::Archivist::IndexTypeMismatch();
             return impl->operator const T & ();
         }
+
+        // 简单输出辅助
+        static struct Visualize
+        {
+            StaticString knownIndex = "[Index of type: {}, data: {}]";
+            StaticString unknownIndex = "[Index of unknown type: {}]";
+        } visualize;
+
+        std::string info() const;
     };
 
 }
