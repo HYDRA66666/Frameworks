@@ -9,7 +9,7 @@ namespace HYDRA15::Foundation::Archivist
 {
     class EntryBase
     {
-    
+
     };
 
     template<typename T>
@@ -21,6 +21,8 @@ namespace HYDRA15::Foundation::Archivist
 
     class Entry
     {
-        
+
+
+
     };
 }
