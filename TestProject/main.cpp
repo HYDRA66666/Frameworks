@@ -1,23 +1,36 @@
 ﻿#include <iostream>
 #include <any>
 
-#include "Foundation/Index.h"
 #include "Foundation/Entry.h"
-#include "Foundation/ThreadLake.h"
-#include "Foundation/iExceptionBase.h"
 using namespace HYDRA15::Foundation::Archivist;
 
-int main() {
-    Entry entry(Entry::Type::map);
-    entry[std::string("int")] = 42;
-    entry[std::string("double")] = 3.14;
-    entry[std::string("string")] = std::string("Hello World");
-    entry[1] = Entry(Entry::Type::list);
-    entry[2] = Entry(Entry::Type::queue);
-    entry[3] = Entry(Entry::Type::map);
-    entry[0] = std::make_shared<HYDRA15::Foundation::Labourer::ThreadLake>(4);
+class datas
+{
+public:
+    int a;
+    std::string b;
+    datas(int a, const std::string& b) : a(a), b(b) {}
+};
 
-    for(auto& it : entry) {
-        std::cout << "Key: " << it.first.info() << ", Value: " << it.second.info() << std::endl;
-    }
+int main() {
+    Entry e1 = 42;
+    Entry e2 = std::string("Hello, World!");
+    Entry e3; // Empty entry
+    Entry e4 = datas(10, "Sample");
+
+    std::cout << "e1: " << e1.info() << std::endl;
+    std::cout << "e2: " << e2.info() << std::endl;
+    std::cout << "e3: " << e3.info() << std::endl;
+    std::cout << "e4: " << static_cast<datas&>(e4).a << " " << static_cast<datas&>(e4).b << std::endl;
+
+    Entry e11 = e1;
+    Entry e22 = std::move(e2);
+    Entry e44 = e4;
+    static_cast<datas&>(e44).a = 20;
+
+    std::cout << "e11: " << e11.info() << std::endl;
+    std::cout << "e22: " << e22.info() << std::endl;
+    std::cout << "e2 after move: " << e2.info() << std::endl;
+    std::cout << "e4 after modify: " << datas(e4).a << " " << datas(e4).b << std::endl;
+    std::cout << "e44: " << datas(e44).a << " " << datas(e44).b << std::endl;
 }

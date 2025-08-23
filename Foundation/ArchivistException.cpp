@@ -16,6 +16,30 @@ namespace HYDRA15::Foundation::Exceptions
         );
     }
 
+    Archivist Archivist::EntryUnknownExpt() noexcept
+    {
+        return Archivist(
+            visualize.entry.data(),
+            iExptCodes.entry
+        );
+    }
+
+    Archivist Archivist::EntryEmpty() noexcept
+    {
+        return Archivist(
+            visualize.entryEmpty.data(),
+            iExptCodes.entryEmpty
+        );
+    }
+
+    Archivist Archivist::EntryTypeMismatch() noexcept
+    {
+        return Archivist(
+            visualize.entryTypeMismatch.data(),
+            iExptCodes.entryTypeMismatch
+        );
+    }
+
 
 
 }
