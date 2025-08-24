@@ -9,6 +9,7 @@ namespace HYDRA15::Foundation::Archivist
 {
     // 可以存储任意数据类型的索引
     // 注意：索引的实际类型必须支持比较和哈希
+    // 注意：如需比较大小，两个索引必须包含同一类型的数据
 
     class IndexBase
     {
@@ -48,7 +49,9 @@ namespace HYDRA15::Foundation::Archivist
         virtual bool operator<(const IndexBase& other) const override
         {
             const auto* otherImpl = dynamic_cast<const IndexImpl<T>*>(&other);
-            return otherImpl && data < otherImpl->data;
+            if(!otherImpl)
+                throw Exceptions::Archivist::IndexTypeMismatch();
+            return data < otherImpl->data;
         }
         virtual size_t hash() const override
         {

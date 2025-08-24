@@ -28,8 +28,6 @@ namespace HYDRA15::Foundation::Archivist
             throw Exceptions::Archivist::IndexEmpty();
         auto thisImpl = std::dynamic_pointer_cast<IndexBase>(pImpl);
         auto otherImpl = std::dynamic_pointer_cast<IndexBase>(other.pImpl);
-        if (!thisImpl || !otherImpl) // 暂不允许不同类型比较
-            throw Exceptions::Archivist::IndexTypeMismatch();
         return thisImpl->operator<(*otherImpl);
     }
 
