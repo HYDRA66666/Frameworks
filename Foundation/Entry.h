@@ -178,7 +178,7 @@ namespace HYDRA15::Foundation::Archivist
         static struct Visualize
         {
             StaticString emptyEntry = "[Empty Entry object]";
-            StaticString entry = "[Entry object with {}]";
+            StaticString entry = "[Entry | {}]";
         } visualize;
     public:
         std::string info() const;

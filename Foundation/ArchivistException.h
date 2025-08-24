@@ -21,7 +21,8 @@ namespace HYDRA15::Foundation::Exceptions
 
             // 索引
             StaticUInt index = 0xB00;
-            StaticUInt indexTypeMismatch = 0xB01;
+            StaticUInt indexEmpty = 0xB01;
+            StaticUInt indexTypeMismatch = 0xB02;
 
             // 表
             StaticUInt tablet = 0xC00;
@@ -38,6 +39,8 @@ namespace HYDRA15::Foundation::Exceptions
 
             // 索引
             StaticString index = "Unknown Index Exception";
+            StaticString indexEmpty = "Index: This Index is empty";
+            StaticString indexTypeMismatch = "Index: Index data type mismatch";
             
             // 表
 
@@ -60,6 +63,7 @@ namespace HYDRA15::Foundation::Exceptions
 
         // 索引
         static Archivist IndexUnknownExpt() noexcept;
+        static Archivist IndexEmpty() noexcept;
         static Archivist IndexTypeMismatch() noexcept;
         
         // 表

@@ -48,10 +48,18 @@ namespace HYDRA15::Foundation::Exceptions
         );
     }
 
+    Archivist Archivist::IndexEmpty() noexcept
+    {
+        return Archivist(
+            visualize.indexEmpty.data(),
+            iExptCodes.indexEmpty
+        );
+    }
+
     Archivist Archivist::IndexTypeMismatch() noexcept
     {
         return Archivist(
-            visualize.index.data(),
+            visualize.indexTypeMismatch.data(),
             iExptCodes.indexTypeMismatch
         );
     }

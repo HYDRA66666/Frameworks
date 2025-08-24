@@ -63,11 +63,11 @@ namespace HYDRA15::Foundation::Archivist
     public:
         Index() = delete;
         Index(const Index& other);
-        Index(Index&& other) = delete;
+        Index(Index&& other);
 
         template<typename T>
             requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
-        Index(T t)
+        Index(const T& t)
             : pImpl(std::make_shared<IndexImpl<std::remove_cvref_t<T>>>(t))
         {
         }
@@ -88,6 +88,8 @@ namespace HYDRA15::Foundation::Archivist
             requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
         operator T& ()
         {
+            if(!pImpl )
+                throw Exceptions::Archivist::IndexEmpty();
             auto impl = std::dynamic_pointer_cast<EntryImpl<std::remove_cvref_t<T>>>(pImpl);
             if (!impl)
                 throw Exceptions::Archivist::IndexTypeMismatch();
@@ -97,7 +99,8 @@ namespace HYDRA15::Foundation::Archivist
         // 简单输出辅助
         static struct Visualize
         {
-            StaticString index = "[Index object with {}]";
+            StaticString indexEmpty = "[Empty Index Object]";
+            StaticString index = "[Index | {}]";
         } visualize;
 
         std::string info() const;
