@@ -21,6 +21,7 @@ namespace HYDRA15::Foundation::Exceptions
 
             // 索引
             StaticUInt index = 0xB00;
+            StaticUInt indexTypeMismatch = 0xB01;
 
             // 表
             StaticUInt tablet = 0xC00;
@@ -58,7 +59,8 @@ namespace HYDRA15::Foundation::Exceptions
         static Archivist EntryTypeMismatch() noexcept;
 
         // 索引
-        static Archivist IndexUnknownExpt();
+        static Archivist IndexUnknownExpt() noexcept;
+        static Archivist IndexTypeMismatch() noexcept;
         
         // 表
         static Archivist TabletUnknownExpt() noexcept;

@@ -28,14 +28,17 @@ namespace HYDRA15::Foundation::Archivist
     std::string Entry::info() const
     {
         if (!pImpl)
-            return infoEmpty.data();
-        return pImpl->info();
+            return visualize.emptyEntry.data();
+        return std::format(
+            visualize.entry.data(),
+            pImpl->info()
+        );
     }
 
     std::ostream& Entry::operator<<(std::ostream& os) const
     {
         if(!pImpl)
-            os << infoEmpty.data();
+            os << visualize.emptyEntry.data();
         else
             os << pImpl->info();
         return os;

@@ -40,7 +40,7 @@ int main() {
     Entry e22 = std::move(e2);
     Entry e44 = e4;
     //static_cast<datas&>(e44).a = 20;
-    datas& d = static_cast<datas&>(e4);
+    datas& d = static_cast<datas&>(e44);
     d.a = 20;
 
     std::cout << "e11: " << e11.info() << std::endl;
@@ -48,4 +48,5 @@ int main() {
     std::cout << "e2 after move: " << e2.info() << std::endl;
     std::cout << "e4 after modify: " << e4.info() << std::endl;
     std::cout << "e44: " << e44.info() << std::endl;
+    std::cout << std::string(e22);
 }

@@ -40,6 +40,22 @@ namespace HYDRA15::Foundation::Exceptions
         );
     }
 
+    Archivist Archivist::IndexUnknownExpt() noexcept
+    {
+        return Archivist(
+            visualize.index.data(),
+            iExptCodes.index
+        );
+    }
+
+    Archivist Archivist::IndexTypeMismatch() noexcept
+    {
+        return Archivist(
+            visualize.index.data(),
+            iExptCodes.indexTypeMismatch
+        );
+    }
+
 
 
 }
