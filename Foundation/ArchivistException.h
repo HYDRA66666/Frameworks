@@ -48,6 +48,12 @@ namespace HYDRA15::Foundation::Exceptions
             StaticString indexTypeMismatch = "Index: Index data type mismatch";
             
             // 表
+            StaticString tablet = "Unknown Tablet Exception";
+            StaticString tabletInvalidContainerOperation = "Tablet: Invalid operation for current Tablet type";
+            StaticString tabletContainerEmpty = "Tablet: Tablet is empty";
+            StaticString tabletContainerFull = "Tablet: Tablet is full";
+            StaticString tabletListRangeExceed = "Tablet: List index out of range";
+            StaticString tabletListBadSize = "Tablet: Invalid list size";
 
         }visualize;
     public:

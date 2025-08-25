@@ -64,6 +64,54 @@ namespace HYDRA15::Foundation::Exceptions
         );
     }
 
+    Archivist Archivist::TabletUnknownExpt() noexcept
+    {
+        return Archivist(
+            visualize.tablet.data(),
+            iExptCodes.tablet
+        );
+    }
+
+    Archivist Archivist::TabletInvalidContainerOperation() noexcept
+    {
+        return Archivist(
+            visualize.tabletInvalidContainerOperation.data(),
+            iExptCodes.tabletInvalidContainerOperation
+        );
+    }
+
+    Archivist Archivist::TabletContainerEmpty() noexcept
+    {
+        return Archivist(
+            visualize.tabletContainerEmpty.data(),
+            iExptCodes.tabletContainerEmpty
+        );
+    }
+
+    Archivist Archivist::TabletContainerFull() noexcept
+    {
+        return Archivist(
+            visualize.tabletContainerFull.data(),
+            iExptCodes.tabletContainerFull
+        );
+    }
+
+    Archivist Archivist::TabletListRangeExceed() noexcept
+    {
+        return Archivist(
+            visualize.tabletListRangeExceed.data(),
+            iExptCodes.tabletListRangeExceed
+        );
+    }
+
+    Archivist Archivist::TabletListBadSize() noexcept
+    {
+        return Archivist(
+            visualize.tabletListBadSize.data(),
+            iExptCodes.tabletListBadSize
+        );
+    }
+
 
 
 }

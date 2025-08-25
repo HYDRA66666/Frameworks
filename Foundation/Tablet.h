@@ -37,11 +37,11 @@ namespace HYDRA15::Foundation::Archivist
     private:
         Entry& list_access(const Index& key);
         void list_resize(UintIndex size);
-        void list_push(const Entry& entry);
+        void list_push(Entry&& entry);
         Entry& list_front();
         Entry& list_back();
 
-        void queue_push(const Entry& entry);
+        void queue_push(Entry&& entry);
         void queue_pop();
         Entry& queue_front();
         Entry& queue_back();
@@ -68,7 +68,7 @@ namespace HYDRA15::Foundation::Archivist
         Entry& operator[](const Index& idx);
 
         // 增减元素
-        void push(const Entry& entry);
+        void push(Entry&& entry);
         void pop();
         Entry& front();
         Entry& back();
@@ -86,6 +86,7 @@ namespace HYDRA15::Foundation::Archivist
 
         // 类型
         Type get_type() const;
+        void set_type(Type t);
 
 
         // 迭代器
@@ -103,8 +104,9 @@ namespace HYDRA15::Foundation::Archivist
 
             // 构造
         private:
-            iterator(Entry& e, bool isBegin);
-            friend class Entry;
+            iterator() = delete;
+            iterator(Tablet& tab, Tablet::UintIndex idx, Tablet::Map::iterator iter);
+            friend class Tablet;
 
             // 迭代器操作
         public:
@@ -116,5 +118,21 @@ namespace HYDRA15::Foundation::Archivist
 
         iterator begin();
         iterator end();
+
+
+        // 信息输出支持
+    private:
+        static struct Visualize
+        {
+            StaticString tabletMap = "[Tablet | Type: Map, Size: {}]";
+            StaticString tabletList = "[Tablet | Type: List, Size: {}]";
+            StaticString tabletQueue = "[Tablet | Type: Queue, Size: {}]";
+        } visualize;
+
+    public:
+        std::string info() const;
     };
+
+
 }
+
