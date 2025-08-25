@@ -153,6 +153,7 @@
     <ClInclude Include="LabourerException.h" />
     <ClInclude Include="LibID.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Registry.h" />
     <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="Tablet.h" />

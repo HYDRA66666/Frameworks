@@ -31,6 +31,13 @@ namespace HYDRA15::Foundation::Exceptions
             StaticUInt tabletContainerFull = 0xC03;
             StaticUInt tabletListRangeExceed = 0xC04;
             StaticUInt tabletListBadSize = 0xC05;
+
+            // 注册机
+            StaticUInt registry = 0xD00;
+            StaticUInt registryTabletInvalidMaxSize = 0xD01;
+            StaticUInt registryTabletFull = 0xD02;
+            StaticUInt registryKeyExists = 0xD03;
+            StaticUInt registryKeyNotFound = 0xD04;
         }iExptCodes;
 
         static struct Visualize
@@ -54,6 +61,13 @@ namespace HYDRA15::Foundation::Exceptions
             StaticString tabletContainerFull = "Tablet: Tablet is full";
             StaticString tabletListRangeExceed = "Tablet: List index out of range";
             StaticString tabletListBadSize = "Tablet: Invalid list size";
+
+            // 注册机
+            StaticString registry = "Unknown Registry Exception";
+            StaticString registryTabletInvalidMaxSize = "Registry: Invalid max size for Registry";
+            StaticString registryTabletFull = "Registry: Registry is full";
+            StaticString registryKeyExists = "Registry: Key already exists in Registry";
+            StaticString registryKeyNotFound = "Registry: Key not found in Registry";
 
         }visualize;
     public:
@@ -84,6 +98,13 @@ namespace HYDRA15::Foundation::Exceptions
         static Archivist TabletContainerFull() noexcept;
         static Archivist TabletListRangeExceed() noexcept;
         static Archivist TabletListBadSize() noexcept;
+
+        // 注册机
+        static Archivist RegistryUnknownExpt() noexcept;
+        static Archivist RegistryTabletInvalidMaxSize() noexcept;
+        static Archivist RegistryTabletFull() noexcept;
+        static Archivist RegistryKeyExists() noexcept;
+        static Archivist RegistryKeyNotFound() noexcept;
         
     };
 

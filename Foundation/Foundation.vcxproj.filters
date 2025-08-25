@@ -72,6 +72,9 @@
     <ClInclude Include="Tablet.h">
       <Filter>Archivist</Filter>
     </ClInclude>
+    <ClInclude Include="Registry.h">
+      <Filter>Archivist</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

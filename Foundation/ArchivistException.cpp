@@ -112,6 +112,48 @@ namespace HYDRA15::Foundation::Exceptions
         );
     }
 
+    Archivist Archivist::RegistryUnknownExpt() noexcept
+    {
+        return Archivist(
+            visualize.registry.data(),
+            iExptCodes.registry
+        );
+    }
+
+    Archivist Archivist::RegistryTabletInvalidMaxSize() noexcept
+    {
+        return Archivist(
+            visualize.registryTabletInvalidMaxSize.data(),
+            iExptCodes.registryTabletInvalidMaxSize
+        );
+    }
+
+    Archivist Archivist::RegistryTabletFull() noexcept
+    {
+        return Archivist(
+            visualize.registryTabletFull.data(),
+            iExptCodes.registryTabletFull
+        );
+    }
+
+    Archivist Archivist::RegistryKeyExists() noexcept
+    {
+        return Archivist(
+            visualize.registryKeyExists.data(),
+            iExptCodes.registryKeyExists
+        );
+    }
+
+    Archivist Archivist::RegistryKeyNotFound() noexcept
+    {
+        return Archivist(
+            visualize.registryKeyNotFound.data(),
+            iExptCodes.registryKeyNotFound
+        );
+    }
+
+
+
 
 
 }
