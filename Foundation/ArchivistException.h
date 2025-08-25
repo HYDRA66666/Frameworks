@@ -26,6 +26,11 @@ namespace HYDRA15::Foundation::Exceptions
 
             // 表
             StaticUInt tablet = 0xC00;
+            StaticUInt tabletInvalidContainerOperation = 0xC01;
+            StaticUInt tabletContainerEmpty = 0xC02;
+            StaticUInt tabletContainerFull = 0xC03;
+            StaticUInt tabletListRangeExceed = 0xC04;
+            StaticUInt tabletListBadSize = 0xC05;
         }iExptCodes;
 
         static struct Visualize
@@ -68,6 +73,11 @@ namespace HYDRA15::Foundation::Exceptions
         
         // 表
         static Archivist TabletUnknownExpt() noexcept;
+        static Archivist TabletInvalidContainerOperation() noexcept;
+        static Archivist TabletContainerEmpty() noexcept;
+        static Archivist TabletContainerFull() noexcept;
+        static Archivist TabletListRangeExceed() noexcept;
+        static Archivist TabletListBadSize() noexcept;
         
     };
 

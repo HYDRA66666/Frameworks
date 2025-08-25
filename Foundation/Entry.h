@@ -160,7 +160,7 @@ namespace HYDRA15::Foundation::Archivist
         // 数据访问
         template<typename T>
             requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>)
-        operator T& ()
+        operator T& () const
         {
             if (!pImpl)
                 throw Exceptions::Archivist::EntryEmpty();

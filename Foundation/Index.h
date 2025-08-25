@@ -89,7 +89,7 @@ namespace HYDRA15::Foundation::Archivist
 
         template<typename T>
             requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
-        operator T& ()
+        operator T& () const
         {
             if(!pImpl )
                 throw Exceptions::Archivist::IndexEmpty();

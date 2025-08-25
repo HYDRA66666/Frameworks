@@ -28,10 +28,7 @@ using namespace HYDRA15::Foundation::Archivist;
 
 
 int main() {
-    std::unordered_map<Index, Entry> map;
-    map[42] = 3.14;
-    map[3.2] = 1;
+    Index idx1 = 42;
 
-    for(auto i :map)
-        std::cout << i.first.info() << " -> " << i.second.info() << std::endl;
+    std::cout << static_cast<int>(idx1) << std::endl;
 }

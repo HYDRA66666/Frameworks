@@ -155,6 +155,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="SingletonBase.h" />
+    <ClInclude Include="Tablet.h" />
     <ClInclude Include="ThreadLake.h" />
   </ItemGroup>
   <ItemGroup>
@@ -171,6 +172,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Tablet.cpp" />
     <ClCompile Include="ThreadLake.cpp" />
   </ItemGroup>
   <ItemGroup>
