@@ -32,21 +32,13 @@ using namespace HYDRA15::Foundation::Archivist;
 
 
 int main() {
-    Registry r(10);
-    r.regist(42, Entry(datas(1, "Hello")));
-    r.regist(100, Entry(std::string("World")));
+    Entry e = 41;
+    Entry e2 = 3.14;
+    Entry e3 = std::string("Hello, World!");
+    Entry e4 = datas(7, "example");
 
-    std::cout << r.find(42).info() << std::endl;
-    std::cout << r.find(100).info() << std::endl;
-
-    r.unregist(100);
-
-    try
-    {
-        std::cout << r.find(100).info() << std::endl; // This should throw an exception
-    }
-    catch (const std::exception& e)
-    {
-        std::cout << "Exception caught: " << e.what() << std::endl;
-    }
+    std::cout << e.info() << std::endl;
+    std::cout << e2.info() << std::endl;
+    std::cout << e3.info() << std::endl;
+    std::cout << e4.info() << std::endl;
 }

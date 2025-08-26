@@ -11,6 +11,8 @@ namespace HYDRA15::Foundation::Archivist
     // 注意：索引的实际类型必须支持比较和哈希
     // 注意：如需比较大小，两个索引必须包含同一类型的数据
 
+    /***************************** 基 类 *****************************/
+    // 接口定义
     class IndexBase
     {
     public:
@@ -22,6 +24,8 @@ namespace HYDRA15::Foundation::Archivist
         virtual size_t hash() const = 0;
     };
 
+    /***************************** 派生类 *****************************/
+    // 存储数据，实现核心功能
     template<typename T>
         requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
     class IndexImpl :public IndexBase, public EntryImpl<T>
@@ -59,6 +63,8 @@ namespace HYDRA15::Foundation::Archivist
         }
     };
 
+    /***************************** 主 类 *****************************/
+    // 包装，用户接口
     class Index
     {
         std::shared_ptr<EntryBase> pImpl;

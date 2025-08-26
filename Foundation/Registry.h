@@ -14,7 +14,7 @@ namespace HYDRA15::Foundation::Archivist
     // 模板参数 L : 锁类型，如果支持共享锁，则在查询时使用共享锁
     // 如果不需要上锁，可以使用 NotALock 作为锁类型，其满足锁约束，但不会进行任何实际操作
 
-
+    /***************************** 概 念 *****************************/
     // 锁约束
     template<typename L>
     concept lockable = requires(L l) {
@@ -40,6 +40,7 @@ namespace HYDRA15::Foundation::Archivist
     };
 
 
+    /***************************** 基 类 *****************************/
     // 基础注册机模板，支持任意类型的键和值
     template<typename K, typename V, typename L>
         requires hash_key<K> && lockable<L>
@@ -119,6 +120,8 @@ namespace HYDRA15::Foundation::Archivist
         }
     };
 
+
+    /***************************** 特化类 *****************************/
     // 简单注册机
     using Registry = RegistryBase<Index, Entry, std::mutex>;
     

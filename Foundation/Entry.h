@@ -58,7 +58,8 @@ namespace HYDRA15::Foundation::Archivist
     //    std::ostream& operator<<(std::ostream& os) const;
     //};
 
-
+    /***************************** 基 类 *****************************/
+    // 接口定义
     class EntryBase
     {
     public:
@@ -74,22 +75,27 @@ namespace HYDRA15::Foundation::Archivist
             StaticString entryWithKnownType = "type: {}, data: {}";
             StaticString entryWithUnknownType = "unknown type: {}";
         } visualize;
-        template<typename T>
-            requires std::is_same_v<std::remove_cvref_t<T>, std::string>
-        friend std::string entry_to_string(const T& data);
-        template<typename T>
-            requires can_be_transfer_to_string<T>
-        friend std::string entry_to_string(const T& data);
-        template<typename T>
-            requires (!can_be_transfer_to_string<T>) && (!has_info_interface<T>)  && (!std::is_same_v<std::remove_cvref_t<T>, std::string>)
-        friend std::string entry_to_string(const T&);
-        template<typename T>
-            requires has_info_interface<T>
-        friend std::string entry_to_string(const T& data);
+
     public:
         virtual std::string info() const = 0;
     };
 
+    // 信息输出相关概念
+    template<typename T>
+    concept can_be_transfer_to_string = requires(std::remove_cvref_t<T> a) {
+        { std::to_string(a) } -> std::convertible_to<std::string>;
+    } || requires(std::remove_cvref_t<T> a) {
+        { to_string(a) } -> std::convertible_to<std::string>;
+    };
+
+    template<class T>
+    concept has_info_interface = requires(std::remove_cvref_t<T> a) {
+        { a.info() } -> std::convertible_to<std::string>;
+    };
+
+
+    /***************************** 派生类 *****************************/
+    // 存储数据
     template<typename T>
         requires (!std::derived_from <std::remove_cvref_t<T> , EntryBase> )
     class EntryImpl : public EntryBase
@@ -119,10 +125,34 @@ namespace HYDRA15::Foundation::Archivist
         // 信息输出支持
         virtual std::string info() const override
         {
-            return entry_to_string<T>(data);
+            if constexpr (std::is_same_v<T, std::string>)
+                return std::format(
+                    visualize.entryWithKnownType.data(),
+                    typeid(T).name(),
+                    data
+                );
+            else if constexpr (can_be_transfer_to_string<T>)
+                return std::format(
+                    visualize.entryWithKnownType.data(),
+                    typeid(T).name(),
+                    std::to_string(data)
+                );
+            else if constexpr (has_info_interface<T>)
+                return std::format(
+                    visualize.entryWithKnownType.data(),
+                    typeid(T).name(),
+                    data.info()
+                );
+            else
+                return std::format(
+                    visualize.entryWithUnknownType.data(),
+                    typeid(T).name()
+                );
         }
     };
 
+    /***************************** 主 类 *****************************/
+    // 包装，用户接口
     class Entry
     {
         std::shared_ptr<EntryBase> pImpl;
@@ -200,59 +230,7 @@ namespace HYDRA15::Foundation::Archivist
     };
 
 
-    // 信息输出相关
-    template<typename T>
-    concept can_be_transfer_to_string = requires(std::remove_cvref_t<T> a) {
-        { std::to_string(a) } -> std::convertible_to<std::string>;
-    } || requires(std::remove_cvref_t<T> a) {
-        { to_string(a) } -> std::convertible_to<std::string>;
-    };
 
-    template<class T>
-    concept has_info_interface = requires(std::remove_cvref_t<T> a) {
-        { a.info() } -> std::convertible_to<std::string>;
-    };
 
-    template<typename T>
-        requires std::is_same_v<std::remove_cvref_t<T>, std::string>
-    std::string entry_to_string(const T& data)
-    {
-        return std::format(
-            EntryBase::Visualize::entryWithKnownType.data(),
-            typeid(T).name(),
-            data
-        );
-    }
-
-    template<typename T>
-        requires (!can_be_transfer_to_string<T>) && (!has_info_interface<T>) && (!std::is_same_v<std::remove_cvref_t<T>, std::string>)
-    std::string entry_to_string(const T&)
-    {
-        return std::format(
-            EntryBase::Visualize::entryWithUnknownType.data(),
-            typeid(T).name()
-        );
-    }
-
-    template<typename T>
-        requires can_be_transfer_to_string<T>
-    std::string entry_to_string(const T& data)
-    {
-        return std::format(
-            EntryBase::Visualize::entryWithKnownType.data(),
-            typeid(T).name(),
-            std::to_string(data)
-        );
-    }
-
-    template<typename T>
-        requires has_info_interface<T>
-    std::string entry_to_string(const T& data)
-    {
-        return std::format(
-            EntryBase::Visualize::entryWithKnownType.data(),
-            typeid(T).name(),
-            data.info()
-        );
-    }
+    
 }
