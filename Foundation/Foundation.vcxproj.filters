@@ -107,6 +107,9 @@
     <ClCompile Include="Tablet.cpp">
       <Filter>Archivist</Filter>
     </ClCompile>
+    <ClCompile Include="Registry.cpp">
+      <Filter>Archivist</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="document.md" />
