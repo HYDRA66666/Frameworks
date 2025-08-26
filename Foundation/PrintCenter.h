@@ -96,7 +96,8 @@ namespace HYDRA15::Foundation::Secretary
         // 数据
     private:
         StaticString fileNameFormat = ".\\Log_{0}.log";
-        FileMsgList fileMsgList;
+        FileMsgList* pFMsgLstFront;
+        FileMsgList* pFMsgLstBack;
         std::mutex fileMsgLock;
         std::ofstream file;
         TimePiont lastRefresh;
@@ -104,8 +105,5 @@ namespace HYDRA15::Foundation::Secretary
 
         // 接口
         size_t file(const std::string& content);
-
-
-
     };
 }
