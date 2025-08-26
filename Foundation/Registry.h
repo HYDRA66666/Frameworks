@@ -126,9 +126,9 @@ namespace HYDRA15::Foundation::Archivist
     using Registry = RegistryBase<Index, Entry, std::mutex>;
     
     // 整数键注册机，支持被动注册和懒注册
-    template<typename L>
+    template<typename V, typename L>
         requires lockable<L>
-    class RegistryInt : public RegistryBase<unsigned long long, Entry, L>
+    class RegistryInt : public RegistryBase<unsigned long long, V, L>
     {
         // 类型定义
     public:
@@ -136,14 +136,14 @@ namespace HYDRA15::Foundation::Archivist
         // 核心数据
         UintIndex current = 0;
         UintIndex start = 0;
-        using RegistryBase<UintIndex, Entry, L>::tab;
-        using RegistryBase<UintIndex, Entry, L>::max;
-        using RegistryBase<UintIndex, Entry, L>::lock;
+        using RegistryBase<UintIndex, V, L>::tab;
+        using RegistryBase<UintIndex, V, L>::max;
+        using RegistryBase<UintIndex, V, L>::lock;
 
         // 构造与析构
     public:
         RegistryInt(UintIndex startKey = 0, size_t maxSize = 0)
-            : RegistryBase<UintIndex, Entry, L>(maxSize), start(startKey), current(startKey)
+            : RegistryBase<UintIndex, V, L>(maxSize), start(startKey), current(startKey)
         {
         }
 
@@ -169,7 +169,7 @@ namespace HYDRA15::Foundation::Archivist
     public:
         // 被动注册：传入值，注册机分配键
         // 懒注册：不传入值，注册机分配键和默认值
-        UintIndex regist(Entry&& value = Entry())
+        UintIndex regist(V&& value = V())
         {
             std::unique_lock lck(lock);
             if (max > 0 && tab.size() >= max)
@@ -178,7 +178,7 @@ namespace HYDRA15::Foundation::Archivist
                 throw Exceptions::Archivist::RegistryTabletFull();
             find_next_key();
 
-            tab[current] = std::forward<Entry>(value);
+            tab[current] = std::forward<V>(value);
             return current;
         }
     };

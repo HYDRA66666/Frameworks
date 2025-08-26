@@ -152,10 +152,13 @@
     <ClInclude Include="iMutexies.h" />
     <ClInclude Include="LabourerException.h" />
     <ClInclude Include="LibID.h" />
+    <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="PrintCenter.h" />
+    <ClInclude Include="Progress.h" />
     <ClInclude Include="Registry.h" />
+    <ClInclude Include="SecretaryException.h" />
     <ClInclude Include="SharedContainerBase.h" />
-    <ClInclude Include="SingletonBase.h" />
     <ClInclude Include="Tablet.h" />
     <ClInclude Include="ThreadLake.h" />
   </ItemGroup>

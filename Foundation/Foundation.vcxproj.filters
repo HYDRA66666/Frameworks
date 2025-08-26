@@ -39,9 +39,6 @@
     <ClInclude Include="iExceptionBase.h">
       <Filter>Referee</Filter>
     </ClInclude>
-    <ClInclude Include="SingletonBase.h">
-      <Filter>Assistant</Filter>
-    </ClInclude>
     <ClInclude Include="SharedContainerBase.h">
       <Filter>Labourer</Filter>
     </ClInclude>
@@ -74,6 +71,18 @@
     </ClInclude>
     <ClInclude Include="Registry.h">
       <Filter>Archivist</Filter>
+    </ClInclude>
+    <ClInclude Include="PrintCenter.h">
+      <Filter>Secretary</Filter>
+    </ClInclude>
+    <ClInclude Include="Log.h">
+      <Filter>Secretary</Filter>
+    </ClInclude>
+    <ClInclude Include="Progress.h">
+      <Filter>Secretary</Filter>
+    </ClInclude>
+    <ClInclude Include="SecretaryException.h">
+      <Filter>Exceptions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
