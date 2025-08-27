@@ -11,6 +11,7 @@ using namespace HYDRA15::Foundation::Secretary;
 void rolling_writer(PrintCenter& pc, int thread_id) {
     for (int i = 0; i < 100; ++i) {
         pc.rolling("Thread " + std::to_string(thread_id) + " rolling msg #" + std::to_string(i));
+        pc.file("Thread " + std::to_string(thread_id) + " file msg #" + std::to_string(i));
         std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }

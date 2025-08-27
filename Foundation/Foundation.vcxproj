@@ -162,6 +162,7 @@
     <ClInclude Include="SharedContainerBase.h" />
     <ClInclude Include="Tablet.h" />
     <ClInclude Include="ThreadLake.h" />
+    <ClInclude Include="to_string.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArchivistException.cpp" />
@@ -182,6 +183,7 @@
     <ClCompile Include="SecretaryException.cpp" />
     <ClCompile Include="Tablet.cpp" />
     <ClCompile Include="ThreadLake.cpp" />
+    <ClCompile Include="to_string.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="document.md" />

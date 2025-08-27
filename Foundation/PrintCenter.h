@@ -6,6 +6,7 @@
 #include "Registry.h"
 #include "iMutexies.h"
 #include "Background.h"
+#include "to_string.h"
 #include "SharedContainerBase.h"
 
 namespace HYDRA15::Foundation::Secretary
@@ -139,6 +140,7 @@ namespace HYDRA15::Foundation::Secretary
         size_t fileMsgCount = 0;
 
         // 接口
+    public:
         size_t file(const std::string& content);
     };
 }

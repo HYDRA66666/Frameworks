@@ -4,7 +4,8 @@
 namespace HYDRA15::Foundation::Secretary
 {
     PrintCenter::PrintCenter()
-        :Labourer::Background(1), logFile(cfg.fileNameFormat.data())
+        :Labourer::Background(1),
+        logFile(std::format(cfg.fileNameFormat.data(), Assistant::to_date_string(std::time(NULL))),std::ios::app)
     {
         start();
     }

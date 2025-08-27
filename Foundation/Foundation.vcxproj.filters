@@ -87,6 +87,9 @@
     <ClInclude Include="iString.h">
       <Filter>Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="to_string.h">
+      <Filter>Assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -127,6 +130,9 @@
     </ClCompile>
     <ClCompile Include="SecretaryException.cpp">
       <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="to_string.cpp">
+      <Filter>Assistant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
