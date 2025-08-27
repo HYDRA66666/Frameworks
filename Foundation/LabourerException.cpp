@@ -1,24 +1,25 @@
 ﻿#include "pch.h"
 #include "LabourerException.h"
+#include "SecretaryException.h"
 
 namespace HYDRA15::Foundation::Exceptions
 {
-    ThreadLake::ThreadLake(const std::string& desp, const Referee::iExceptionCode& code) noexcept
+    Labourer::Labourer(const std::string& desp, const Referee::iExceptionCode& code) noexcept
         : Referee::iExceptionBase(desp, Foundation::LibInfo::libID.Labourer, code)
     {
     }
 
-    ThreadLake ThreadLake::make_exception(const Referee::iExceptionCode& exptCode) noexcept
+    Labourer Labourer::make_exception(const Referee::iExceptionCode& exptCode) noexcept
     {
-        return ThreadLake(
+        return Labourer(
             visualize.thrdLakeExpt.data(),
             exptCode
         );
     }
 
-    ThreadLake ThreadLake::TaskQueueFull() noexcept
+    Labourer Labourer::TaskQueueFull() noexcept
     {
-        return ThreadLake(
+        return Labourer(
             visualize.thrdLakeQueueFull.data(),
             iExptCodes.threadQueueFull
         );

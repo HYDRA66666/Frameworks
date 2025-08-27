@@ -53,7 +53,7 @@ namespace HYDRA15::Foundation::Archivist
 
         // 核心数据
     protected:
-        L lock;
+        mutable L lock; 
         RegTab tab;
         size_t max = 0;
 
@@ -118,6 +118,7 @@ namespace HYDRA15::Foundation::Archivist
 
             return tab.size();
         }
+
     };
 
 

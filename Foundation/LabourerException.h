@@ -7,8 +7,9 @@
 
 namespace HYDRA15::Foundation::Exceptions
 {
-    class ThreadLake : public Referee::iExceptionBase
+    class Labourer : public Referee::iExceptionBase
     {
+    public:
         static struct iExceptionCodes
         {
             // 线程池
@@ -16,6 +17,7 @@ namespace HYDRA15::Foundation::Exceptions
             StaticUInt threadQueueFull = 0xA01;
         }iExptCodes;
 
+    private:
         static struct Visualize
         {
             // 线程池
@@ -24,18 +26,18 @@ namespace HYDRA15::Foundation::Exceptions
         }visualize;
 
     public:
-        ThreadLake(
+        Labourer(
             const std::string& desp = visualize.thrdLakeExpt.data(),
             const Referee::iExceptionCode& code = iExptCodes.threadLake
         ) noexcept;
-        ThreadLake() = delete;
-        virtual ~ThreadLake() noexcept = default;
+        Labourer() = delete;
+        virtual ~Labourer() noexcept = default;
 
 
         // 快速创建异常
-        static ThreadLake make_exception(const Referee::iExceptionCode& exptCode) noexcept;
+        static Labourer make_exception(const Referee::iExceptionCode& exptCode) noexcept;
 
-        static ThreadLake TaskQueueFull() noexcept;
+        static Labourer TaskQueueFull() noexcept;
 
     };
 }

@@ -50,7 +50,7 @@ namespace HYDRA15::Foundation::Labourer
     {
         if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
         {
-            throw Exceptions::ThreadLake::TaskQueueFull();
+            throw Exceptions::Labourer::TaskQueueFull();
         }
         std::lock_guard<std::mutex> lock(queueMutex);
         taskQueue.push(taskPkg);

@@ -150,6 +150,7 @@
     <ClInclude Include="iExceptionBase.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="iMutexies.h" />
+    <ClInclude Include="iString.h" />
     <ClInclude Include="LabourerException.h" />
     <ClInclude Include="LibID.h" />
     <ClInclude Include="Log.h" />
@@ -176,7 +177,9 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="PrintCenter.cpp" />
     <ClCompile Include="Registry.cpp" />
+    <ClCompile Include="SecretaryException.cpp" />
     <ClCompile Include="Tablet.cpp" />
     <ClCompile Include="ThreadLake.cpp" />
   </ItemGroup>

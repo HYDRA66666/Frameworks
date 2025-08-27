@@ -32,6 +32,8 @@
 #include <ctime>
 #include <fstream>
 #include <chrono>
+#include <condition_variable>
+#include <sstream>
 
 
 #endif //PCH_H

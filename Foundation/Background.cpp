@@ -35,6 +35,11 @@ namespace HYDRA15::Foundation::Labourer
             item.thread->detach();
     }
 
+    Background::Background()
+        :Background(1)
+    {
+    }
+
     Background::iterator::iterator(list_iter iter)
         :it(iter)
     {

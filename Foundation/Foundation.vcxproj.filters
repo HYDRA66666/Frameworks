@@ -84,6 +84,9 @@
     <ClInclude Include="SecretaryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="iString.h">
+      <Filter>Assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -118,6 +121,12 @@
     </ClCompile>
     <ClCompile Include="Registry.cpp">
       <Filter>Archivist</Filter>
+    </ClCompile>
+    <ClCompile Include="PrintCenter.cpp">
+      <Filter>Secretary</Filter>
+    </ClCompile>
+    <ClCompile Include="SecretaryException.cpp">
+      <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

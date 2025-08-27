@@ -9,6 +9,7 @@ namespace HYDRA15::Foundation::Exceptions
 {
     class Archivist :public Referee::iExceptionBase
     {
+    public:
         static struct iExceptionCodes
         {
             StaticUInt archivist = 0x0000;
@@ -40,6 +41,7 @@ namespace HYDRA15::Foundation::Exceptions
             StaticUInt registryKeyNotFound = 0xD04;
         }iExptCodes;
 
+    private:
         static struct Visualize
         {
             StaticString archivist = "Unknown Archivist Exception";
