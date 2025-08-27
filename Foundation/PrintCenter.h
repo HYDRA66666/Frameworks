@@ -43,8 +43,8 @@ namespace HYDRA15::Foundation::Secretary
         {
             Milliseconds btmMsgDispTimeout = Milliseconds(1000);        // 超过此时间则不展示
             Milliseconds btmMsgExistTimeout = Milliseconds(30000);      // 超过此时间则删除
-            Milliseconds btmMsgRefreshInterval = Milliseconds(20);   // 底部消息刷新间隔
-            static const size_t maxBtmMsgs = 2;                          // 最大底部消息数
+            Milliseconds btmMsgRefreshInterval = Milliseconds(100);   // 底部消息刷新间隔
+            static const size_t maxBtmMsgs = 3;                          // 最大底部消息数
             StaticString otherBtmMsgFormat = "  ... and {0} more";
 
             StaticString fileNameFormat = ".\\Log_{0}.log";

@@ -25,7 +25,7 @@ void bottom_progress_writer(PrintCenter& pc, int token, std::atomic<bool>& runni
         std::this_thread::sleep_for(std::chrono::milliseconds(100));
         ++progress;
     }
-    pc.remove_bottom(id, token);
+    //pc.remove_bottom(id, token);
 }
 
 int main() {
@@ -40,7 +40,7 @@ int main() {
     // 启动3个底部消息线程
     std::vector<std::thread> bottom_threads;
     std::vector<std::atomic<bool>> running_flags(3);
-    for (int i = 0; i < 1; ++i) {
+    for (int i = 0; i < 4; ++i) {
         running_flags[i] = true;
         bottom_threads.emplace_back(bottom_progress_writer, std::ref(pc), 15 + i, std::ref(running_flags[i]));
     }

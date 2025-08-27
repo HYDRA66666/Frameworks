@@ -57,7 +57,7 @@ namespace HYDRA15::Foundation::Secretary
     {
         std::string str;
         std::list<ID> timeoutList;
-        size_t otherCount = 0, currentCount = 0;
+        size_t other = 0, disped = 0;
 
         {
             std::lock_guard lg(btmMsgTab.lock);
@@ -68,28 +68,33 @@ namespace HYDRA15::Foundation::Secretary
             {
                 std::lock_guard lg(msgCtrl.lock);
                 if (msgCtrl.content.empty())
+                {
+                    other++;
                     continue;
+                }
                 if (now - msgCtrl.lastUpdate < cfg.btmMsgDispTimeout)    // 未超时，展示
-                    if (currentCount < cfg.maxBtmMsgs)
+                    if (disped < cfg.maxBtmMsgs)
                     {
-                        if(!first)
+                        if (!first)
                             str.append(", ");
                         if (msgCtrl.content.back() == '\n')
                             str.append(msgCtrl.content.erase(msgCtrl.content.back()));
                         else
                             str.append(msgCtrl.content);
-                        currentCount++;
+                        disped++;
                     }
                     else
-                        otherCount++;
+                        other++;
+                else
+                    other++;
                 first = false;
                 if (now - msgCtrl.lastUpdate > cfg.btmMsgExistTimeout)  // 超时删除
                     timeoutList.push_back(id);
             }
         }
         
-        if(otherCount)
-            str.append(std::format(cfg.otherBtmMsgFormat, otherCount));
+        if(other)
+            str.append(std::format(cfg.otherBtmMsgFormat, other));
         
         if (!timeoutList.empty())
             for (const auto& id : timeoutList)
