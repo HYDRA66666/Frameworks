@@ -33,7 +33,7 @@ namespace HYDRA15::Foundation::Secretary
 
         // 辅助函数
     private:
-        std::string to_date_time_string(const time_t& stamp);
+        static std::string to_date_time_string(const time_t& stamp);
         
         // 公有接口
     public:
