@@ -263,22 +263,6 @@ namespace HYDRA15::Foundation::Secretary
         return fileMsgCount++;
     }
 
-    PrintCenter::BottomControlBlock::BottomControlBlock(const TimePiont& t, int tkn, const std::string& ctnt)
-        : lastUpdate(t), token(tkn), content(ctnt), lock()
-    {
-    }
-
-    PrintCenter::BottomControlBlock::BottomControlBlock(const BottomControlBlock& src)
-        : lastUpdate(src.lastUpdate), token(src.token), content(src.content), lock()
-    {
-
-    }
-
-    PrintCenter::BottomControlBlock::BottomControlBlock()
-        :lastUpdate(TimePiont::clock::now()), token(0), content(),lock()
-    {
-    }
-
     PrintCenter::BottomControlBlock& PrintCenter::BottomControlBlock::operator=(const BottomControlBlock& src)
     {
         if (this != &src)

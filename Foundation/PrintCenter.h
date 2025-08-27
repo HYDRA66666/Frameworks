@@ -93,21 +93,18 @@ namespace HYDRA15::Foundation::Secretary
             int token;
             std::string content;
             std::mutex lock;
-            BottomControlBlock(const TimePiont&, int, const std::string&);
-            BottomControlBlock(const BottomControlBlock&);
-            BottomControlBlock();
             BottomControlBlock& operator=(const BottomControlBlock&);
         };
 
-        class BtmMsgMap : public Archivist::RegistryInt<BottomControlBlock, std::mutex>
+        class BtmMsgMap : public Archivist::IntRegistry<BottomControlBlock, std::mutex>
         {
         public:
-            using ID = Archivist::RegistryInt<BottomControlBlock, std::mutex>::UintIndex;
+            using ID = Archivist::IntRegistry<BottomControlBlock, std::mutex>::UintIndex;
 
             using iterator = RegTab::iterator;
             iterator begin();
             iterator end();
-            using Archivist::RegistryInt<BottomControlBlock, std::mutex>::lock;
+            using Archivist::IntRegistry<BottomControlBlock, std::mutex>::lock;
         }btmMsgTab;
 
     public:

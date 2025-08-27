@@ -44,7 +44,7 @@ namespace HYDRA15::Foundation::Archivist
     // 基础注册机模板，支持任意类型的键和值
     template<typename K, typename V, typename L>
         requires hash_key<K> && lockable<L>
-    class RegistryBase
+    class BasicRegistry
     {
         // 类型定义
     public:
@@ -59,13 +59,13 @@ namespace HYDRA15::Foundation::Archivist
 
         // 构造与析构
     public:
-        RegistryBase(size_t maxSize)
+        BasicRegistry(size_t maxSize)
             :max(maxSize)
         {
             if (max > tab.max_size())
                 throw Exceptions::Archivist::RegistryTabletInvalidMaxSize();
         }
-        RegistryBase() : max(0) {}
+        BasicRegistry() : max(0) {}
 
         // 注册
         void regist(const K& key, V&& value)
@@ -124,12 +124,12 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 特化类 *****************************/
     // 简单注册机
-    using Registry = RegistryBase<Index, Entry, std::mutex>;
+    using Registry = BasicRegistry<Index, Entry, std::mutex>;
     
     // 整数键注册机，支持被动注册和懒注册
     template<typename V, typename L>
         requires lockable<L>
-    class RegistryInt : public RegistryBase<unsigned long long, V, L>
+    class IntRegistry : public BasicRegistry<unsigned long long, V, L>
     {
         // 类型定义
     public:
@@ -137,14 +137,14 @@ namespace HYDRA15::Foundation::Archivist
         // 核心数据
         UintIndex current = 0;
         UintIndex start = 0;
-        using RegistryBase<UintIndex, V, L>::tab;
-        using RegistryBase<UintIndex, V, L>::max;
-        using RegistryBase<UintIndex, V, L>::lock;
+        using BasicRegistry<UintIndex, V, L>::tab;
+        using BasicRegistry<UintIndex, V, L>::max;
+        using BasicRegistry<UintIndex, V, L>::lock;
 
         // 构造与析构
     public:
-        RegistryInt(UintIndex startKey = 0, size_t maxSize = 0)
-            : RegistryBase<UintIndex, V, L>(maxSize), start(startKey), current(startKey)
+        IntRegistry(UintIndex startKey = 0, size_t maxSize = 0)
+            : BasicRegistry<UintIndex, V, L>(maxSize), start(startKey), current(startKey)
         {
         }
 
@@ -169,8 +169,7 @@ namespace HYDRA15::Foundation::Archivist
         // 注册
     public:
         // 被动注册：传入值，注册机分配键
-        // 懒注册：不传入值，注册机分配键和默认值
-        UintIndex regist(V&& value = V())
+        UintIndex regist(V&& value)
         {
             std::unique_lock lck(lock);
             if (max > 0 && tab.size() >= max)
@@ -180,6 +179,20 @@ namespace HYDRA15::Foundation::Archivist
             find_next_key();
 
             tab[current] = std::forward<V>(value);
+            return current;
+        }
+
+        // 懒注册：不传入值，注册机分配键和默认值
+        UintIndex regist()
+        {
+            std::unique_lock lck(lock);
+            if (max > 0 && tab.size() >= max)
+                throw Exceptions::Archivist::RegistryTabletFull();
+            if (tab.size() >= tab.max_size())
+                throw Exceptions::Archivist::RegistryTabletFull();
+            find_next_key();
+
+            tab[current];
             return current;
         }
     };
