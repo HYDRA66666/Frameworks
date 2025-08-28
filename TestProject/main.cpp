@@ -39,7 +39,7 @@ int main() {
 
     // 启动3个底部消息线程
     std::vector<std::thread> bottom_threads;
-    std::vector<std::atomic<bool>> running_flags(3);
+    std::vector<std::atomic<bool>> running_flags(4);
     for (int i = 0; i < 4; ++i) {
         running_flags[i] = true;
         bottom_threads.emplace_back(bottom_progress_writer, std::ref(pc), 15 + i, std::ref(running_flags[i]));

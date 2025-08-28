@@ -144,7 +144,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="ArchivistException.h" />
+    <ClInclude Include="AssistantException.h" />
     <ClInclude Include="Background.h" />
+    <ClInclude Include="DateTime.h" />
     <ClInclude Include="Entry.h" />
     <ClInclude Include="Index.h" />
     <ClInclude Include="iExceptionBase.h" />
@@ -166,12 +168,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArchivistException.cpp" />
+    <ClCompile Include="AssistantException.cpp" />
     <ClCompile Include="Background.cpp" />
+    <ClCompile Include="DateTime.cpp" />
     <ClCompile Include="Entry.cpp" />
     <ClCompile Include="iExceptionBase.cpp" />
     <ClCompile Include="iMutexies.cpp" />
     <ClCompile Include="Index.cpp" />
     <ClCompile Include="LabourerException.cpp" />
+    <ClCompile Include="Log.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

@@ -22,6 +22,7 @@ namespace HYDRA15::Foundation::LibInfo
         StaticUInt Archivist = 0xA13;
         StaticUInt Expressman = 0xA14;
         StaticUInt Secretary = 0xA15;
+        StaticUInt Assistant = 0xA16;
 
 
 

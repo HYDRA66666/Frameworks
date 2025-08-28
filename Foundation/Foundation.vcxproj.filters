@@ -90,6 +90,12 @@
     <ClInclude Include="to_string.h">
       <Filter>Assistant</Filter>
     </ClInclude>
+    <ClInclude Include="DateTime.h">
+      <Filter>Assistant</Filter>
+    </ClInclude>
+    <ClInclude Include="AssistantException.h">
+      <Filter>Exceptions</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -133,6 +139,15 @@
     </ClCompile>
     <ClCompile Include="to_string.cpp">
       <Filter>Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="Log.cpp">
+      <Filter>Secretary</Filter>
+    </ClCompile>
+    <ClCompile Include="DateTime.cpp">
+      <Filter>Assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="AssistantException.cpp">
+      <Filter>Exceptions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

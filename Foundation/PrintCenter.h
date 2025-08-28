@@ -6,7 +6,7 @@
 #include "Registry.h"
 #include "iMutexies.h"
 #include "Background.h"
-#include "to_string.h"
+#include "DateTime.h"
 #include "SharedContainerBase.h"
 
 namespace HYDRA15::Foundation::Secretary
@@ -20,9 +20,6 @@ namespace HYDRA15::Foundation::Secretary
         // 禁止外部构造
         PrintCenter();
         PrintCenter(const PrintCenter&) = delete;
-
-        // 唯一实例
-        static PrintCenter instance;
 
         // 获取接口
     public:

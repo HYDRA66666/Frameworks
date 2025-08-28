@@ -5,15 +5,19 @@ namespace HYDRA15::Foundation::Secretary
 {
     PrintCenter::PrintCenter()
         :Labourer::Background(1),
-        logFile(std::format(cfg.fileNameFormat.data(), Assistant::to_date_string(std::time(NULL))),std::ios::app)
+        logFile(
+            std::format(
+                cfg.fileNameFormat.data(), Assistant::DateTime::now_date_time("%Y-%m-%d")
+            ), 
+            std::ios::app
+            )
     {
         start();
     }
 
-    PrintCenter PrintCenter::instance;
-
     PrintCenter& PrintCenter::get_instance()
     {
+        static PrintCenter instance;
         return instance;
     }
 

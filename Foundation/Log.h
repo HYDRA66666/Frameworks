@@ -30,10 +30,6 @@ namespace HYDRA15::Foundation::Secretary
             StaticString errorFormat = "[ {0} | {1} ][ Error ] {2}";
             StaticString debugFormat = "[ {0} | {1} ][ Debug ] {2}";
         };
-
-        // 辅助函数
-    private:
-        static std::string to_date_time_string(const time_t& stamp);
         
         // 公有接口
     public:
