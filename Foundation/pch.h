@@ -34,6 +34,7 @@
 #include <chrono>
 #include <condition_variable>
 #include <sstream>
+#include <atomic>
 
 
 #endif //PCH_H

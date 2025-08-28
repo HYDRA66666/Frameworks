@@ -61,7 +61,7 @@ namespace HYDRA15::Foundation::Secretary
     {
         std::string str;
         std::list<ID> timeoutList;
-        size_t other = 0, disped = 0;
+        size_t other = 0;
 
         {
             std::lock_guard lg(btmMsgTab.lock);
@@ -77,7 +77,7 @@ namespace HYDRA15::Foundation::Secretary
                     continue;
                 }
                 if (now - msgCtrl.lastUpdate < cfg.btmMsgDispTimeout)    // 未超时，展示
-                    if (disped < cfg.maxBtmMsgs)
+                    if (str.size() + msgCtrl.content.size() < cfg.maxBtmChars)
                     {
                         if (!first)
                             str.append(", ");
@@ -85,7 +85,6 @@ namespace HYDRA15::Foundation::Secretary
                             str.append(msgCtrl.content.erase(msgCtrl.content.back()));
                         else
                             str.append(msgCtrl.content);
-                        disped++;
                     }
                     else
                         other++;
@@ -198,7 +197,7 @@ namespace HYDRA15::Foundation::Secretary
     {
         try
         {
-            return btmMsgTab.regist({ TimePiont::clock::now(), token, std::string() });
+            return btmMsgTab.regist({ token ,TimePiont::clock::now() , std::string() });
         }
         catch(Exceptions::Archivist& e)
         {
@@ -237,25 +236,15 @@ namespace HYDRA15::Foundation::Secretary
         return btmMsgTab.contains(id);
     }
 
-    void PrintCenter::remove_bottom(ID id, int token)
+    bool PrintCenter::remove_bottom(ID id, int token)
     {
-        BottomControlBlock* pMsgCtrl;
+        if (!btmMsgTab.contains(id))
+            return true;
 
-        try
-        {
-            pMsgCtrl = &btmMsgTab.find(id);
-        }
-        catch (Exceptions::Archivist& e)
-        {
-            if (e.exptCode == Exceptions::Archivist::iExceptionCodes::registryKeyNotFound)
-                throw Exceptions::Secretary::PrintCenterBtmMsgNotFound();
-            else throw e;
-        }
+        if (btmMsgTab.find(id).token != token)
+            return false;
 
-        if (pMsgCtrl->token != token)
-            throw Exceptions::Secretary::PrintCenterBtmMsgBadToken();
-
-        btmMsgTab.unregist(id);
+        return btmMsgTab.unregist(id);
     }
 
     size_t PrintCenter::file(const std::string& content)

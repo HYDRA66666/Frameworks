@@ -17,9 +17,6 @@ namespace HYDRA15::Foundation::Secretary
         Progress();
         Progress(const Progress&) = delete;
 
-        // 唯一实例
-        static Progress instance;
-
         // 获取接口
     public:
         Progress& get_instance();
@@ -29,15 +26,22 @@ namespace HYDRA15::Foundation::Secretary
 
         /***************************** 公 用 *****************************/
         // 类型
+    private:
         using TimePoint = std::chrono::time_point<std::chrono::steady_clock>;
+        using Milliseconds = std::chrono::milliseconds;
 
         // 配置
-        struct Config
+    private:
+        static struct Config
         {
-
+            Milliseconds refreshInterval = Milliseconds(150); // 刷新间隔
+            Milliseconds displayTimeout = Milliseconds(1000); // 超过此时间未更新则不展示
+            Milliseconds existTimeout = Milliseconds(30000);  // 超过此时间未更新则删除
         }cfg;
 
         // 后台
+    private:
+        bool working = true;
         virtual void work(Background::ThreadInfo& info) override;
 
 
@@ -47,11 +51,14 @@ namespace HYDRA15::Foundation::Secretary
         struct ProgressControlBlock
         {
             int token;
+            std::string title;
+            std::function<void(int, const std::string&)> timeoutCallback;
             TimePoint lastUpdate;
-            float progress;
+            std::atomic<float> progress;
         };
-        using ProgMap = Archivist::RegistryInt<ProgressControlBlock, std::mutex>;
-        using Id = ProgMap::UintIndex;
+        using ProgMap = Archivist::IntRegistry<ProgressControlBlock, std::mutex>;
+    public:
+        using ID = ProgMap::UintIndex;
 
         // 数据
         ProgMap progTab;
@@ -59,9 +66,9 @@ namespace HYDRA15::Foundation::Secretary
 
         // 接口
     public:
-        Id create_progress(int token);
-        bool update_progress(Id id, int token, float progress);
-        bool remove_progress(Id id, int token);
-        bool check_progress(Id id, int token);
+        static ID create(int token, std::string title);
+        static void update(ID id, int token, float progress);
+        static float check(ID id, int token);   // 返回 -1 表示未找到
+        static bool remove(ID id, int token);
     };
 }

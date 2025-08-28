@@ -40,8 +40,8 @@ namespace HYDRA15::Foundation::Secretary
         {
             Milliseconds btmMsgDispTimeout = Milliseconds(1000);        // 超过此时间则不展示
             Milliseconds btmMsgExistTimeout = Milliseconds(30000);      // 超过此时间则删除
-            Milliseconds btmMsgRefreshInterval = Milliseconds(100);   // 底部消息刷新间隔
-            static const size_t maxBtmMsgs = 3;                          // 最大底部消息数
+            Milliseconds btmMsgRefreshInterval = Milliseconds(200);     // 底部消息刷新间隔
+            static const size_t maxBtmChars = 100;                   // 最大底部消息字符数
             StaticString otherBtmMsgFormat = "  ... and {0} more";
 
             StaticString fileNameFormat = ".\\Log_{0}.log";
@@ -86,8 +86,8 @@ namespace HYDRA15::Foundation::Secretary
     private:
         struct BottomControlBlock
         {
-            TimePiont lastUpdate;
             int token;
+            TimePiont lastUpdate;
             std::string content;
             std::mutex lock;
             BottomControlBlock& operator=(const BottomControlBlock&);
@@ -116,7 +116,7 @@ namespace HYDRA15::Foundation::Secretary
         ID new_bottom(int token);
         void update_bottom(ID id, int token, const std::string& content);
         bool check_bottom(ID id);
-        void remove_bottom(ID id, int token);
+        bool remove_bottom(ID id, int token);
 
 
         /***************************** 写入文件相关 *****************************/
