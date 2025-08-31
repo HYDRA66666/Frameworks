@@ -93,6 +93,9 @@
     <ClInclude Include="AssistantException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>
+    <ClInclude Include="Progress.h">
+      <Filter>Secretary</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -145,6 +148,9 @@
     </ClCompile>
     <ClCompile Include="AssistantException.cpp">
       <Filter>Exceptions</Filter>
+    </ClCompile>
+    <ClCompile Include="Progress.cpp">
+      <Filter>Secretary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -143,30 +143,23 @@ namespace HYDRA15::Foundation::Secretary
             while (
                 working && // 工作中
                 pRollMsgLstFront->empty() && pRollMsgLstBack->empty() && // 滚动消息为空
-                (TimePiont::clock::now() - lastBtmRefresh < cfg.btmMsgRefreshInterval) && // 底部刷新未到时
                 pFMsgLstBack->empty() && pFMsgLstFront->empty() && // 文件消息为空
-                (TimePiont::clock::now() - lastFileRefresh < cfg.fileRefreshTime) // 文件写入未到时间
+                (TimePiont::clock::now() - lastRefresh < cfg.refreshInterval) // 未到刷新时间
                 )
-                sleepcv.wait(lg);
-
-            // 检查是否需要刷新底部消息
-            bool refreshBtm = false;
-            if (!pRollMsgLstFront->empty() || TimePiont::clock::now() - lastBtmRefresh > cfg.btmMsgRefreshInterval)
-                refreshBtm = true;
+                sleepcv.wait_for(lg, cfg.refreshInterval);
 
             // 清除底部消息
-                clear_bottom_msg();
+            clear_bottom_msg();
 
             // 输出滚动消息
             if (!pRollMsgLstFront->empty())
                 std::cout << print_rolling_msg();
 
             // 输出底部消息
-            if (btmMsgTab.size() > 0 && refreshBtm)
+            if (btmMsgTab.size() > 0)
             {
                 std::string a = print_bottom_msg();
                 std::cout << a;
-                lastBtmRefresh = TimePiont::clock::now();
             }
 
             std::cout.flush();
@@ -182,12 +175,23 @@ namespace HYDRA15::Foundation::Secretary
                     lastFileRefresh = TimePiont::clock::now();
                 }
             }
+
+            // 计时
+            lastRefresh = TimePiont::clock::now();
         }
     }
 
     void PrintCenter::notify()
     {
         sleepcv.notify_all();
+    }
+
+    PrintCenter& PrintCenter::operator<<(const std::string& content)
+    {
+        rolling(content);
+        file(content);
+        notify();
+        return *this;
     }
 
     size_t PrintCenter::rolling(const std::string& content)

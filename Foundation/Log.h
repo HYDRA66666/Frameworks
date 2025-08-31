@@ -7,7 +7,8 @@
 
 namespace HYDRA15::Foundation::Secretary
 {
-    // 提供统一的接口接受日志内容，格式化成字符串，最后输出至 PrintCenter
+    // 格式化日志字符串
+    // 返回格式化后的字符串，用户需要自行处理输出
     class Log
     {
         // 禁止构造
@@ -33,9 +34,15 @@ namespace HYDRA15::Foundation::Secretary
         
         // 公有接口
     public:
-        static void log(const std::string& title, const std::string& content);
-        static void warning(const std::string& title, const std::string& content);
-        static void error(const std::string& title, const std::string& content);
-        static void debug(const std::string& title, const std::string& content);
+        struct LogStrPkg
+        {
+            std::string withColor;
+            std::string withoutColor;
+        };
+
+        static LogStrPkg log(const std::string& title, const std::string& content);
+        static LogStrPkg warning(const std::string& title, const std::string& content);
+        static LogStrPkg error(const std::string& title, const std::string& content);
+        static LogStrPkg debug(const std::string& title, const std::string& content);
     };
 }

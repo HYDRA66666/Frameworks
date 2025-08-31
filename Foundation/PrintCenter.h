@@ -39,9 +39,10 @@ namespace HYDRA15::Foundation::Secretary
     private:
         struct Config
         {
+            Milliseconds refreshInterval = Milliseconds(300); // 最短刷新间隔
+
             Milliseconds btmMsgDispTimeout = Milliseconds(1000);        // 超过此时间则不展示
             Milliseconds btmMsgExistTimeout = Milliseconds(30000);      // 超过此时间则删除
-            Milliseconds btmMsgRefreshInterval = Milliseconds(200);     // 底部消息刷新间隔
             static const size_t maxBtmChars = 100;                   // 最大底部消息字符数
             StaticString otherBtmMsgFormat = "  ... and {0} more";
 
@@ -62,11 +63,13 @@ namespace HYDRA15::Foundation::Secretary
         std::condition_variable sleepcv;
         std::mutex sleeplock;
         bool working = true;
+        TimePiont lastRefresh = TimePiont::clock::now();
         virtual void work(Background::ThreadInfo&) override;
 
         // 接口
     public:
-        void notify();
+        void notify();  // 刷新
+        PrintCenter& operator<<(const std::string& content);    // 快速输出，滚动消息+文件+刷新
 
 
         /***************************** 滚动消息相关 *****************************/
@@ -111,10 +114,6 @@ namespace HYDRA15::Foundation::Secretary
 
     public:
         using ID = BtmMsgMap::ID;
-
-        // 数据
-    private:
-        TimePiont lastBtmRefresh = TimePiont::clock::now();
 
         // 接口
     public:

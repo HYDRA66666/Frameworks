@@ -158,6 +158,7 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrintCenter.h" />
+    <ClInclude Include="Progress.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="SecretaryException.h" />
     <ClInclude Include="SharedContainerBase.h" />
@@ -183,6 +184,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PrintCenter.cpp" />
+    <ClCompile Include="Progress.cpp" />
     <ClCompile Include="Registry.cpp" />
     <ClCompile Include="SecretaryException.cpp" />
     <ClCompile Include="Tablet.cpp" />
