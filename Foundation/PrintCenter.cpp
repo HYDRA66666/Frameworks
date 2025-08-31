@@ -185,11 +185,15 @@ namespace HYDRA15::Foundation::Secretary
         }
     }
 
+    void PrintCenter::notify()
+    {
+        sleepcv.notify_all();
+    }
+
     size_t PrintCenter::rolling(const std::string& content)
     {
         std::lock_guard lg(rollMsgLock);
         pRollMsgLstFront->push_back(content);
-        sleepcv.notify_all();
         return rollMsgCount++;
     }
 
@@ -228,7 +232,6 @@ namespace HYDRA15::Foundation::Secretary
         std::lock_guard lg(pMsgCtrl->lock);
         pMsgCtrl->content = content;
         pMsgCtrl->lastUpdate = TimePiont::clock::now();
-        sleepcv.notify_all();
     }
 
     bool PrintCenter::check_bottom(ID id)
@@ -252,7 +255,6 @@ namespace HYDRA15::Foundation::Secretary
         std::lock_guard lg(fileMsgLock);
 
         pFMsgLstFront->push_back(content);
-        sleepcv.notify_all();
         return fileMsgCount++;
     }
 

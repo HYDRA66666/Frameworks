@@ -78,9 +78,6 @@
     <ClInclude Include="Log.h">
       <Filter>Secretary</Filter>
     </ClInclude>
-    <ClInclude Include="Progress.h">
-      <Filter>Secretary</Filter>
-    </ClInclude>
     <ClInclude Include="SecretaryException.h">
       <Filter>Exceptions</Filter>
     </ClInclude>

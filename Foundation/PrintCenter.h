@@ -13,6 +13,7 @@ namespace HYDRA15::Foundation::Secretary
 {
     // 统一输出接口
     // 提供滚动消息、底部消息和写入文件三种输出方式
+    // 提交消息之后，调用 notify() 方法通知后台线程处理，这在连续提交消息时可以解约开销
     class PrintCenter :Labourer::Background
     {
         /***************************** 公有单例 *****************************/
@@ -62,6 +63,10 @@ namespace HYDRA15::Foundation::Secretary
         std::mutex sleeplock;
         bool working = true;
         virtual void work(Background::ThreadInfo&) override;
+
+        // 接口
+    public:
+        void notify();
 
 
         /***************************** 滚动消息相关 *****************************/

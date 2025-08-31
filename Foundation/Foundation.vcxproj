@@ -158,7 +158,6 @@
     <ClInclude Include="Log.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrintCenter.h" />
-    <ClInclude Include="Progress.h" />
     <ClInclude Include="Registry.h" />
     <ClInclude Include="SecretaryException.h" />
     <ClInclude Include="SharedContainerBase.h" />
