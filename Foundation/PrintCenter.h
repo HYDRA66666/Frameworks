@@ -97,7 +97,6 @@ namespace HYDRA15::Foundation::Secretary
             int token;
             TimePiont lastUpdate;
             std::string content;
-            std::mutex lock;
             BottomControlBlock& operator=(const BottomControlBlock&);
         };
 

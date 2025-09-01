@@ -70,7 +70,6 @@ namespace HYDRA15::Foundation::Secretary
             bool first = true;
             for (auto& [id, msgCtrl] : btmMsgTab)
             {
-                std::lock_guard lg(msgCtrl.lock);
                 if (msgCtrl.content.empty())
                 {
                     other++;
@@ -235,7 +234,6 @@ namespace HYDRA15::Foundation::Secretary
         if (pMsgCtrl->token != token)
             throw Exceptions::Secretary::PrintCenterBtmMsgBadToken();
 
-        std::lock_guard lg(pMsgCtrl->lock);
         pMsgCtrl->content = content;
         pMsgCtrl->lastUpdate = TimePiont::clock::now();
     }
