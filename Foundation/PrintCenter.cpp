@@ -64,7 +64,7 @@ namespace HYDRA15::Foundation::Secretary
         size_t other = 0;
 
         {
-            std::lock_guard lg(btmMsgTab.lock);
+            std::lock_guard lg(btmMsgTabLock);
             TimePiont now = TimePiont::clock::now();
 
             bool first = true;
@@ -203,6 +203,7 @@ namespace HYDRA15::Foundation::Secretary
 
     PrintCenter::ID PrintCenter::new_bottom(int token)
     {
+        std::lock_guard lk(btmMsgTabLock);
         try
         {
             return btmMsgTab.regist({ token ,TimePiont::clock::now() , std::string() });
@@ -218,6 +219,7 @@ namespace HYDRA15::Foundation::Secretary
     void PrintCenter::update_bottom(ID id, int token, const std::string& content)
     {
         BottomControlBlock* pMsgCtrl;
+        std::lock_guard lk(btmMsgTabLock);
 
         try
         {
@@ -240,11 +242,14 @@ namespace HYDRA15::Foundation::Secretary
 
     bool PrintCenter::check_bottom(ID id)
     {
+        std::lock_guard lk(btmMsgTabLock);
         return btmMsgTab.contains(id);
     }
 
     bool PrintCenter::remove_bottom(ID id, int token)
     {
+        std::lock_guard lk(btmMsgTabLock);
+
         if (!btmMsgTab.contains(id))
             return true;
 
@@ -272,7 +277,4 @@ namespace HYDRA15::Foundation::Secretary
         }
         return *this;
     }
-
-    PrintCenter::BtmMsgMap::iterator PrintCenter::BtmMsgMap::begin() { return tab.begin(); }
-    PrintCenter::BtmMsgMap::iterator PrintCenter::BtmMsgMap::end() { return tab.end(); }
 }

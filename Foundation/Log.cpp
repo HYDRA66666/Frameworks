@@ -7,13 +7,13 @@ namespace HYDRA15::Foundation::Secretary
     {
         return {
             std::format(
-                Visualize::logFormatClr.data(),
+                visualize.logFormatClr.data(),
                 Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    Visualize::logFormat.data(),
+                    visualize.logFormat.data(),
                     Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content
@@ -25,13 +25,13 @@ namespace HYDRA15::Foundation::Secretary
     {
         return {
             std::format(
-                Visualize::warningFormatClr.data(),
+                visualize.warningFormatClr.data(),
                 Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    Visualize::warningFormat.data(),
+                    visualize.warningFormat.data(),
                     Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content
@@ -43,13 +43,13 @@ namespace HYDRA15::Foundation::Secretary
     {
         return {
             std::format(
-                Visualize::errorFormatClr.data(),
+                visualize.errorFormatClr.data(),
                 Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
             std::format(
-                Visualize::errorFormat.data(),
+                visualize.errorFormat.data(),
                 Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
@@ -62,13 +62,13 @@ namespace HYDRA15::Foundation::Secretary
     {
         return {
             std::format(
-                Visualize::debugFormatClr.data(),
+                visualize.debugFormatClr.data(),
                 Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    Visualize::debugFormat.data(),
+                    visualize.debugFormat.data(),
                     Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content

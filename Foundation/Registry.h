@@ -11,26 +11,10 @@ namespace HYDRA15::Foundation::Archivist
     // 处理注册相关逻辑
     // 模板参数 K : 键类型，要求满足哈希键约束
     // 模板参数 V : 值类型，不做要求
-    // 模板参数 L : 锁类型，如果支持共享锁，则在查询时使用共享锁
+    // 不负责线程安全，线程安全内容请自行处理
     // 如果不需要上锁，可以使用 NotALock 作为锁类型，其满足锁约束，但不会进行任何实际操作
 
     /***************************** 概 念 *****************************/
-    // 锁约束
-    template<typename L>
-    concept lockable = requires(L l) {
-        { l.lock() };
-        { l.unlock() };
-        { l.try_lock() };
-    };
-
-    // 共享锁约束
-    template<typename L>
-    concept shared_lockable = requires(L l) {
-        { l.lock_shared() };
-        { l.unlock_shared() };
-        { l.try_lock_shared() };
-    };
-
     // 哈希键约束
     template<typename K>
     concept hash_key = requires(K k) {
@@ -42,8 +26,8 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 基 类 *****************************/
     // 基础注册机模板，支持任意类型的键和值
-    template<typename K, typename V, typename L>
-        requires hash_key<K> && lockable<L>
+    template<typename K, typename V>
+        requires hash_key<K>
     class BasicRegistry
     {
         // 类型定义
@@ -53,7 +37,6 @@ namespace HYDRA15::Foundation::Archivist
 
         // 核心数据
     protected:
-        mutable L lock; 
         RegTab tab;
         size_t max = 0;
 
@@ -70,8 +53,6 @@ namespace HYDRA15::Foundation::Archivist
         // 注册
         void regist(const K& key, V&& value)
         {
-            std::unique_lock lck(lock);
-
             if (max > 0 && tab.size() >= max)
                 throw Exceptions::Archivist::RegistryTabletFull();
             if(tab.size() >= tab.max_size())
@@ -83,17 +64,10 @@ namespace HYDRA15::Foundation::Archivist
         }
         bool unregist(const K& key)
         {
-            std::unique_lock lck(lock);
-
             return tab.erase(key);
         }
         V& find(const K& key)
         {
-            if constexpr (shared_lockable<L>)
-                std::shared_lock lck(lock);
-            else
-                std::unique_lock lck(lock);
-
             if (!tab.contains(key))
                 throw Exceptions::Archivist::RegistryKeyNotFound();
             return tab[key];
@@ -102,34 +76,27 @@ namespace HYDRA15::Foundation::Archivist
         // 查询
         bool contains(const K& key) const
         {
-            if constexpr (shared_lockable<L>)
-                std::shared_lock lck(lock);
-            else
-                std::unique_lock lck(lock);
-
             return tab.contains(key);
         }
         size_t size() const
         {
-            if constexpr (shared_lockable<L>)
-                std::shared_lock lck(lock);
-            else
-                std::unique_lock lck(lock);
-
             return tab.size();
         }
 
+        // 迭代器
+        using iterator = typename RegTab::iterator;
+        iterator begin() { return tab.begin(); }
+        iterator end() { return tab.end(); }
     };
 
 
     /***************************** 特化类 *****************************/
     // 简单注册机
-    using Registry = BasicRegistry<Index, Entry, std::mutex>;
+    using Registry = BasicRegistry<Index, Entry>;
     
     // 整数键注册机，支持被动注册和懒注册
-    template<typename V, typename L>
-        requires lockable<L>
-    class IntRegistry : public BasicRegistry<unsigned long long, V, L>
+    template<typename V>
+    class IntRegistry : public BasicRegistry<unsigned long long, V>
     {
         // 类型定义
     public:
@@ -137,14 +104,13 @@ namespace HYDRA15::Foundation::Archivist
         // 核心数据
         UintIndex current = 0;
         UintIndex start = 0;
-        using BasicRegistry<UintIndex, V, L>::tab;
-        using BasicRegistry<UintIndex, V, L>::max;
-        using BasicRegistry<UintIndex, V, L>::lock;
+        using BasicRegistry<UintIndex, V>::tab;
+        using BasicRegistry<UintIndex, V>::max;
 
         // 构造与析构
     public:
         IntRegistry(UintIndex startKey = 0, size_t maxSize = 0)
-            : BasicRegistry<UintIndex, V, L>(maxSize), start(startKey), current(startKey)
+            : BasicRegistry<UintIndex, V>(maxSize), start(startKey), current(startKey)
         {
         }
 
@@ -171,7 +137,6 @@ namespace HYDRA15::Foundation::Archivist
         // 被动注册：传入值，注册机分配键
         UintIndex regist(V&& value)
         {
-            std::unique_lock lck(lock);
             if (max > 0 && tab.size() >= max)
                 throw Exceptions::Archivist::RegistryTabletFull();
             if (tab.size() >= tab.max_size())
@@ -185,7 +150,6 @@ namespace HYDRA15::Foundation::Archivist
         // 懒注册：不传入值，注册机分配键和默认值
         UintIndex regist()
         {
-            std::unique_lock lck(lock);
             if (max > 0 && tab.size() >= max)
                 throw Exceptions::Archivist::RegistryTabletFull();
             if (tab.size() >= tab.max_size())
@@ -195,13 +159,5 @@ namespace HYDRA15::Foundation::Archivist
             tab[current];
             return current;
         }
-    };
-
-    class NotALock
-    {
-    public:
-        void lock();
-        void unlock();
-        bool try_lock();
     };
 }

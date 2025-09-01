@@ -30,7 +30,7 @@ namespace HYDRA15::Foundation::Secretary
             StaticString warningFormat = "[ {0} |Warning][ {1} ] {2}";
             StaticString errorFormat = "[ {0} | Error ][ {1} ] {2}";
             StaticString debugFormat = "[ {0} | Debug ][ {1} ] {2}";
-        };
+        }visualize;
         
         // 公有接口
     public:

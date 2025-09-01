@@ -101,19 +101,11 @@ namespace HYDRA15::Foundation::Secretary
             BottomControlBlock& operator=(const BottomControlBlock&);
         };
 
-        class BtmMsgMap : public Archivist::IntRegistry<BottomControlBlock, std::mutex>
-        {
-        public:
-            using ID = Archivist::IntRegistry<BottomControlBlock, std::mutex>::UintIndex;
-
-            using iterator = RegTab::iterator;
-            iterator begin();
-            iterator end();
-            using Archivist::IntRegistry<BottomControlBlock, std::mutex>::lock;
-        }btmMsgTab;
-
+        using BtmMsgTab = Archivist::IntRegistry<BottomControlBlock>;
+        BtmMsgTab btmMsgTab;
+        std::mutex btmMsgTabLock;
     public:
-        using ID = BtmMsgMap::ID;
+        using ID = BtmMsgTab::UintIndex;
 
         // 接口
     public:
