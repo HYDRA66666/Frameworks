@@ -24,6 +24,7 @@ namespace HYDRA15::Foundation::Secretary
     PrintCenter::~PrintCenter()
     {
         working = false;
+        onPause = false;
         sleepcv.notify_all();
         wait_for_end();
         if (logFile.is_open())
@@ -138,6 +139,9 @@ namespace HYDRA15::Foundation::Secretary
         {
             std::unique_lock lg(sleeplock);
 
+            while(onPause) // 暂停
+                sleepcv.wait(lg);
+
             // 无工作，等待
             while (
                 working && // 工作中
@@ -191,6 +195,16 @@ namespace HYDRA15::Foundation::Secretary
         file(content);
         notify();
         return *this;
+    }
+
+    void PrintCenter::pause()
+    {
+        onPause = true;
+    }
+
+    void PrintCenter::unpause()
+    {
+        onPause = false;
     }
 
     size_t PrintCenter::rolling(const std::string& content)

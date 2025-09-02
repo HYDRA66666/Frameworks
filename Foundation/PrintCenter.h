@@ -63,6 +63,7 @@ namespace HYDRA15::Foundation::Secretary
         std::condition_variable sleepcv;
         std::mutex sleeplock;
         bool working = true;
+        bool onPause = false;
         TimePiont lastRefresh = TimePiont::clock::now();
         virtual void work(Background::ThreadInfo&) override;
 
@@ -70,6 +71,8 @@ namespace HYDRA15::Foundation::Secretary
     public:
         void notify();  // 刷新
         PrintCenter& operator<<(const std::string& content);    // 快速输出，滚动消息+文件+刷新
+        void pause();
+        void unpause();
 
 
         /***************************** 滚动消息相关 *****************************/
