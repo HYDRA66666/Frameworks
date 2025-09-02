@@ -71,8 +71,8 @@ namespace HYDRA15::Foundation::Secretary
     public:
         void notify();  // 刷新
         PrintCenter& operator<<(const std::string& content);    // 快速输出，滚动消息+文件+刷新
-        void pause();
-        void unpause();
+        void pause();   // 暂停输出，所有内容都将暂存
+        void unpause(); // 允许输出，调用之后需要调用 notify() 方法刷新
 
 
         /***************************** 滚动消息相关 *****************************/
