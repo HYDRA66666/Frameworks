@@ -53,7 +53,7 @@ namespace HYDRA15::Foundation::Secretary
 
         // 辅助寒素
     private:
-        void clear_bottom_msg();    // 清除底部消息
+        std::string clear_bottom_msg();    // 清除底部消息
         std::string print_rolling_msg(); // 输出滚动消息
         std::string print_bottom_msg();  // 输出底部消息
         std::string print_file_msg();    // 输出文件消息
@@ -99,6 +99,7 @@ namespace HYDRA15::Foundation::Secretary
         {
             int token;
             TimePiont lastUpdate;
+            bool neverExpire = false;
             std::string content;
             BottomControlBlock& operator=(const BottomControlBlock&);
         };
@@ -111,7 +112,7 @@ namespace HYDRA15::Foundation::Secretary
 
         // 接口
     public:
-        ID new_bottom(int token);
+        ID new_bottom(int token, bool nvrExpr = false);
         void update_bottom(ID id, int token, const std::string& content);
         bool check_bottom(ID id);
         bool remove_bottom(ID id, int token);

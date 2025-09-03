@@ -31,9 +31,9 @@ namespace HYDRA15::Foundation::Secretary
             logFile.close();
     }
 
-    void PrintCenter::clear_bottom_msg()
+    std::string PrintCenter::clear_bottom_msg()
     {
-        std::cout << "\033[2K\r";
+        return "\033[2K\r";
     }
 
     std::string PrintCenter::print_rolling_msg()
@@ -76,7 +76,7 @@ namespace HYDRA15::Foundation::Secretary
                     other++;
                     continue;
                 }
-                if (now - msgCtrl.lastUpdate < cfg.btmMsgDispTimeout)    // 未超时，展示
+                if (now - msgCtrl.lastUpdate < cfg.btmMsgDispTimeout || msgCtrl.neverExpire)    // 未超时，展示
                     if (str.size() + msgCtrl.content.size() < cfg.maxBtmChars)
                     {
                         if (!first)
@@ -152,7 +152,7 @@ namespace HYDRA15::Foundation::Secretary
                 sleepcv.wait_for(lg, cfg.refreshInterval);
 
             // 清除底部消息
-            clear_bottom_msg();
+            std::cout << clear_bottom_msg();
 
             // 输出滚动消息
             if (!pRollMsgLstFront->empty())
@@ -161,11 +161,8 @@ namespace HYDRA15::Foundation::Secretary
             // 输出底部消息
             if (btmMsgTab.size() > 0)
             {
-                std::string a = print_bottom_msg();
-                std::cout << a;
+                std::cout << print_bottom_msg();
             }
-
-            std::cout.flush();
 
             // 输出文件消息
             if (logFile.is_open())
@@ -214,12 +211,12 @@ namespace HYDRA15::Foundation::Secretary
         return rollMsgCount++;
     }
 
-    PrintCenter::ID PrintCenter::new_bottom(int token)
+    PrintCenter::ID PrintCenter::new_bottom(int token, bool nvrExpr)
     {
         std::lock_guard lk(btmMsgTabLock);
         try
         {
-            return btmMsgTab.regist({ token ,TimePiont::clock::now() , std::string() });
+            return btmMsgTab.regist({ token ,TimePiont::clock::now(), nvrExpr, std::string() });
         }
         catch(Exceptions::Archivist& e)
         {
