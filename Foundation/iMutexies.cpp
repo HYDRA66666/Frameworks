@@ -1,9 +1,9 @@
 ﻿#include "pch.h"
 #include "iMutexies.h"
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
-    void WriteFirstMutex::lock()
+    void write_first_mutex::lock()
     {
         std::unique_lock<std::mutex> lk(mutex);
 
@@ -14,7 +14,7 @@ namespace HYDRA15::Foundation::Labourer
         activeWriters = true;
     }
 
-    void WriteFirstMutex::unlock()
+    void write_first_mutex::unlock()
     {
         std::unique_lock<std::mutex> lk(mutex);
 
@@ -26,7 +26,7 @@ namespace HYDRA15::Foundation::Labourer
             readCond.notify_all();
     }
 
-    bool WriteFirstMutex::try_lock()
+    bool write_first_mutex::try_lock()
     {
         std::unique_lock<std::mutex> lk(mutex);
 
@@ -38,7 +38,7 @@ namespace HYDRA15::Foundation::Labourer
         return false;
     }
 
-    void WriteFirstMutex::lock_shared()
+    void write_first_mutex::lock_shared()
     {
         std::unique_lock<std::mutex> lk(mutex);
 
@@ -47,7 +47,7 @@ namespace HYDRA15::Foundation::Labourer
         activeReaders++;
     }
 
-    void WriteFirstMutex::unlock_shared()
+    void write_first_mutex::unlock_shared()
     {
         std::unique_lock<std::mutex> lk(mutex);
 
@@ -57,7 +57,7 @@ namespace HYDRA15::Foundation::Labourer
             writeCond.notify_one();
     }
 
-    bool WriteFirstMutex::try_lock_shared()
+    bool write_first_mutex::try_lock_shared()
     {
         std::unique_lock<std::mutex> lk(mutex);
 

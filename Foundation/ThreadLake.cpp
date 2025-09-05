@@ -1,17 +1,17 @@
 ﻿#include "pch.h"
 #include "ThreadLake.h"
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
-    void ThreadLake::work(Background::ThreadInfo& info)
+    void ThreadLake::work(background::thread_info& info)
     {
-        TaskPackage taskPkg;
-        info.state = Background::ThreadInfo::State::idle;
+        package taskPkg;
+        info.thread_state = background::thread_info::state::idle;
 
         while (true)
         {
             // 取任务
-            info.state = Background::ThreadInfo::State::waiting;
+            info.thread_state = background::thread_info::state::waiting;
             {
                 std::unique_lock<std::mutex> lock(queueMutex);
                 if (working && taskQueue.empty())
@@ -23,9 +23,9 @@ namespace HYDRA15::Foundation::Labourer
             }
 
             // 执行任务
-            info.state = Background::ThreadInfo::State::working;
-            if (taskPkg.task)
-                taskPkg.task();
+            info.thread_state = background::thread_info::state::working;
+            if (taskPkg.content)
+                taskPkg.content();
             if (taskPkg.callback)
                 taskPkg.callback();
         }
@@ -33,7 +33,7 @@ namespace HYDRA15::Foundation::Labourer
     }
 
     ThreadLake::ThreadLake(int threadCount, size_t tskQueMaxSize)
-        : Background(threadCount), tskQueMaxSize(tskQueMaxSize)
+        : background(threadCount), tskQueMaxSize(tskQueMaxSize)
     {
         working = true;
         start();
@@ -46,11 +46,11 @@ namespace HYDRA15::Foundation::Labourer
         wait_for_end(); // 等待所有线程结束
     }
 
-    void ThreadLake::submit(const TaskPackage& taskPkg)
+    void ThreadLake::submit(const package& taskPkg)
     {
         if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
         {
-            throw Exceptions::Labourer::TaskQueueFull();
+            throw Exceptions::labourer::TaskQueueFull();
         }
         std::lock_guard<std::mutex> lock(queueMutex);
         taskQueue.push(taskPkg);

@@ -2,10 +2,10 @@
 #include "framework.h"
 #include "pch.h"
 
-#include "ArchivistException.h"
+#include "archivist_exception.h"
 #include "Entry.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
     // 可以存储任意数据类型的索引
     // 注意：索引的实际类型必须支持比较和哈希
@@ -13,48 +13,48 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 基 类 *****************************/
     // 接口定义
-    class IndexBase
+    class index_base
     {
     public:
-        virtual ~IndexBase() = default;
+        virtual ~index_base() = default;
 
         // 核心功能：比较和哈希
-        virtual bool operator==(const IndexBase& other) const = 0;
-        virtual bool operator<(const IndexBase& other) const = 0;
+        virtual bool operator==(const index_base& other) const = 0;
+        virtual bool operator<(const index_base& other) const = 0;
         virtual size_t hash() const = 0;
     };
 
     /***************************** 派生类 *****************************/
     // 存储数据，实现核心功能
     template<typename T>
-        requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
-    class IndexImpl :public IndexBase, public EntryImpl<T>
+        requires (!std::derived_from<std::remove_cvref_t<T>, index_base>)
+    class index_impl :public index_base, public entry_impl<T>
     {
-        using EntryImpl<T>::data;
+        using entry_impl<T>::data;
 
     public:
-        IndexImpl() = delete;
-        explicit IndexImpl(const T& value) : EntryImpl<T>(value) {}
-        explicit IndexImpl(T&& value) : EntryImpl<T>(std::move(value)) {}
-        virtual ~IndexImpl() = default;
+        index_impl() = delete;
+        explicit index_impl(const T& value) : entry_impl<T>(value) {}
+        explicit index_impl(T&& value) : entry_impl<T>(std::move(value)) {}
+        virtual ~index_impl() = default;
 
         // 类型擦除状态下的拷贝支持
-        virtual std::shared_ptr<EntryBase> clone() const override
+        virtual std::shared_ptr<entry_base> clone() const override
         {
-            return std::make_shared<IndexImpl<T>>(data);
+            return std::make_shared<index_impl<T>>(data);
         }
 
         // 比较和哈希
-        virtual bool operator==(const IndexBase& other) const override
+        virtual bool operator==(const index_base& other) const override
         {
-            const auto* otherImpl = dynamic_cast<const IndexImpl<T>*>(&other);
+            const auto* otherImpl = dynamic_cast<const index_impl<T>*>(&other);
             return otherImpl && data == otherImpl->data;
         }
-        virtual bool operator<(const IndexBase& other) const override
+        virtual bool operator<(const index_base& other) const override
         {
-            const auto* otherImpl = dynamic_cast<const IndexImpl<T>*>(&other);
+            const auto* otherImpl = dynamic_cast<const index_impl<T>*>(&other);
             if(!otherImpl)
-                throw Exceptions::Archivist::IndexTypeMismatch();
+                throw Exceptions::archivist::IndexTypeMismatch();
             return data < otherImpl->data;
         }
         virtual size_t hash() const override
@@ -65,52 +65,52 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 主 类 *****************************/
     // 包装，用户接口
-    class Index
+    class index
     {
-        std::shared_ptr<EntryBase> pImpl;
+        std::shared_ptr<entry_base> pImpl;
 
     public:
-        Index() = delete;
-        Index(const Index& other);
-        Index(Index&& other);
+        index() = delete;
+        index(const index& other);
+        index(index&& other);
 
         template<typename T>
-            requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
-        Index(const T& t)
-            : pImpl(std::make_shared<IndexImpl<std::remove_cvref_t<T>>>(t))
+            requires (!std::derived_from<std::remove_cvref_t<T>, index_base>)
+        index(const T& t)
+            : pImpl(std::make_shared<index_impl<std::remove_cvref_t<T>>>(t))
         {
         }
         template<typename T>
-            requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
-        Index& operator=(const T& t)
+            requires (!std::derived_from<std::remove_cvref_t<T>, index_base>)
+        index& operator=(const T& t)
         {
-            pImpl = std::make_shared<IndexImpl<std::remove_cvref_t<T>>>(t);
+            pImpl = std::make_shared<index_impl<std::remove_cvref_t<T>>>(t);
             return *this;
         }
 
-        bool operator==(const Index& other) const;
-        bool operator<(const Index& other) const;
+        bool operator==(const index& other) const;
+        bool operator<(const index& other) const;
         size_t hash() const;
 
 
         template<typename T>
-            requires (!std::derived_from<std::remove_cvref_t<T>, IndexBase>)
+            requires (!std::derived_from<std::remove_cvref_t<T>, index_base>)
         operator T& () const
         {
             if(!pImpl )
-                throw Exceptions::Archivist::IndexEmpty();
-            auto impl = std::dynamic_pointer_cast<EntryImpl<std::remove_cvref_t<T>>>(pImpl);
+                throw Exceptions::archivist::IndexEmpty();
+            auto impl = std::dynamic_pointer_cast<entry_impl<std::remove_cvref_t<T>>>(pImpl);
             if (!impl)
-                throw Exceptions::Archivist::IndexTypeMismatch();
+                throw Exceptions::archivist::IndexTypeMismatch();
             return impl->operator std::remove_cvref_t<T> & ();
         }
 
         // 简单输出辅助
-        static struct Visualize
+        static struct visualize
         {
-            StaticString indexEmpty = "[Empty Index Object]";
-            StaticString index = "[Index | {}]";
-        } visualize;
+            static_string indexEmpty = "[Empty Index Object]";
+            static_string index = "[Index | {}]";
+        } vslz;
 
         std::string info() const;
     };
@@ -119,11 +119,11 @@ namespace HYDRA15::Foundation::Archivist
 
 namespace std
 {
-    using namespace HYDRA15::Foundation::Archivist;
+    using namespace HYDRA15::Foundation::archivist;
     template<>
-    struct hash<Index>
+    struct hash<index>
     {
-        size_t operator()(const Index& k) const
+        size_t operator()(const index& k) const
         {
             return k.hash();
         }

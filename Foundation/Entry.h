@@ -2,9 +2,9 @@
 #include "framework.h"
 #include "pch.h"
 
-#include "ArchivistException.h"
+#include "archivist_exception.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
     // 条目 可以存储任意数据类型，支持移动构造和拷贝构造
     // 使用示例（详细内容见类声明）：
@@ -60,21 +60,22 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 基 类 *****************************/
     // 接口定义
-    class EntryBase
+    class entry_base
     {
     public:
-        virtual ~EntryBase() = default;
+        virtual ~entry_base() = default;
 
-        // 类型擦除状态下的拷贝支持
-        virtual std::shared_ptr<EntryBase> clone() const = 0;
+        // 类型擦除支持
+        virtual std::shared_ptr<entry_base> clone() const = 0;
+        virtual const std::type_info& type() const = 0;
 
         // 信息输出支持
     protected:
-        static struct Visualize
+        static struct visualize
         {
-            StaticString entryWithKnownType = "type: {}, data: {}";
-            StaticString entryWithUnknownType = "unknown type: {}";
-        } visualize;
+            static_string entryWithKnownType = "type: {}, data: {}";
+            static_string entryWithUnknownType = "unknown type: {}";
+        } vslz;
 
     public:
         virtual std::string info() const = 0;
@@ -97,17 +98,17 @@ namespace HYDRA15::Foundation::Archivist
     /***************************** 派生类 *****************************/
     // 存储数据
     template<typename T>
-        requires (!std::derived_from <std::remove_cvref_t<T> , EntryBase> )
-    class EntryImpl : public EntryBase
+        requires (!std::derived_from <std::remove_cvref_t<T> , entry_base> )
+    class entry_impl : public entry_base
     {
     protected:
         T data;
 
     public:
-        EntryImpl() = delete;
-        explicit EntryImpl(const T& value) : data(value) {}
-        explicit EntryImpl(T&& value) : data(std::move(value)) {}
-        virtual ~EntryImpl() = default;
+        entry_impl() = delete;
+        explicit entry_impl(const T& value) : data(value) {}
+        explicit entry_impl(T&& value) : data(std::move(value)) {}
+        virtual ~entry_impl() = default;
 
         // 数据获取
         operator T& ()
@@ -115,10 +116,15 @@ namespace HYDRA15::Foundation::Archivist
             return data;
         }
 
-        // 类型擦除状态下的拷贝支持
-        virtual std::shared_ptr<EntryBase> clone() const override
+        virtual const std::type_info& type() const override
         {
-            return std::make_shared<EntryImpl<T>>(data);
+            return typeid(T);
+        }
+
+        // 类型擦除状态下的拷贝支持
+        virtual std::shared_ptr<entry_base> clone() const override
+        {
+            return std::make_shared<entry_impl<T>>(data);
         }
 
 
@@ -127,25 +133,25 @@ namespace HYDRA15::Foundation::Archivist
         {
             if constexpr (std::is_same_v<T, std::string>)
                 return std::format(
-                    visualize.entryWithKnownType.data(),
+                    vslz.entryWithKnownType.data(),
                     typeid(T).name(),
                     data
                 );
             else if constexpr (can_be_transfer_to_string<T>)
                 return std::format(
-                    visualize.entryWithKnownType.data(),
+                    vslz.entryWithKnownType.data(),
                     typeid(T).name(),
                     std::to_string(data)
                 );
             else if constexpr (has_info_interface<T>)
                 return std::format(
-                    visualize.entryWithKnownType.data(),
+                    vslz.entryWithKnownType.data(),
                     typeid(T).name(),
                     data.info()
                 );
             else
                 return std::format(
-                    visualize.entryWithUnknownType.data(),
+                    vslz.entryWithUnknownType.data(),
                     typeid(T).name()
                 );
         }
@@ -153,77 +159,77 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 主 类 *****************************/
     // 包装，用户接口
-    class Entry
+    class entry
     {
-        std::shared_ptr<EntryBase> pImpl;
+        std::shared_ptr<entry_base> pImpl;
 
         // 构造、析构、复制和数据获取
     public:
-        Entry() = default;
-        ~Entry() = default;
+        entry() = default;
+        ~entry() = default;
 
         // 从其他 Entry 构造
-        Entry(const Entry& other);
-        Entry(Entry&& other);
-        Entry& operator=(const Entry& other);
-        Entry& operator=(Entry&& other);
+        entry(const entry& other);
+        entry(entry&& other);
+        entry& operator=(const entry& other);
+        entry& operator=(entry&& other);
 
         // 从任意数据类型构造
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>) && (!std::is_same_v<std::remove_cvref_t<T>, Entry>)
-        Entry(const T& value) : pImpl(std::make_shared<EntryImpl<std::remove_cvref_t<T>>>(value)) {}
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>) && (!std::is_same_v<std::remove_cvref_t<T>, entry>)
+        entry(const T& value) : pImpl(std::make_shared<entry_impl<std::remove_cvref_t<T>>>(value)) {}
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>) && (!std::is_same_v<std::remove_cvref_t<T>, Entry>)
-        Entry(T&& value) : pImpl(std::make_shared<EntryImpl<std::remove_cvref_t<T>>>(std::move(value))) {}
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>) && (!std::is_same_v<std::remove_cvref_t<T>, entry>)
+        entry(T&& value) : pImpl(std::make_shared<entry_impl<std::remove_cvref_t<T>>>(std::move(value))) {}
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>) && (!std::is_same_v<std::remove_cvref_t<T>, Entry>)
-        Entry& operator=(const T& value)
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>) && (!std::is_same_v<std::remove_cvref_t<T>, entry>)
+        entry& operator=(const T& value)
         {
-            pImpl = std::make_shared<EntryImpl<std::remove_cvref_t<T>>>(value);
+            pImpl = std::make_shared<entry_impl<std::remove_cvref_t<T>>>(value);
             return *this;
         }
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>) && (!std::is_same_v<std::remove_cvref_t<T>, Entry>)
-        Entry& operator=(T&& value)
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>) && (!std::is_same_v<std::remove_cvref_t<T>, entry>)
+        entry& operator=(T&& value)
         {
-            pImpl = std::make_shared<EntryImpl<std::remove_cvref_t<T>>>(std::move(value));
+            pImpl = std::make_shared<entry_impl<std::remove_cvref_t<T>>>(std::move(value));
             return *this;
         }
 
         // 数据访问
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>)
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>)
         operator T& () const
         {
             if (!pImpl)
-                throw Exceptions::Archivist::EntryEmpty();
+                throw Exceptions::archivist::EntryEmpty();
 
-            auto impl = std::dynamic_pointer_cast<EntryImpl<std::remove_cvref_t<T>>>(pImpl);
+            auto impl = std::dynamic_pointer_cast<entry_impl<std::remove_cvref_t<T>>>(pImpl);
 
             if (!impl)
-                throw Exceptions::Archivist::EntryTypeMismatch();
+                throw Exceptions::archivist::EntryTypeMismatch();
 
             return impl->operator std::remove_cvref_t<T> & ();
         }
         template<typename T>
-            requires (!std::derived_from <std::remove_cvref_t<T>, EntryBase>)
+            requires (!std::derived_from <std::remove_cvref_t<T>, entry_base>)
         T& get() const
         {
             if (!pImpl)
-                throw Exceptions::Archivist::EntryEmpty();
-            auto impl = std::dynamic_pointer_cast<EntryImpl<std::remove_cvref_t<T>>>(pImpl);
+                throw Exceptions::archivist::EntryEmpty();
+            auto impl = std::dynamic_pointer_cast<entry_impl<std::remove_cvref_t<T>>>(pImpl);
             if (!impl)
-                throw Exceptions::Archivist::EntryTypeMismatch();
+                throw Exceptions::archivist::EntryTypeMismatch();
             return impl->operator std::remove_cvref_t<T> &();
         }
 
         // 信息输出支持
     private:
-        static struct Visualize
+        static struct visualize
         {
-            StaticString emptyEntry = "[Empty Entry object]";
-            StaticString entry = "[Entry | {}]";
-        } visualize;
+            static_string emptyEntry = "[Empty Entry object]";
+            static_string entry = "[Entry | {}]";
+        } vslz;
     public:
         std::string info() const;
         std::ostream& operator<<(std::ostream& os) const;

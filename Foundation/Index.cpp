@@ -1,50 +1,50 @@
 ﻿#include "pch.h"
-#include "Index.h"
+#include "index.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
-    Index::Index(const Index& other)
-        : pImpl(std::dynamic_pointer_cast<EntryBase>(other.pImpl)->clone())
+    index::index(const index& other)
+        : pImpl(std::dynamic_pointer_cast<entry_base>(other.pImpl)->clone())
     {
     }
 
-    Index::Index(Index&& other)
+    index::index(index&& other)
         :pImpl(std::move(other.pImpl))
     {
     }
 
-    bool Index::operator==(const Index& other) const
+    bool index::operator==(const index& other) const
     {
         if (!pImpl || !other.pImpl)
-            throw Exceptions::Archivist::IndexEmpty();
-        auto thisImpl = std::dynamic_pointer_cast<IndexBase>(pImpl);
-        auto otherImpl = std::dynamic_pointer_cast<IndexBase>(other.pImpl);
+            throw Exceptions::archivist::IndexEmpty();
+        auto thisImpl = std::dynamic_pointer_cast<index_base>(pImpl);
+        auto otherImpl = std::dynamic_pointer_cast<index_base>(other.pImpl);
         return thisImpl->operator==(*otherImpl);
     }
 
-    bool Index::operator<(const Index& other) const
+    bool index::operator<(const index& other) const
     {
         if(!pImpl || !other.pImpl)
-            throw Exceptions::Archivist::IndexEmpty();
-        auto thisImpl = std::dynamic_pointer_cast<IndexBase>(pImpl);
-        auto otherImpl = std::dynamic_pointer_cast<IndexBase>(other.pImpl);
+            throw Exceptions::archivist::IndexEmpty();
+        auto thisImpl = std::dynamic_pointer_cast<index_base>(pImpl);
+        auto otherImpl = std::dynamic_pointer_cast<index_base>(other.pImpl);
         return thisImpl->operator<(*otherImpl);
     }
 
-    size_t Index::hash() const
+    size_t index::hash() const
     {
         if(!pImpl)
-            throw Exceptions::Archivist::IndexEmpty();
-        auto thisImpl = std::dynamic_pointer_cast<IndexBase>(pImpl);
+            throw Exceptions::archivist::IndexEmpty();
+        auto thisImpl = std::dynamic_pointer_cast<index_base>(pImpl);
         return thisImpl->hash();
     }
 
-    std::string Index::info() const
+    std::string index::info() const
     {
         if (!pImpl)
-            return visualize.indexEmpty.data();
+            return vslz.indexEmpty.data();
         return std::format(
-            visualize.index.data(),
+            vslz.index.data(),
             pImpl->info()
         );
     }

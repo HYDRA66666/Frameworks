@@ -2,7 +2,7 @@
 #include "framework.h"
 #include "pch.h"
 
-namespace HYDRA15::Foundation::Secretary
+namespace HYDRA15::Foundation::secretary
 {
     // 格式化进度条
     // 返回格式化后的字符串，用户需要自行处理输出
@@ -16,16 +16,16 @@ namespace HYDRA15::Foundation::Secretary
 
         // 公有数据
     private:
-        static struct Visualize
+        static struct visualize
         {
-            StaticString digitalProgressFormat = "{0}... {1:02d}%";
-            StaticString simpleBarFormat = "{0}[{1}] {2:02d}%";
-        }visualize;
+            static_string digitalProgressFormat = "{0}... {1:02d}%";
+            static_string simpleBarFormat = "{0}[{1}] {2:02d}%";
+        }vslz;
 
         // 接口
     public:
         static std::string digital(std::string title, float progress);
-        static std::string simpleBar(std::string title, float progress, unsigned int barWidth = 10, char barChar = '=');
+        static std::string simple_bar(std::string title, float progress, unsigned int barWidth = 10, char barChar = '=');
     };
 
 }

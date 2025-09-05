@@ -2,9 +2,9 @@
 #include "iExceptionBase.h"
 
 
-namespace HYDRA15::Foundation::Referee
+namespace HYDRA15::Foundation::referee
 {
-	iExceptionBase::iExceptionBase(const std::string& desp, const iExceptionCode& id, const iExceptionCode& code) noexcept
+	iException_base::iException_base(const std::string& desp, const iException_code& id, const iException_code& code) noexcept
         :description(desp), libID(id), exptCode(code)
 #ifdef LIB_IEXPT_STACKTRACE_ENABLE
 		, stackTrace(std::stacktrace::current())
@@ -13,7 +13,7 @@ namespace HYDRA15::Foundation::Referee
 
 	}
 
-	const char* iExceptionBase::what() const noexcept
+	const char* iException_base::what() const noexcept
 	{
 		whatStr = std::format(
 			baseWhatStrFormat,

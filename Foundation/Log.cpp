@@ -1,56 +1,56 @@
 ﻿#include "pch.h"
 #include "Log.h"
 
-namespace HYDRA15::Foundation::Secretary
+namespace HYDRA15::Foundation::secretary
 {
-    Log::LogStrPkg Log::log(const std::string& title, const std::string& content)
+    Log::logstr_pkg Log::log(const std::string& title, const std::string& content)
     {
         return {
             std::format(
-                visualize.logFormatClr.data(),
-                Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                vslz.logFormatClr.data(),
+                assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    visualize.logFormat.data(),
-                    Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                    vslz.logFormat.data(),
+                    assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content
                 )
         };
     }
 
-    Log::LogStrPkg Log::warning(const std::string& title, const std::string& content)
+    Log::logstr_pkg Log::warning(const std::string& title, const std::string& content)
     {
         return {
             std::format(
-                visualize.warningFormatClr.data(),
-                Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                vslz.warningFormatClr.data(),
+                assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    visualize.warningFormat.data(),
-                    Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                    vslz.warningFormat.data(),
+                    assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content
                 )
         };
     }
 
-    Log::LogStrPkg Log::error(const std::string& title, const std::string& content)
+    Log::logstr_pkg Log::error(const std::string& title, const std::string& content)
     {
         return {
             std::format(
-                visualize.errorFormatClr.data(),
-                Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                vslz.errorFormatClr.data(),
+                assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
             std::format(
-                visualize.errorFormat.data(),
-                Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                vslz.errorFormat.data(),
+                assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
            )
@@ -58,18 +58,18 @@ namespace HYDRA15::Foundation::Secretary
 
     }
 
-    Log::LogStrPkg Log::debug(const std::string& title, const std::string& content)
+    Log::logstr_pkg Log::debug(const std::string& title, const std::string& content)
     {
         return {
             std::format(
-                visualize.debugFormatClr.data(),
-                Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                vslz.debugFormatClr.data(),
+                assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                 title,
                 content
             ),
                 std::format(
-                    visualize.debugFormat.data(),
-                    Assistant::DateTime::now_date_time("%Y-%m-%d %H:%M:%S"),
+                    vslz.debugFormat.data(),
+                    assistant::datetime::now_date_time("%Y-%m-%d %H:%M:%S"),
                     title,
                     content
                 )

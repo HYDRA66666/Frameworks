@@ -1,13 +1,13 @@
 ﻿#include "pch.h"
 #include "PrintCenter.h"
 
-namespace HYDRA15::Foundation::Secretary
+namespace HYDRA15::Foundation::secretary
 {
     PrintCenter::PrintCenter()
-        :Labourer::Background(1),
+        :labourer::background(1),
         logFile(
             std::format(
-                cfg.fileNameFormat.data(), Assistant::DateTime::now_date_time("%Y-%m-%d")
+                cfg.fileNameFormat.data(), assistant::datetime::now_date_time("%Y-%m-%d")
             ), 
             std::ios::app
             )
@@ -40,7 +40,7 @@ namespace HYDRA15::Foundation::Secretary
     {
         {   // 交换缓冲区
             std::lock_guard lg(rollMsgLock);
-            RollingMsgList* temp = pRollMsgLstFront;
+            rollmsg_list* temp = pRollMsgLstFront;
             pRollMsgLstFront = pRollMsgLstBack;
             pRollMsgLstBack = temp;
         }
@@ -66,7 +66,7 @@ namespace HYDRA15::Foundation::Secretary
 
         {
             std::lock_guard lg(btmMsgTabLock);
-            TimePiont now = TimePiont::clock::now();
+            time_point now = time_point::clock::now();
 
             bool first = true;
             for (auto& [id, msgCtrl] : btmMsgTab)
@@ -110,7 +110,7 @@ namespace HYDRA15::Foundation::Secretary
     {
         {
             std::lock_guard lg(fileMsgLock);
-            FileMsgList* temp = pFMsgLstBack;
+            filemsg_list* temp = pFMsgLstBack;
             pFMsgLstBack = pFMsgLstFront;
             pFMsgLstFront = temp;
         }
@@ -128,7 +128,7 @@ namespace HYDRA15::Foundation::Secretary
     }
 
 
-    void PrintCenter::work(Background::ThreadInfo&)
+    void PrintCenter::work(background::thread_info&)
     {
         while (
             working || // 工作中
@@ -147,7 +147,7 @@ namespace HYDRA15::Foundation::Secretary
                 working && // 工作中
                 pRollMsgLstFront->empty() && pRollMsgLstBack->empty() && // 滚动消息为空
                 pFMsgLstBack->empty() && pFMsgLstFront->empty() && // 文件消息为空
-                (TimePiont::clock::now() - lastRefresh < cfg.refreshInterval) // 未到刷新时间
+                (time_point::clock::now() - lastRefresh < cfg.refreshInterval) // 未到刷新时间
                 )
                 sleepcv.wait_for(lg, cfg.refreshInterval);
 
@@ -169,15 +169,15 @@ namespace HYDRA15::Foundation::Secretary
             {
                 if (!pFMsgLstFront->empty())
                     logFile << print_file_msg();
-                if (TimePiont::clock::now() - lastFileRefresh >= cfg.fileRefreshTime)
+                if (time_point::clock::now() - lastFileRefresh >= cfg.fileRefreshTime)
                 {
                     logFile.flush();
-                    lastFileRefresh = TimePiont::clock::now();
+                    lastFileRefresh = time_point::clock::now();
                 }
             }
 
             // 计时
-            lastRefresh = TimePiont::clock::now();
+            lastRefresh = time_point::clock::now();
         }
     }
 
@@ -216,37 +216,37 @@ namespace HYDRA15::Foundation::Secretary
         std::lock_guard lk(btmMsgTabLock);
         try
         {
-            return btmMsgTab.regist({ token ,TimePiont::clock::now(), nvrExpr, std::string() });
+            return btmMsgTab.regist({ token ,time_point::clock::now(), nvrExpr, std::string() });
         }
-        catch(Exceptions::Archivist& e)
+        catch(Exceptions::archivist& e)
         {
-            if (e.exptCode == Exceptions::Archivist::iExceptionCodes::registryTabletFull)
-                throw Exceptions::Secretary::PrintCenterBtmMsgFull();
+            if (e.exptCode == Exceptions::archivist::iException_codes::registryTabletFull)
+                throw Exceptions::secretary::PrintCenterBtmMsgFull();
             else throw e;
         }
     }
 
     void PrintCenter::update_bottom(ID id, int token, const std::string& content)
     {
-        BottomControlBlock* pMsgCtrl;
+        bottom_ctrlblk* pMsgCtrl;
         std::lock_guard lk(btmMsgTabLock);
 
         try
         {
             pMsgCtrl = &btmMsgTab.find(id);
         }
-        catch (Exceptions::Archivist& e)
+        catch (Exceptions::archivist& e)
         {
-            if (e.exptCode == Exceptions::Archivist::iExceptionCodes::registryKeyNotFound)
-                throw Exceptions::Secretary::PrintCenterBtmMsgNotFound();
+            if (e.exptCode == Exceptions::archivist::iException_codes::registryKeyNotFound)
+                throw Exceptions::secretary::PrintCenterBtmMsgNotFound();
             else throw e;
         }
 
         if (pMsgCtrl->token != token)
-            throw Exceptions::Secretary::PrintCenterBtmMsgBadToken();
+            throw Exceptions::secretary::PrintCenterBtmMsgBadToken();
 
         pMsgCtrl->content = content;
-        pMsgCtrl->lastUpdate = TimePiont::clock::now();
+        pMsgCtrl->lastUpdate = time_point::clock::now();
     }
 
     bool PrintCenter::check_bottom(ID id)
@@ -276,7 +276,7 @@ namespace HYDRA15::Foundation::Secretary
         return fileMsgCount++;
     }
 
-    PrintCenter::BottomControlBlock& PrintCenter::BottomControlBlock::operator=(const BottomControlBlock& src)
+    PrintCenter::bottom_ctrlblk& PrintCenter::bottom_ctrlblk::operator=(const bottom_ctrlblk& src)
     {
         if (this != &src)
         {

@@ -2,23 +2,23 @@
 #include "framework.h"
 #include "pch.h"
 
-#include "Entry.h"
-#include "Index.h"
-#include "ArchivistException.h"
+#include "entry.h"
+#include "index.h"
+#include "archivist_exception.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
     // 支持存储映射、列表和队列三种数据结构
     // 表项的的索引和元素为 Index 和 Entry 类型，以支持任意类型的索引和元素
     // 三种数据结构均使用 std::unordered_map 作为底层实现
-    class Tablet
+    class tablet
     {
         // 数据类型
     public:
-        using Map = std::unordered_map<Index, Entry>;
-        using Pair = std::pair<const Index, Entry>;
-        using UintIndex = size_t;
-        enum class Type
+        using map = std::unordered_map<index, entry>;
+        using pair = std::pair<const index, entry>;
+        using uint_index = size_t;
+        enum class type
         {
             map,
             list,
@@ -28,50 +28,50 @@ namespace HYDRA15::Foundation::Archivist
 
         // 核心数据
     private:
-        Type type;
-        Map data;
-        UintIndex listSize = 0;
-        std::pair<UintIndex, UintIndex> queueRange = { 0, 0 };
+        type container_type;
+        map data;
+        uint_index listSize = 0;
+        std::pair<uint_index, uint_index> queueRange = { 0, 0 };
 
         // 辅助函数
     private:
-        Entry& list_access(const Index& key);
-        void list_resize(UintIndex size);
-        void list_push(Entry&& entry);
-        Entry& list_front();
-        Entry& list_back();
+        entry& list_access(const index& key);
+        void list_resize(uint_index size);
+        void list_push(entry&& item);
+        entry& list_front();
+        entry& list_back();
 
-        void queue_push(Entry&& entry);
+        void queue_push(entry&& item);
         void queue_pop();
-        Entry& queue_front();
-        Entry& queue_back();
+        entry& queue_front();
+        entry& queue_back();
 
 
         // 构造与析构
     public:
-        Tablet() = delete;
-        Tablet(const Tablet&) = default;
-        Tablet(Tablet&&) = default;
-        ~Tablet() = default;
+        tablet() = delete;
+        tablet(const tablet&) = default;
+        tablet(tablet&&) = default;
+        ~tablet() = default;
 
         // 直接构造为对应类型
-        Tablet(Type t);
+        tablet(type t);
 
 
         // 访问
     public:
         // 获取容器
-        Map get_container() const;
-        Map& get_container_ref();
+        map get_container() const;
+        map& get_container_ref();
 
         // 访问容器数据
-        Entry& operator[](const Index& idx);
+        entry& operator[](const index& idx);
 
         // 增减元素
-        void push(Entry&& entry);
+        void push(entry&& item);
         void pop();
-        Entry& front();
-        Entry& back();
+        entry& front();
+        entry& back();
 
 
         // 修改容器
@@ -85,8 +85,8 @@ namespace HYDRA15::Foundation::Archivist
         void clear();
 
         // 类型
-        Type get_type() const;
-        void set_type(Type t);
+        type get_type() const;
+        void set_type(type t);
 
 
         // 迭代器
@@ -98,20 +98,20 @@ namespace HYDRA15::Foundation::Archivist
         {
             // 核心数据
         private:
-            Tablet& tablet;
-            Tablet::UintIndex index;
-            Tablet::Map::iterator it;
+            tablet& tab;
+            tablet::uint_index index;
+            tablet::map::iterator it;
 
             // 构造
         private:
             iterator() = delete;
-            iterator(Tablet& tab, Tablet::UintIndex idx, Tablet::Map::iterator iter);
-            friend class Tablet;
+            iterator(tablet& tab, tablet::uint_index idx, tablet::map::iterator iter);
+            friend class tablet;
 
             // 迭代器操作
         public:
             iterator& operator++();
-            Tablet::Pair& operator*() const;
+            tablet::pair& operator*() const;
             bool operator==(const iterator& other) const;
         };
         friend class iterator;
@@ -122,12 +122,12 @@ namespace HYDRA15::Foundation::Archivist
 
         // 信息输出支持
     private:
-        static struct Visualize
+        static struct visualize
         {
-            StaticString tabletMap = "[Tablet | Type: Map, Size: {}]";
-            StaticString tabletList = "[Tablet | Type: List, Size: {}]";
-            StaticString tabletQueue = "[Tablet | Type: Queue, Size: {}]";
-        } visualize;
+            static_string tabletMap = "[Tablet | Type: Map, Size: {}]";
+            static_string tabletList = "[Tablet | Type: List, Size: {}]";
+            static_string tabletQueue = "[Tablet | Type: Queue, Size: {}]";
+        } vslz;
 
     public:
         std::string info() const;

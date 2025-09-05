@@ -3,29 +3,29 @@
 #include "framework.h"
 
 #include "Background.h"
-#include "LabourerException.h"
+#include "labourer_exception.h"
 
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
 
     // 线程池
-    class ThreadLake :Background
+    class ThreadLake :background
     {
         // 任务和任务包定义
     public:
-        template<typename ReturnType = void>
-        using Task = std::function<ReturnType()>;
+        template<typename ret_type = void>
+        using task = std::function<ret_type()>;
 
-        struct TaskPackage
+        struct package
         {
-            Task<> task;
-            Task<> callback;	// 任务完成后的回调
+            task<> content;
+            task<> callback;	// 任务完成后的回调
         };
 
         //任务队列
     private:
-        std::queue <TaskPackage> taskQueue; //任务队列
+        std::queue <package> taskQueue; //任务队列
         const size_t tskQueMaxSize = 0; //任务队列最大大小，0表示无限制
         std::mutex queueMutex;
         std::condition_variable queueCv;
@@ -33,7 +33,7 @@ namespace HYDRA15::Foundation::Labourer
         //后台任务
     private:
         bool working = false;
-        virtual void work(Background::ThreadInfo& info) override;
+        virtual void work(background::thread_info& info) override;
 
         //接口
     public:
@@ -45,22 +45,22 @@ namespace HYDRA15::Foundation::Labourer
 
         //提交任务
         // 方法1：提交任务函数 std::function 和回调函数 std::function，推荐使用此方法
-        template<typename ReturnType>
-        auto submit(Task<ReturnType>& task, Task<> callback = Task<>())
-            -> std::future<ReturnType>
+        template<typename ret_type>
+        auto submit(task<ret_type>& content, task<> callback = task<>())
+            -> std::future<ret_type>
         {
-            auto pkgedTask = std::make_shared<std::packaged_task<ReturnType()>>(task);
+            auto pkgedTask = std::make_shared<std::packaged_task<ret_type()>>(content);
 
             // 插入任务包
             {
                 std::lock_guard<std::mutex> lock(queueMutex);
                 if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
-                    throw Exceptions::Labourer::TaskQueueFull();
+                    throw Exceptions::labourer::TaskQueueFull();
                 }
                 taskQueue.push(
                     {
-                        Task<>([pkgedTask] { (*pkgedTask)(); }),
+                        task<>([pkgedTask] { (*pkgedTask)(); }),
                         callback
                     }
                 );
@@ -71,7 +71,7 @@ namespace HYDRA15::Foundation::Labourer
         }
 
         //方法2：直接提交任务包
-        void submit(const TaskPackage& taskPkg);
+        void submit(const package& taskPkg);
 
         // 方法3：提交裸函数指针和参数，不建议使用此方法，仅留做备用
         template<typename F, typename ... Args>
@@ -80,7 +80,7 @@ namespace HYDRA15::Foundation::Labourer
         {
             using return_type = typename std::invoke_result<F, Args...>::type;
 
-            auto task =
+            auto pkgedTask =
                 std::make_shared<std::packaged_task<return_type()>>(
                     std::bind(std::forward<F>(f), std::forward<Args>(args)...)
                 );
@@ -90,18 +90,18 @@ namespace HYDRA15::Foundation::Labourer
                 std::lock_guard<std::mutex> lock(queueMutex);
                 if (tskQueMaxSize != 0 && taskQueue.size() >= tskQueMaxSize) // 队列已满
                 {
-                    throw Exceptions::Labourer::TaskQueueFull();
+                    throw Exceptions::labourer::TaskQueueFull();
                 }
                 taskQueue.push(
                     {
-                        Task<>([task] { (*task)(); }),
-                        Task<>()
+                        task<>([pkgedTask] { (*pkgedTask)(); }),
+                        task<>()
                     }
                 );
                 queueCv.notify_one();
             }
 
-            return task->get_future();
+            return pkgedTask->get_future();
         }
 
 

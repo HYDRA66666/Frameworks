@@ -4,8 +4,8 @@
 
 
 // 常用类型定义
-#define StaticString static constexpr std::string_view
-#define StaticUInt static constexpr unsigned int
+#define static_string static constexpr std::string_view
+#define static_uint static constexpr unsigned int
 
 
 

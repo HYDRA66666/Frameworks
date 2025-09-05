@@ -1,7 +1,7 @@
 ﻿#include "pch.h"
-#include "Registry.h"
+#include "registry.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
 
 }

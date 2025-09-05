@@ -1,10 +1,11 @@
-﻿#pragma once
+﻿
+#pragma once
 #include "pch.h"
 #include "framework.h"
 
 
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
     // 在调用容器接口时上锁
     //    - 标准调用不使用任何锁操作
@@ -17,13 +18,13 @@ namespace HYDRA15::Foundation::Labourer
     // 调用使用示例：
     //   - 无重载成员函数：call(&Container::func, args...)
     //   - 有重载成员函数：call(static_cast<Ret (Container::*)(Args&&...)>(&Container::func), args...)，须在static_cast中指定函数指针重载的版本
-    template<class Container, class Lock>
+    template<class container, class container_lock>
     class SharedContainerBase
     {
-        Container container;
+        container container;
 
     protected:
-        Lock lock;  // 将锁对象暴露给外部，以实现更高级的操作
+        container_lock lock;  // 将锁对象暴露给外部，以实现更高级的操作
 
     public:
         virtual ~SharedContainerBase() = default;
@@ -47,14 +48,14 @@ namespace HYDRA15::Foundation::Labourer
         template<typename F, typename... Args>
         decltype(auto) call_locked(F&& f, Args&&... args)
         {
-            std::lock_guard<Lock> guard(lock);
+            std::lock_guard<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
         template<typename F, typename... Args>
         decltype(auto) static_call_locked(F&& f, Args&&... args)
         {
-            std::lock_guard<Lock> guard(lock);
+            std::lock_guard<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
 
@@ -62,14 +63,14 @@ namespace HYDRA15::Foundation::Labourer
         template<typename F, typename... Args>
         decltype(auto) call_shared(F&& f, Args&&... args)
         {
-            std::shared_lock<Lock> guard(lock);
+            std::shared_lock<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
         template<typename F, typename... Args>
         decltype(auto) static_call_shared(F&& f, Args&&... args)
         {
-            std::shared_lock<Lock> guard(lock);
+            std::shared_lock<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
 
@@ -77,14 +78,14 @@ namespace HYDRA15::Foundation::Labourer
         template<typename F, typename... Args>
         decltype(auto) call_unique(F&& f, Args&&... args)
         {
-            std::unique_lock<Lock> guard(lock);
+            std::unique_lock<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
         template<typename F, typename... Args>
         decltype(auto) static_call_unique(F&& f, Args&&... args)
         {
-            std::unique_lock<Lock> guard(lock);
+            std::unique_lock<container_lock> guard(lock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
     };

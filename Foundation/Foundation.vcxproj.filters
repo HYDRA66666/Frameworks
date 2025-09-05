@@ -4,29 +4,29 @@
     <Filter Include="framework">
       <UniqueIdentifier>{2aea1dff-b788-41de-bfaa-24026cc97b41}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Referee">
-      <UniqueIdentifier>{00a54bc1-c3a7-470e-8cba-2618baa31708}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Labourer">
-      <UniqueIdentifier>{17a57186-f7ad-4460-a514-73703e7fbdbb}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Exceptions">
-      <UniqueIdentifier>{092d2006-8916-4472-b18b-408a399d5b29}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="LibInfo">
-      <UniqueIdentifier>{8d44b619-2d3a-4e40-8cbe-9181d3b4938c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Archivist">
+    <Filter Include="archivist">
       <UniqueIdentifier>{fdc4cf69-cb31-42da-b712-da7163256903}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Assistant">
+    <Filter Include="assistant">
       <UniqueIdentifier>{aaf992c7-0cd6-4da8-b262-cfd6e1c6949c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Secretary">
-      <UniqueIdentifier>{4fa52ffe-fb05-4cbc-8eda-a5bb11d795e7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Expressman">
+    <Filter Include="expressman">
       <UniqueIdentifier>{650c7452-e161-4c43-bb6f-8230e595777c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="exceptions">
+      <UniqueIdentifier>{092d2006-8916-4472-b18b-408a399d5b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="labourer">
+      <UniqueIdentifier>{17a57186-f7ad-4460-a514-73703e7fbdbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="lib_info">
+      <UniqueIdentifier>{8d44b619-2d3a-4e40-8cbe-9181d3b4938c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="referee">
+      <UniqueIdentifier>{00a54bc1-c3a7-470e-8cba-2618baa31708}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="secretary">
+      <UniqueIdentifier>{4fa52ffe-fb05-4cbc-8eda-a5bb11d795e7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -37,64 +37,58 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="iExceptionBase.h">
-      <Filter>Referee</Filter>
+      <Filter>referee</Filter>
     </ClInclude>
-    <ClInclude Include="SharedContainerBase.h">
-      <Filter>Labourer</Filter>
+    <ClInclude Include="shared_container_base.h">
+      <Filter>labourer</Filter>
     </ClInclude>
     <ClInclude Include="iMutexies.h">
-      <Filter>Labourer</Filter>
+      <Filter>labourer</Filter>
     </ClInclude>
-    <ClInclude Include="Background.h">
-      <Filter>Labourer</Filter>
+    <ClInclude Include="background.h">
+      <Filter>labourer</Filter>
     </ClInclude>
     <ClInclude Include="ThreadLake.h">
-      <Filter>Labourer</Filter>
+      <Filter>labourer</Filter>
     </ClInclude>
-    <ClInclude Include="LabourerException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="labourer_exception.h">
+      <Filter>exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="LibID.h">
-      <Filter>LibInfo</Filter>
+    <ClInclude Include="libID.h">
+      <Filter>lib_info</Filter>
     </ClInclude>
-    <ClInclude Include="Index.h">
-      <Filter>Archivist</Filter>
+    <ClInclude Include="index.h">
+      <Filter>archivist</Filter>
     </ClInclude>
-    <ClInclude Include="ArchivistException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="archivist_exception.h">
+      <Filter>exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="Entry.h">
-      <Filter>Archivist</Filter>
+    <ClInclude Include="entry.h">
+      <Filter>archivist</Filter>
     </ClInclude>
-    <ClInclude Include="Tablet.h">
-      <Filter>Archivist</Filter>
+    <ClInclude Include="tablet.h">
+      <Filter>archivist</Filter>
     </ClInclude>
-    <ClInclude Include="Registry.h">
-      <Filter>Archivist</Filter>
+    <ClInclude Include="registry.h">
+      <Filter>archivist</Filter>
     </ClInclude>
     <ClInclude Include="PrintCenter.h">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClInclude>
     <ClInclude Include="Log.h">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClInclude>
-    <ClInclude Include="SecretaryException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="secretary_exception.h">
+      <Filter>exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="iString.h">
-      <Filter>Assistant</Filter>
+    <ClInclude Include="datetime.h">
+      <Filter>assistant</Filter>
     </ClInclude>
-    <ClInclude Include="to_string.h">
-      <Filter>Assistant</Filter>
-    </ClInclude>
-    <ClInclude Include="DateTime.h">
-      <Filter>Assistant</Filter>
-    </ClInclude>
-    <ClInclude Include="AssistantException.h">
-      <Filter>Exceptions</Filter>
+    <ClInclude Include="assistant_exception.h">
+      <Filter>exceptions</Filter>
     </ClInclude>
     <ClInclude Include="Progress.h">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -102,55 +96,52 @@
       <Filter>framework</Filter>
     </ClCompile>
     <ClCompile Include="iExceptionBase.cpp">
-      <Filter>Referee</Filter>
+      <Filter>referee</Filter>
     </ClCompile>
     <ClCompile Include="iMutexies.cpp">
-      <Filter>Labourer</Filter>
+      <Filter>labourer</Filter>
     </ClCompile>
-    <ClCompile Include="Background.cpp">
-      <Filter>Labourer</Filter>
+    <ClCompile Include="background.cpp">
+      <Filter>labourer</Filter>
     </ClCompile>
     <ClCompile Include="ThreadLake.cpp">
-      <Filter>Labourer</Filter>
+      <Filter>labourer</Filter>
     </ClCompile>
-    <ClCompile Include="LabourerException.cpp">
-      <Filter>Exceptions</Filter>
+    <ClCompile Include="labourer_exception.cpp">
+      <Filter>exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Entry.cpp">
-      <Filter>Archivist</Filter>
+    <ClCompile Include="entry.cpp">
+      <Filter>archivist</Filter>
     </ClCompile>
-    <ClCompile Include="Index.cpp">
-      <Filter>Archivist</Filter>
+    <ClCompile Include="index.cpp">
+      <Filter>archivist</Filter>
     </ClCompile>
-    <ClCompile Include="ArchivistException.cpp">
-      <Filter>Exceptions</Filter>
+    <ClCompile Include="archivist_exception.cpp">
+      <Filter>exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Tablet.cpp">
-      <Filter>Archivist</Filter>
+    <ClCompile Include="tablet.cpp">
+      <Filter>archivist</Filter>
     </ClCompile>
-    <ClCompile Include="Registry.cpp">
-      <Filter>Archivist</Filter>
+    <ClCompile Include="registry.cpp">
+      <Filter>archivist</Filter>
     </ClCompile>
     <ClCompile Include="PrintCenter.cpp">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClCompile>
-    <ClCompile Include="SecretaryException.cpp">
-      <Filter>Exceptions</Filter>
-    </ClCompile>
-    <ClCompile Include="to_string.cpp">
-      <Filter>Assistant</Filter>
+    <ClCompile Include="secretary_exception.cpp">
+      <Filter>exceptions</Filter>
     </ClCompile>
     <ClCompile Include="Log.cpp">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClCompile>
-    <ClCompile Include="DateTime.cpp">
-      <Filter>Assistant</Filter>
+    <ClCompile Include="datetime.cpp">
+      <Filter>assistant</Filter>
     </ClCompile>
-    <ClCompile Include="AssistantException.cpp">
-      <Filter>Exceptions</Filter>
+    <ClCompile Include="assistant_exception.cpp">
+      <Filter>exceptions</Filter>
     </ClCompile>
     <ClCompile Include="Progress.cpp">
-      <Filter>Secretary</Filter>
+      <Filter>secretary</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

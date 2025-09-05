@@ -3,7 +3,7 @@
 #include "framework.h"
 
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
     // 继承此类的子类将在初始化时自动根据设定的参数启动后台线程
     // 使用方法：
@@ -13,37 +13,37 @@ namespace HYDRA15::Foundation::Labourer
     //   - 结束工作后，需要自行通知工作线程结束任务并返回
     //   - 结束工作后调用 stop() 方法等待线程返回，所有线程都返回后此函数将返回
     // 线程的数量一经初始化后不可更改，需要动态调整线程数量建议创建多个 Background 实例
-    class Background
+    class background
     {
         // 线程信息块和线程物品
     public:
-        class ThreadInfo
+        class thread_info
         {
         public:
-            enum class State
+            enum class state
             {
                 undefined,
                 idle,
                 waiting,
                 working,
                 finishing
-            }state = State::undefined;
+            }thread_state = state::undefined;
         };
 
-        class ThreadItem
+        class thread_ctrlblk
         {
         public:
             std::shared_ptr<std::thread> thread; // 线程对象
-            ThreadInfo info; // 线程信息
+            thread_info info; // 线程信息
         };
 
     private:
         std::barrier<> checkpoint;  //启动和结束同步
-        std::list<ThreadItem> threads; // 异步线程组
-        void work_shell(ThreadInfo& info); // 封装了启动与结束同步的工作函数
+        std::list<thread_ctrlblk> threads; // 异步线程组
+        void work_shell(thread_info& info); // 封装了启动与结束同步的工作函数
 
     public:
-        virtual void work(ThreadInfo& info) = 0;  // 重写此方法以异步执行
+        virtual void work(thread_info& info) = 0;  // 重写此方法以异步执行
 
         // 启动同步和结束同步
     public:
@@ -52,24 +52,24 @@ namespace HYDRA15::Foundation::Labourer
 
         // 构造函数，参数为异步线程数量，默认为1
     public:
-        Background(unsigned int bkgThrCount);
-        Background(Background&&) = delete;
-        Background();
-        virtual ~Background() = default;
-        Background(const Background&) = delete;
-        Background& operator=(const Background&) = delete;
+        background(unsigned int bkgThrCount);
+        background(background&&) = delete;
+        background();
+        virtual ~background() = default;
+        background(const background&) = delete;
+        background& operator=(const background&) = delete;
 
         // 迭代器访问每一个线程信息
     public:
         class iterator
         {
-            using list_iter = std::list<ThreadItem>::iterator;
+            using list_iter = std::list<thread_ctrlblk>::iterator;
             list_iter it;
         public:
             iterator(list_iter iter);
             iterator& operator++();
             bool operator!=(const iterator& other) const;
-            ThreadInfo& operator*() const;
+            thread_info& operator*() const;
         };
 
         iterator begin();

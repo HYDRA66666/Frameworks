@@ -1,19 +1,19 @@
 ﻿#include "pch.h"
-#include "Tablet.h"
+#include "tablet.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
-    Entry& Tablet::list_access(const Index& key)
+    entry& tablet::list_access(const index& key)
     {
-        UintIndex k;
+        uint_index k;
         bool converted = false;
 
         // 尝试解析常规整型
 #define TRY(TYPE) \
         try { \
-            k = static_cast<UintIndex>(static_cast<TYPE>(key)); \
+            k = static_cast<uint_index>(static_cast<TYPE>(key)); \
             converted = true; \
-        } catch (Exceptions::Archivist&) { \
+        } catch (Exceptions::archivist&) { \
         }
 
         TRY(int);
@@ -24,335 +24,335 @@ namespace HYDRA15::Foundation::Archivist
 #undef TRY
 
         if (!converted)
-            throw Exceptions::Archivist::IndexTypeMismatch();
+            throw Exceptions::archivist::IndexTypeMismatch();
 
         if (k >= listSize)
-            throw Exceptions::Archivist::TabletListRangeExceed();
+            throw Exceptions::archivist::TabletListRangeExceed();
 
         return data[k];
     }
 
-    void Tablet::list_resize(UintIndex size)
+    void tablet::list_resize(uint_index size)
     {
         if (size > data.max_size())
-            throw Exceptions::Archivist::TabletListBadSize();
+            throw Exceptions::archivist::TabletListBadSize();
 
         if (listSize == size)
             return;
 
         if (listSize < size)
-            for (UintIndex i = listSize; i < size; i++)
-                data[i] = Entry();
+            for (uint_index i = listSize; i < size; i++)
+                data[i] = entry();
         else
-            for (UintIndex i = size; i < listSize; i++)
+            for (uint_index i = size; i < listSize; i++)
                 data.erase(i);
 
         listSize = size;
         return;
     }
 
-    void Tablet::list_push(Entry&& entry)
+    void tablet::list_push(entry&& item)
     {
-        if (listSize >= data.max_size() - 1 || listSize >= std::numeric_limits<UintIndex>::max())
-            throw Exceptions::Archivist::TabletContainerFull();
+        if (listSize >= data.max_size() - 1 || listSize >= std::numeric_limits<uint_index>::max())
+            throw Exceptions::archivist::TabletContainerFull();
 
-        data[listSize] = std::forward<Entry>(entry);
+        data[listSize] = std::forward<entry>(item);
         listSize++;
     }
 
-    Entry& Tablet::list_front()
+    entry& tablet::list_front()
     {
         if (listSize == 0)
-            throw Exceptions::Archivist::TabletContainerEmpty();
-        return data[UintIndex(0)];
+            throw Exceptions::archivist::TabletContainerEmpty();
+        return data[uint_index(0)];
     }
 
-    Entry& Tablet::list_back()
+    entry& tablet::list_back()
     {
         if (listSize == 0)
-            throw Exceptions::Archivist::TabletContainerEmpty();
+            throw Exceptions::archivist::TabletContainerEmpty();
         return data[listSize - 1];
     }
 
-    void Tablet::queue_push(Entry&& entry)
+    void tablet::queue_push(entry&& item)
     {
         if (data.size() >= data.max_size() - 1 || queueRange.second == queueRange.first - 1)
-            throw Exceptions::Archivist::TabletContainerFull();
+            throw Exceptions::archivist::TabletContainerFull();
 
-        data[queueRange.second] = std::forward<Entry>(entry);
-        if (queueRange.second == std::numeric_limits<UintIndex>::max())
+        data[queueRange.second] = std::forward<entry>(item);
+        if (queueRange.second == std::numeric_limits<uint_index>::max())
             queueRange.second = 0;
         else
             queueRange.second++;
     }
 
-    void Tablet::queue_pop()
+    void tablet::queue_pop()
     {
         if (queueRange.first == queueRange.second)
-            throw Exceptions::Archivist::TabletContainerEmpty();
+            throw Exceptions::archivist::TabletContainerEmpty();
 
-        data.erase(Index(queueRange.first));
-        if (queueRange.first == std::numeric_limits<UintIndex>::max())
+        data.erase(index(queueRange.first));
+        if (queueRange.first == std::numeric_limits<uint_index>::max())
             queueRange.first = 0;
         else
             queueRange.first++;
     }
 
-    Entry& Tablet::queue_front()
+    entry& tablet::queue_front()
     {
         if (queueRange.first == queueRange.second)
-            throw Exceptions::Archivist::TabletContainerEmpty();
+            throw Exceptions::archivist::TabletContainerEmpty();
 
         return data[queueRange.first];
     }
 
-    Entry& Tablet::queue_back()
+    entry& tablet::queue_back()
     {
         if (queueRange.first == queueRange.second)
-            throw Exceptions::Archivist::TabletContainerEmpty();
+            throw Exceptions::archivist::TabletContainerEmpty();
 
         if (queueRange.second == 0)
-            return data[std::numeric_limits<UintIndex>::max()];
+            return data[std::numeric_limits<uint_index>::max()];
         else
             return data[queueRange.second - 1];
     }
 
-    Tablet::Tablet(Type t)
-        :type(t)
+    tablet::tablet(type t)
+        :container_type(t)
     {
     }
 
-    Tablet::Map Tablet::get_container() const
-    {
-        return data;
-    }
-
-    Tablet::Map& Tablet::get_container_ref()
+    tablet::map tablet::get_container() const
     {
         return data;
     }
 
-    Entry& Tablet::operator[](const Index& idx)
+    tablet::map& tablet::get_container_ref()
+    {
+        return data;
+    }
+
+    entry& tablet::operator[](const index& idx)
     {
         return data[idx];
     }
 
-    void Tablet::push(Entry&& entry)
+    void tablet::push(entry&& item)
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
-            return list_push(std::forward<Entry>(entry));
+        case HYDRA15::Foundation::archivist::tablet::type::list:
+            return list_push(std::forward<entry>(item));
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
-            return queue_push(std::forward<Entry>(entry));
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
+            return queue_push(std::forward<entry>(item));
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    void Tablet::pop()
+    void tablet::pop()
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+        case HYDRA15::Foundation::archivist::tablet::type::list:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
             return queue_pop();
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    Entry& Tablet::front()
+    entry& tablet::front()
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
+        case HYDRA15::Foundation::archivist::tablet::type::list:
             return list_front();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
             return queue_front();
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    Entry& Tablet::back()
+    entry& tablet::back()
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
+        case HYDRA15::Foundation::archivist::tablet::type::list:
             return list_back();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
             return queue_back();
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    size_t Tablet::size() const
+    size_t tablet::size() const
     {
         return data.size();
     }
 
-    void Tablet::resize(size_t size)
+    void tablet::resize(size_t size)
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
+        case HYDRA15::Foundation::archivist::tablet::type::list:
             return list_resize(size);
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    bool Tablet::empty() const
+    bool tablet::empty() const
     {
         return data.empty();
     }
 
-    void Tablet::clear()
+    void tablet::clear()
     {
         data.clear();
         listSize = 0;
         queueRange = { 0, 0 };
     }
 
-    Tablet::Type Tablet::get_type() const
+    tablet::type tablet::get_type() const
     {
-        return type;
+        return container_type;
     }
 
-    void Tablet::set_type(Type t)
+    void tablet::set_type(type t)
     {
-        if (type != t)
+        if (container_type != t)
         {
             data.clear();
             listSize = 0;
             queueRange = { 0, 0 };
-            type = t;
+            container_type = t;
         }
     }
 
-    Tablet::iterator::iterator(Tablet& tab, Tablet::UintIndex idx, Tablet::Map::iterator it)
-        :tablet(tab), index(idx), it(it)
+    tablet::iterator::iterator(tablet& tab, tablet::uint_index idx, tablet::map::iterator it)
+        :tab(tab), index(idx), it(it)
     {
 
     }
 
-    Tablet::iterator& Tablet::iterator::operator++()
+    tablet::iterator& tablet::iterator::operator++()
     {
-        switch (tablet.type)
+        switch (tab.container_type)
         {
-        case Tablet::Type::map:
+        case tablet::type::map:
             it++;
             return *this;
 
-        case Tablet::Type::list:
+        case tablet::type::list:
             index++;
-            if(index>= tablet.listSize)
-                it = tablet.data.end();
+            if(index>= tab.listSize)
+                it = tab.data.end();
             else
-                it = tablet.data.find(index);
+                it = tab.data.find(index);
             return *this;
                 
-        case Tablet::Type::queue:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case tablet::type::queue:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
         }
     }
 
-    Tablet::Pair& Tablet::iterator::operator*() const
+    tablet::pair& tablet::iterator::operator*() const
     {
         return *it;
     }
 
-    bool Tablet::iterator::operator==(const iterator& other) const
+    bool tablet::iterator::operator==(const iterator& other) const
     {
         return it == other.it;
     }
 
-    Tablet::iterator Tablet::begin()
+    tablet::iterator tablet::begin()
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-            return Tablet::iterator(*this, 0, data.begin());
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+            return tablet::iterator(*this, 0, data.begin());
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
-            return Tablet::iterator(*this, 0, data.find(UintIndex(0)));
+        case HYDRA15::Foundation::archivist::tablet::type::list:
+            return tablet::iterator(*this, 0, data.find(uint_index(0)));
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    Tablet::iterator Tablet::end()
+    tablet::iterator tablet::end()
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
-            return Tablet::iterator(*this, 0, data.end());
+        case HYDRA15::Foundation::archivist::tablet::type::map:
+            return tablet::iterator(*this, 0, data.end());
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
-            return Tablet::iterator(*this, listSize, data.end());
+        case HYDRA15::Foundation::archivist::tablet::type::list:
+            return tablet::iterator(*this, listSize, data.end());
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
-            throw Exceptions::Archivist::TabletInvalidContainerOperation();
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
+            throw Exceptions::archivist::TabletInvalidContainerOperation();
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 
-    std::string Tablet::info() const
+    std::string tablet::info() const
     {
-        switch (type)
+        switch (container_type)
         {
-        case HYDRA15::Foundation::Archivist::Tablet::Type::map:
+        case HYDRA15::Foundation::archivist::tablet::type::map:
             return std::format(
-                visualize.tabletMap.data(),
+                vslz.tabletMap.data(),
                 data.size()
             );
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::list:
+        case HYDRA15::Foundation::archivist::tablet::type::list:
             return std::format(
-                visualize.tabletList.data(),
+                vslz.tabletList.data(),
                 data.size()
             );
 
-        case HYDRA15::Foundation::Archivist::Tablet::Type::queue:
+        case HYDRA15::Foundation::archivist::tablet::type::queue:
             return std::format(
-                visualize.tabletQueue.data(),
+                vslz.tabletQueue.data(),
                 data.size()
             );
 
         default:
-            throw Exceptions::Archivist::TabletUnknownExpt();
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 }

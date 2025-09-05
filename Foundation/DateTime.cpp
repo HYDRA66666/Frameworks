@@ -1,22 +1,22 @@
 ﻿#include "pch.h"
-#include "DateTime.h"
+#include "datetime.h"
 
-namespace HYDRA15::Foundation::Assistant
+namespace HYDRA15::Foundation::assistant
 {
     extern int localTimeZone = 8;
 
-    DateTime::DateTime()
+    datetime::datetime()
         :stamp(std::time(NULL))
     { }
 
-    DateTime::DateTime(time_t t)
+    datetime::datetime(time_t t)
         :stamp(t)
     { }
 
-    std::string DateTime::date_time(std::string format, int timeZone) const
+    std::string datetime::date_time(std::string format, int timeZone) const
     {
         if(timeZone < -12 || timeZone > 14)
-            throw Exceptions::Assistant::DateTimeInvalidTimeZone();
+            throw Exceptions::assistant::DateTimeInvalidTimeZone();
 
         time_t localStamp = stamp + timeZone * 3600;
         tm local;
@@ -28,13 +28,13 @@ namespace HYDRA15::Foundation::Assistant
         return str;
     }
 
-    DateTime DateTime::now()
+    datetime datetime::now()
     {
-        return DateTime();
+        return datetime();
     }
 
-    std::string DateTime::now_date_time(std::string format, int timeZone)
+    std::string datetime::now_date_time(std::string format, int timeZone)
     {
-        return DateTime().date_time(format, timeZone);
+        return datetime().date_time(format, timeZone);
     }
 }

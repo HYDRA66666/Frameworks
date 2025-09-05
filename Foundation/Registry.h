@@ -2,11 +2,11 @@
 #include "framework.h"
 #include "pch.h"
 
-#include "ArchivistException.h"
-#include "Entry.h"
-#include "Index.h"
+#include "archivist_exception.h"
+#include "entry.h"
+#include "index.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
     // 处理注册相关逻辑
     // 模板参数 K : 键类型，要求满足哈希键约束
@@ -28,37 +28,37 @@ namespace HYDRA15::Foundation::Archivist
     // 基础注册机模板，支持任意类型的键和值
     template<typename K, typename V>
         requires hash_key<K>
-    class BasicRegistry
+    class basic_registry
     {
         // 类型定义
     public:
-        using RegTab = std::unordered_map<K, V>;
+        using regtab = std::unordered_map<K, V>;
 
 
         // 核心数据
     protected:
-        RegTab tab;
+        regtab tab;
         size_t max = 0;
 
         // 构造与析构
     public:
-        BasicRegistry(size_t maxSize)
+        basic_registry(size_t maxSize)
             :max(maxSize)
         {
             if (max > tab.max_size())
-                throw Exceptions::Archivist::RegistryTabletInvalidMaxSize();
+                throw Exceptions::archivist::RegistryTabletInvalidMaxSize();
         }
-        BasicRegistry() : max(0) {}
+        basic_registry() : max(0) {}
 
         // 注册
         void regist(const K& key, V&& value)
         {
             if (max > 0 && tab.size() >= max)
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             if(tab.size() >= tab.max_size())
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             if (tab.contains(key))
-                throw Exceptions::Archivist::RegistryKeyExists();
+                throw Exceptions::archivist::RegistryKeyExists();
 
             tab[key] = std::forward<V>(value); // 使用拷贝构造
         }
@@ -69,7 +69,7 @@ namespace HYDRA15::Foundation::Archivist
         V& find(const K& key)
         {
             if (!tab.contains(key))
-                throw Exceptions::Archivist::RegistryKeyNotFound();
+                throw Exceptions::archivist::RegistryKeyNotFound();
             return tab[key];
         }
 
@@ -84,7 +84,7 @@ namespace HYDRA15::Foundation::Archivist
         }
 
         // 迭代器
-        using iterator = typename RegTab::iterator;
+        using iterator = typename regtab::iterator;
         iterator begin() { return tab.begin(); }
         iterator end() { return tab.end(); }
     };
@@ -92,25 +92,25 @@ namespace HYDRA15::Foundation::Archivist
 
     /***************************** 特化类 *****************************/
     // 简单注册机
-    using Registry = BasicRegistry<Index, Entry>;
+    using registry = basic_registry<index, entry>;
     
     // 整数键注册机，支持被动注册和懒注册
     template<typename V>
-    class IntRegistry : public BasicRegistry<unsigned long long, V>
+    class int_registry : public basic_registry<unsigned long long, V>
     {
         // 类型定义
     public:
-        using UintIndex = unsigned long long;
+        using uint_index = unsigned long long;
         // 核心数据
-        UintIndex current = 0;
-        UintIndex start = 0;
-        using BasicRegistry<UintIndex, V>::tab;
-        using BasicRegistry<UintIndex, V>::max;
+        uint_index current = 0;
+        uint_index start = 0;
+        using basic_registry<uint_index, V>::tab;
+        using basic_registry<uint_index, V>::max;
 
         // 构造与析构
     public:
-        IntRegistry(UintIndex startKey = 0, size_t maxSize = 0)
-            : BasicRegistry<UintIndex, V>(maxSize), start(startKey), current(startKey)
+        int_registry(uint_index startKey = 0, size_t maxSize = 0)
+            : basic_registry<uint_index, V>(maxSize), start(startKey), current(startKey)
         {
         }
 
@@ -118,29 +118,29 @@ namespace HYDRA15::Foundation::Archivist
     private:
         void find_next_key()
         {
-            if (current != std::numeric_limits<UintIndex>::max())
+            if (current != std::numeric_limits<uint_index>::max())
                 current++;   // 默认currentKey已使用
-            while (current != std::numeric_limits<UintIndex>::max() && tab.contains(current))
+            while (current != std::numeric_limits<uint_index>::max() && tab.contains(current))
                 current++;
-            if (current == std::numeric_limits<UintIndex>::max() && tab.contains(current)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
+            if (current == std::numeric_limits<uint_index>::max() && tab.contains(current)) // 若达到最大值，则重新扫描整整表，查找是否有空缺位置
             {
                 current = start;
-                while (current != std::numeric_limits<UintIndex>::max() && tab.contains(current))
+                while (current != std::numeric_limits<uint_index>::max() && tab.contains(current))
                     current++;
-                if (current == std::numeric_limits<UintIndex>::max()) // 找不到空缺位置，则抛出异常
-                    throw Exceptions::Archivist::RegistryTabletFull();
+                if (current == std::numeric_limits<uint_index>::max()) // 找不到空缺位置，则抛出异常
+                    throw Exceptions::archivist::RegistryTabletFull();
             }
         }
 
         // 注册
     public:
         // 被动注册：传入值，注册机分配键
-        UintIndex regist(V&& value)
+        uint_index regist(V&& value)
         {
             if (max > 0 && tab.size() >= max)
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             if (tab.size() >= tab.max_size())
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             find_next_key();
 
             tab[current] = std::forward<V>(value);
@@ -148,12 +148,12 @@ namespace HYDRA15::Foundation::Archivist
         }
 
         // 懒注册：不传入值，注册机分配键和默认值
-        UintIndex regist()
+        uint_index regist()
         {
             if (max > 0 && tab.size() >= max)
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             if (tab.size() >= tab.max_size())
-                throw Exceptions::Archivist::RegistryTabletFull();
+                throw Exceptions::archivist::RegistryTabletFull();
             find_next_key();
 
             tab[current];

@@ -1,44 +1,44 @@
 ﻿#include "pch.h"
-#include "Entry.h"
+#include "entry.h"
 
-namespace HYDRA15::Foundation::Archivist
+namespace HYDRA15::Foundation::archivist
 {
-    Entry::Entry(const Entry& other)
+    entry::entry(const entry& other)
         : pImpl(other.pImpl ? other.pImpl->clone() : nullptr)
     {
     }
 
-    Entry::Entry(Entry&& other)
+    entry::entry(entry&& other)
         : pImpl(std::move(other.pImpl))
     {
     }
 
-    Entry& Entry::operator=(const Entry& other)
+    entry& entry::operator=(const entry& other)
     {
         pImpl = other.pImpl ? other.pImpl->clone() : nullptr;
         return *this;
     }
 
-    Entry& Entry::operator=(Entry&& other)
+    entry& entry::operator=(entry&& other)
     {
         pImpl = std::move(other.pImpl);
         return *this;
     }
 
-    std::string Entry::info() const
+    std::string entry::info() const
     {
         if (!pImpl)
-            return visualize.emptyEntry.data();
+            return vslz.emptyEntry.data();
         return std::format(
-            visualize.entry.data(),
+            vslz.entry.data(),
             pImpl->info()
         );
     }
 
-    std::ostream& Entry::operator<<(std::ostream& os) const
+    std::ostream& entry::operator<<(std::ostream& os) const
     {
         if(!pImpl)
-            os << visualize.emptyEntry.data();
+            os << vslz.emptyEntry.data();
         else
             os << pImpl->info();
         return os;

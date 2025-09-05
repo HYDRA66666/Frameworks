@@ -1,73 +1,73 @@
 ﻿#include "pch.h"
-#include "Background.h"
+#include "background.h"
 
-namespace HYDRA15::Foundation::Labourer
+namespace HYDRA15::Foundation::labourer
 {
-    void Background::work_shell(ThreadInfo& info)
+    void background::work_shell(thread_info& info)
     {
-        info.state = ThreadInfo::State::undefined;
+        info.thread_state = thread_info::state::undefined;
         // 等待所有线程准备就绪
         checkpoint.arrive_and_wait();
         // 执行工作
         work(info);
-        info.state = ThreadInfo::State::finishing;
+        info.thread_state = thread_info::state::finishing;
         // 等待所有线程完成工作
         auto t = checkpoint.arrive();
     }
 
-    void Background::start()
+    void background::start()
     {
         auto t = checkpoint.arrive();
     }
 
-    void Background::wait_for_end()
+    void background::wait_for_end()
     {
         checkpoint.arrive_and_wait();
     }
 
-    Background::Background(unsigned int bkgThrCount)
+    background::background(unsigned int bkgThrCount)
         : checkpoint(bkgThrCount + 1)
     {
         threads.resize(bkgThrCount);
         for (auto& i : threads)
-            i.thread = std::make_shared<std::thread>(&Background::work_shell, this, std::ref(i.info));
+            i.thread = std::make_shared<std::thread>(&background::work_shell, this, std::ref(i.info));
         for (auto& item : threads)
             item.thread->detach();
     }
 
-    Background::Background()
-        :Background(1)
+    background::background()
+        :background(1)
     {
     }
 
-    Background::iterator::iterator(list_iter iter)
+    background::iterator::iterator(list_iter iter)
         :it(iter)
     {
 
     }
 
-    Background::iterator& Background::iterator::operator++()
+    background::iterator& background::iterator::operator++()
     {
         it++;
         return *this;
     }
 
-    bool Background::iterator::operator!=(const iterator& other) const
+    bool background::iterator::operator!=(const iterator& other) const
     {
         return it != other.it;
     }
 
-    Background::ThreadInfo& Background::iterator::operator*() const
+    background::thread_info& background::iterator::operator*() const
     {
         return it->info;
     }
 
-    Background::iterator Background::begin()
+    background::iterator background::begin()
     {
         return iterator(threads.begin());
     }
 
-    Background::iterator Background::end()
+    background::iterator background::end()
     {
         return iterator(threads.end());
     }
