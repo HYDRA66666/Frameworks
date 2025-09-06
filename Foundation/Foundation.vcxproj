@@ -163,6 +163,7 @@
     <ClInclude Include="shared_container_base.h" />
     <ClInclude Include="tablet.h" />
     <ClInclude Include="ThreadLake.h" />
+    <ClInclude Include="utility.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="archivist_exception.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="secretary_exception.cpp" />
     <ClCompile Include="tablet.cpp" />
     <ClCompile Include="ThreadLake.cpp" />
+    <ClCompile Include="utility.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="document.md" />

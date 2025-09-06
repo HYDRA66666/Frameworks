@@ -90,6 +90,9 @@
     <ClInclude Include="Progress.h">
       <Filter>secretary</Filter>
     </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>assistant</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="Progress.cpp">
       <Filter>secretary</Filter>
+    </ClCompile>
+    <ClCompile Include="utility.cpp">
+      <Filter>assistant</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

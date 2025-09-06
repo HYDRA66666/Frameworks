@@ -7,6 +7,7 @@
 #include "iMutexies.h"
 #include "Background.h"
 #include "DateTime.h"
+#include "utility.h"
 
 namespace HYDRA15::Foundation::secretary
 {
@@ -36,17 +37,17 @@ namespace HYDRA15::Foundation::secretary
 
         // 全局配置
     private:
-        struct Config
+        static struct Config
         {
-            milliseconds refreshInterval = milliseconds(300); // 最短刷新间隔
+            static constexpr milliseconds refreshInterval = milliseconds(300); // 最短刷新间隔
 
-            milliseconds btmMsgDispTimeout = milliseconds(1000);        // 超过此时间则不展示
-            milliseconds btmMsgExistTimeout = milliseconds(30000);      // 超过此时间则删除
-            static const size_t maxBtmChars = 100;                   // 最大底部消息字符数
-            static_string otherBtmMsgFormat = "  ... and {0} more";
+            static_uint btmMaxLines = 3;
+            static_string btmMoreFormat = " ... and {0} more";
+            static constexpr milliseconds btmDispTimeout = milliseconds(1000);
+            static constexpr milliseconds btmExpireTimeout = milliseconds(30000);
 
             static_string fileNameFormat = ".\\Log_{0}.log";
-            milliseconds fileRefreshTime = milliseconds(5000);
+            static constexpr milliseconds fileRefreshTime = milliseconds(5000);
             
         }cfg;
 
@@ -94,15 +95,15 @@ namespace HYDRA15::Foundation::secretary
         /***************************** 底部消息相关 *****************************/
        // 类型定义
     private:
-        struct bottom_ctrlblk
+        struct btmmsg_ctrlblock
         {
-            int token;
-            time_point lastUpdate;
+            int token = 0;
+            time_point lastUpdate = time_point::clock::now();
+            bool forceDisplay = false;
             bool neverExpire = false;
-            std::string content;
-            bottom_ctrlblk& operator=(const bottom_ctrlblk&);
+            std::string msg;
         };
-        using btmmsg_tab = archivist::int_registry<bottom_ctrlblk>;
+        using btmmsg_tab = archivist::int_registry<btmmsg_ctrlblock>;
     public:
         using ID = btmmsg_tab::uint_index;
 
@@ -110,11 +111,12 @@ namespace HYDRA15::Foundation::secretary
     private:
         btmmsg_tab btmMsgTab;
         std::mutex btmMsgTabLock;
+        size_t lastBtmLines = 0;
 
 
         // 接口
     public:
-        ID new_bottom(int token, bool nvrExpr = false);
+        ID new_bottom(int token = 0, bool forceDisplay = false, bool neverExpire = false);
         void update_bottom(ID id, int token, const std::string& content);
         bool check_bottom(ID id);
         bool remove_bottom(ID id, int token);

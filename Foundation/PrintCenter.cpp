@@ -33,7 +33,13 @@ namespace HYDRA15::Foundation::secretary
 
     std::string PrintCenter::clear_bottom_msg()
     {
-        return "\033[2K\r";
+        using namespace HYDRA15::Foundation::assistant;
+
+        std::string str = "\r\033[2K";
+        if (lastBtmLines > 1)
+            str += std::string("\033[1A\033[2K") * (lastBtmLines - 1);
+        lastBtmLines = 0;
+        return str;
     }
 
     std::string PrintCenter::print_rolling_msg()
@@ -46,12 +52,8 @@ namespace HYDRA15::Foundation::secretary
         }
 
         std::string str;
-        for (const auto& msg : *pRollMsgLstBack) {
-            // 如果尾部有换行符，则直接输出，否则补一个换行符
-            if (msg.back() == '\n')
-                str.append(msg);
-            else
-                str.append(msg + '\n');
+        for (auto& msg : *pRollMsgLstBack) {
+            str.append(assistant::strip(msg) + '\n');
         }
         pRollMsgLstBack->clear();
 
@@ -60,48 +62,44 @@ namespace HYDRA15::Foundation::secretary
 
     std::string PrintCenter::print_bottom_msg()
     {
+        size_t more = 0;
+        std::list<ID> expires;
         std::string str;
-        std::list<ID> timeoutList;
-        size_t other = 0;
+        bool first = true;
 
+        std::lock_guard lk(btmMsgTabLock);
+        time_point now = time_point::clock::now();
+        for(auto& [id,i]: btmMsgTab)
         {
-            std::lock_guard lg(btmMsgTabLock);
-            time_point now = time_point::clock::now();
-
-            bool first = true;
-            for (auto& [id, msgCtrl] : btmMsgTab)
+            if (i.msg.empty())
+                continue;
+            if(!i.neverExpire && now - i.lastUpdate > cfg.btmExpireTimeout)
             {
-                if (msgCtrl.content.empty())
-                {
-                    other++;
-                    continue;
-                }
-                if (now - msgCtrl.lastUpdate < cfg.btmMsgDispTimeout || msgCtrl.neverExpire)    // 未超时，展示
-                    if (str.size() + msgCtrl.content.size() < cfg.maxBtmChars)
-                    {
-                        if (!first)
-                            str.append(", ");
-                        if (msgCtrl.content.back() == '\n')
-                            str.append(msgCtrl.content.erase(msgCtrl.content.back()));
-                        else
-                            str.append(msgCtrl.content);
-                    }
-                    else
-                        other++;
-                else
-                    other++;
-                first = false;
-                if (now - msgCtrl.lastUpdate > cfg.btmMsgExistTimeout)  // 超时删除
-                    timeoutList.push_back(id);
+                expires.push_back(id);
+                continue;
             }
+            if (!i.forceDisplay && (now - i.lastUpdate > cfg.btmDispTimeout || lastBtmLines >= cfg.btmMaxLines))
+            {
+                more++;
+                continue;
+            }
+            if(!first)
+                str.append("\n");
+            else
+                first = false;
+            str.append(assistant::strip(i.msg));
+            lastBtmLines++;
         }
-        
-        if(other)
-            str.append(std::format(cfg.otherBtmMsgFormat, other));
-        
-        if (!timeoutList.empty())
-            for (const auto& id : timeoutList)
-                btmMsgTab.unregist(id);
+        if (more > 0)
+        {
+            if(lastBtmLines > 0)
+                str.append("\n");
+            str.append(std::format(cfg.btmMoreFormat.data(), more));
+            lastBtmLines++;
+        }
+
+        for(const auto& id : expires)
+            btmMsgTab.unregist(id);
 
         return str;
     }
@@ -211,12 +209,12 @@ namespace HYDRA15::Foundation::secretary
         return rollMsgCount++;
     }
 
-    PrintCenter::ID PrintCenter::new_bottom(int token, bool nvrExpr)
+    PrintCenter::ID PrintCenter::new_bottom(int token, bool forceDisplay, bool neverExpire)
     {
         std::lock_guard lk(btmMsgTabLock);
         try
         {
-            return btmMsgTab.regist({ token ,time_point::clock::now(), nvrExpr, std::string() });
+            return btmMsgTab.regist({ token ,time_point::clock::now(), forceDisplay, neverExpire, std::string() });
         }
         catch(Exceptions::archivist& e)
         {
@@ -228,7 +226,7 @@ namespace HYDRA15::Foundation::secretary
 
     void PrintCenter::update_bottom(ID id, int token, const std::string& content)
     {
-        bottom_ctrlblk* pMsgCtrl;
+        btmmsg_ctrlblock* pMsgCtrl;
         std::lock_guard lk(btmMsgTabLock);
 
         try
@@ -245,7 +243,7 @@ namespace HYDRA15::Foundation::secretary
         if (pMsgCtrl->token != token)
             throw Exceptions::secretary::PrintCenterBtmMsgBadToken();
 
-        pMsgCtrl->content = content;
+        pMsgCtrl->msg = content;
         pMsgCtrl->lastUpdate = time_point::clock::now();
     }
 
@@ -274,16 +272,5 @@ namespace HYDRA15::Foundation::secretary
 
         pFMsgLstFront->push_back(content);
         return fileMsgCount++;
-    }
-
-    PrintCenter::bottom_ctrlblk& PrintCenter::bottom_ctrlblk::operator=(const bottom_ctrlblk& src)
-    {
-        if (this != &src)
-        {
-            lastUpdate = src.lastUpdate;
-            token = src.token;
-            content = src.content;
-        }
-        return *this;
     }
 }
