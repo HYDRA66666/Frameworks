@@ -4,7 +4,7 @@
 namespace HYDRA15::Foundation::Exceptions
 {
     assistant::assistant(const std::string& desp, const referee::iException_code& code) noexcept
-        :referee::iExceptionBase(desp, LibInfo::libID.assistant, code)
+        :referee::iExceptionBase(desp, libInfo::libID.assistant, code)
     {
     }
 
