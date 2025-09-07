@@ -37,7 +37,7 @@ namespace HYDRA15::Foundation::labourer
         container container;
 
     protected:
-        container_lock lock;  // 将锁对象暴露给外部，以实现更高级的操作
+        container_lock containerLock;  // 将锁对象暴露给外部，以实现更高级的操作
 
     public:
         virtual ~shared_container_base() = default;
@@ -59,14 +59,14 @@ namespace HYDRA15::Foundation::labourer
         template<typename F, typename... Args>
         decltype(auto) call_locked(F&& f, Args&&... args)
         {
-            std::lock_guard<container_lock> guard(lock);
+            std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
         template<typename F, typename... Args>
         decltype(auto) static_call_locked(F&& f, Args&&... args)
         {
-            std::lock_guard<container_lock> guard(lock);
+            std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
 
@@ -75,9 +75,9 @@ namespace HYDRA15::Foundation::labourer
         decltype(auto) call_shared(F&& f, Args&&... args)
         {
             if constexpr (shared_lockable<container_lock>)
-                std::shared_lock<container_lock> guard(lock);
+                std::shared_lock<container_lock> guard(containerLock);
             else
-                std::lock_guard<container_lock> guard(lock);
+                std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
@@ -85,9 +85,9 @@ namespace HYDRA15::Foundation::labourer
         decltype(auto) static_call_shared(F&& f, Args&&... args)
         {
             if constexpr (shared_lockable<container_lock>)
-                std::shared_lock<container_lock> guard(lock);
+                std::shared_lock<container_lock> guard(containerLock);
             else
-                std::lock_guard<container_lock> guard(lock);
+                std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
 
@@ -96,9 +96,9 @@ namespace HYDRA15::Foundation::labourer
         decltype(auto) call_unique(F&& f, Args&&... args)
         {
             if constexpr (shared_lockable<container_lock>)
-                std::unique_lock<container_lock> guard(lock);
+                std::unique_lock<container_lock> guard(containerLock);
             else
-                std::lock_guard<container_lock> guard(lock);
+                std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), container, std::forward<Args>(args)...);
         }
 
@@ -106,37 +106,37 @@ namespace HYDRA15::Foundation::labourer
         decltype(auto) static_call_unique(F&& f, Args&&... args)
         {
             if constexpr (shared_lockable<container_lock>)
-                std::unique_lock<container_lock> guard(lock);
+                std::unique_lock<container_lock> guard(containerLock);
             else
-                std::lock_guard<container_lock> guard(lock);
+                std::lock_guard<container_lock> guard(containerLock);
             return std::invoke(std::forward<F>(f), std::forward<Args>(args)...);
         }
 
         // 直接上锁
-        auto lock() { return lock.lock(); }
-        auto unlock() { return lock.unlock(); }
-        auto try_lock() { return lock.try_lock(); }
+        auto lock() { return containerLock.lock(); }
+        auto unlock() { return containerLock.unlock(); }
+        auto try_lock() { return containerLock.try_lock(); }
 
         auto lock_shared()
         {
             if constexpr (shared_lockable<container_lock>)
-                return lock.lock_shared();
+                return containerLock.lock_shared();
             else
-                return lock.lock();
+                return containerLock.lock();
         }
         auto unlock_shared()
         {
             if constexpr (shared_lockable<container_lock>)
-                return lock.unlock_shared();
+                return containerLock.unlock_shared();
             else
-                return lock.unlock();
+                return containerLock.unlock();
         }
         auto try_lock_shared()
         {
             if constexpr (shared_lockable<container_lock>)
-                return lock.try_lock_shared();
+                return containerLock.try_lock_shared();
             else
-                return lock.try_lock();
+                return containerLock.try_lock();
         }
     };
 
