@@ -4,7 +4,7 @@
 namespace HYDRA15::Foundation::Exceptions
 {
     secretary::secretary(const std::string& desp, const referee::iException_code& code) noexcept
-        : referee::iException_base(desp, Foundation::LibInfo::libID.secretary, code)
+        : referee::iExceptionBase(desp, Foundation::LibInfo::libID.secretary, code)
     {
     }
 

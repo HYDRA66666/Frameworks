@@ -148,6 +148,7 @@
     <ClInclude Include="background.h" />
     <ClInclude Include="datetime.h" />
     <ClInclude Include="entry.h" />
+    <ClInclude Include="expressman_exception.h" />
     <ClInclude Include="index.h" />
     <ClInclude Include="iExceptionBase.h" />
     <ClInclude Include="framework.h" />
@@ -155,6 +156,9 @@
     <ClInclude Include="labourer_exception.h" />
     <ClInclude Include="libID.h" />
     <ClInclude Include="Log.h" />
+    <ClInclude Include="message.h" />
+    <ClInclude Include="basic_messager.h" />
+    <ClInclude Include="Messager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrintCenter.h" />
     <ClInclude Include="Progress.h" />
@@ -169,6 +173,7 @@
     <ClCompile Include="archivist_exception.cpp" />
     <ClCompile Include="assistant_exception.cpp" />
     <ClCompile Include="background.cpp" />
+    <ClCompile Include="basic_messager.cpp" />
     <ClCompile Include="datetime.cpp" />
     <ClCompile Include="entry.cpp" />
     <ClCompile Include="iExceptionBase.cpp" />
@@ -176,6 +181,8 @@
     <ClCompile Include="index.cpp" />
     <ClCompile Include="labourer_exception.cpp" />
     <ClCompile Include="Log.cpp" />
+    <ClCompile Include="message.cpp" />
+    <ClCompile Include="Messager.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

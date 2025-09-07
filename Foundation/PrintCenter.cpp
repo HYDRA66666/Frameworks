@@ -231,7 +231,7 @@ namespace HYDRA15::Foundation::secretary
 
         try
         {
-            pMsgCtrl = &btmMsgTab.find(id);
+            pMsgCtrl = &btmMsgTab.fecth(id);
         }
         catch (Exceptions::archivist& e)
         {
@@ -260,7 +260,7 @@ namespace HYDRA15::Foundation::secretary
         if (!btmMsgTab.contains(id))
             return true;
 
-        if (btmMsgTab.find(id).token != token)
+        if (btmMsgTab.fecth(id).token != token)
             return false;
 
         return btmMsgTab.unregist(id);

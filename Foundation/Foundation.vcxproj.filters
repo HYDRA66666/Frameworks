@@ -93,6 +93,18 @@
     <ClInclude Include="utility.h">
       <Filter>assistant</Filter>
     </ClInclude>
+    <ClInclude Include="message.h">
+      <Filter>expressman</Filter>
+    </ClInclude>
+    <ClInclude Include="basic_messager.h">
+      <Filter>expressman</Filter>
+    </ClInclude>
+    <ClInclude Include="expressman_exception.h">
+      <Filter>exceptions</Filter>
+    </ClInclude>
+    <ClInclude Include="Messager.h">
+      <Filter>expressman</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -148,6 +160,15 @@
     </ClCompile>
     <ClCompile Include="utility.cpp">
       <Filter>assistant</Filter>
+    </ClCompile>
+    <ClCompile Include="message.cpp">
+      <Filter>expressman</Filter>
+    </ClCompile>
+    <ClCompile Include="Messager.cpp">
+      <Filter>expressman</Filter>
+    </ClCompile>
+    <ClCompile Include="basic_messager.cpp">
+      <Filter>expressman</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

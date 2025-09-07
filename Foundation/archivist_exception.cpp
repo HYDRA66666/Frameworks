@@ -4,7 +4,7 @@
 namespace HYDRA15::Foundation::Exceptions
 {
     archivist::archivist(const std::string& desp, const referee::iException_code& code) noexcept
-        : referee::iException_base(desp, Foundation::LibInfo::libID.archivist, code)
+        : referee::iExceptionBase(desp, Foundation::LibInfo::libID.archivist, code)
     {
     }
 

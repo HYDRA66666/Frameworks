@@ -10,7 +10,7 @@ namespace HYDRA15::Foundation::referee
 	//    - 异常信息
     //    - （可选）调用栈
     using iException_code = unsigned int;
-	class iException_base :public std::exception
+	class iExceptionBase :public std::exception
 	{
 		static_string baseWhatStrFormat = "iException: {0} ( 0x{1:08X} : 0x{2:08X} )\n";
 
@@ -27,9 +27,9 @@ namespace HYDRA15::Foundation::referee
         const std::string description;
 
 		// 构造和析构
-		iException_base() noexcept = delete;
-		iException_base(const std::string& desp, const iException_code& id, const iException_code& code) noexcept;
-		virtual ~iException_base() noexcept = default;
+		iExceptionBase() noexcept = delete;
+		iExceptionBase(const std::string& desp, const iException_code& id, const iException_code& code) noexcept;
+		virtual ~iExceptionBase() noexcept = default;
 
 		// what()
 		virtual const char* what() const noexcept override;

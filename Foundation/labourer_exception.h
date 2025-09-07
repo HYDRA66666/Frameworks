@@ -7,7 +7,7 @@
 
 namespace HYDRA15::Foundation::Exceptions
 {
-    class labourer : public referee::iException_base
+    class labourer : public referee::iExceptionBase
     {
     public:
         static struct iException_codes

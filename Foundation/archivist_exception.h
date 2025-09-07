@@ -7,7 +7,7 @@
 
 namespace HYDRA15::Foundation::Exceptions
 {
-    class archivist :public referee::iException_base
+    class archivist :public referee::iExceptionBase
     {
     public:
         static struct iException_codes

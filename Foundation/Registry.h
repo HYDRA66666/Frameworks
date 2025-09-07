@@ -66,7 +66,7 @@ namespace HYDRA15::Foundation::archivist
         {
             return tab.erase(key);
         }
-        V& find(const K& key)
+        V& fecth(const K& key)
         {
             if (!tab.contains(key))
                 throw Exceptions::archivist::RegistryKeyNotFound();

@@ -7,7 +7,7 @@
 
 namespace HYDRA15::Foundation::Exceptions
 {
-    class assistant : public referee::iException_base
+    class assistant : public referee::iExceptionBase
     {
     public:
         static struct iException_codes
