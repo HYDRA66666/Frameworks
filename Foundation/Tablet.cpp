@@ -280,6 +280,9 @@ namespace HYDRA15::Foundation::archivist
                 
         case tablet::type::queue:
             throw Exceptions::archivist::TabletInvalidContainerOperation();
+
+        default:
+            throw Exceptions::archivist::TabletUnknownExpt();
         }
     }
 

@@ -170,9 +170,9 @@ namespace HYDRA15::Foundation::archivist
 
         // 从其他 Entry 构造
         entry(const entry& other);
-        entry(entry&& other);
+        entry(entry&& other) noexcept;
         entry& operator=(const entry& other);
-        entry& operator=(entry&& other);
+        entry& operator=(entry&& other) noexcept;
 
         // 从任意数据类型构造
         template<typename T>

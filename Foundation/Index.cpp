@@ -8,7 +8,7 @@ namespace HYDRA15::Foundation::archivist
     {
     }
 
-    index::index(index&& other)
+    index::index(index&& other) noexcept
         :pImpl(std::move(other.pImpl))
     {
     }

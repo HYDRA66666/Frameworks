@@ -8,7 +8,7 @@ namespace HYDRA15::Foundation::archivist
     {
     }
 
-    entry::entry(entry&& other)
+    entry::entry(entry&& other) noexcept
         : pImpl(std::move(other.pImpl))
     {
     }
@@ -19,7 +19,7 @@ namespace HYDRA15::Foundation::archivist
         return *this;
     }
 
-    entry& entry::operator=(entry&& other)
+    entry& entry::operator=(entry&& other) noexcept
     {
         pImpl = std::move(other.pImpl);
         return *this;

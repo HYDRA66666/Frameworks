@@ -20,8 +20,8 @@ namespace HYDRA15::Foundation::expressman
     {
         struct msgque_ctrlblk
         {
-            int token;
-            std::shared_ptr<msg_queue> queue;
+            int token = 0;
+            std::shared_ptr<msg_queue> queue = nullptr;
         };
 
         using msg_tab = archivist::basic_registry<archivist::index, msgque_ctrlblk>;

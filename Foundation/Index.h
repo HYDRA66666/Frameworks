@@ -72,7 +72,7 @@ namespace HYDRA15::Foundation::archivist
     public:
         index() = delete;
         index(const index& other);
-        index(index&& other);
+        index(index&& other) noexcept;
 
         template<typename T>
             requires (!std::derived_from<std::remove_cvref_t<T>, index_base>)
