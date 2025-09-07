@@ -3,7 +3,7 @@
 #include "framework.h"
 
 
-namespace HYDRA15::Foundation::LibInfo
+namespace HYDRA15::Foundation::libInfo
 {
     // 集中管理的库代码
     static struct libID
