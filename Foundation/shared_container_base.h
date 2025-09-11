@@ -18,7 +18,7 @@ namespace HYDRA15::Foundation::labourer
     //   - 无重载成员函数：call(&Container::func, args...)
     //   - 有重载成员函数：call(static_cast<Ret (Container::*)(Args&&...)>(&Container::func), args...)，须在static_cast中指定函数指针重载的版本
     template<class container, class container_lock>
-        requires concepts::lockable<container_lock>
+        requires framework::lockable<container_lock>
     class shared_container_base
     {
         container container;
@@ -61,7 +61,7 @@ namespace HYDRA15::Foundation::labourer
         template<typename F, typename... Args>
         decltype(auto) call_shared(F&& f, Args&&... args)
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 std::shared_lock<container_lock> guard(containerLock);
             else
                 std::lock_guard<container_lock> guard(containerLock);
@@ -71,7 +71,7 @@ namespace HYDRA15::Foundation::labourer
         template<typename F, typename... Args>
         decltype(auto) static_call_shared(F&& f, Args&&... args)
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 std::shared_lock<container_lock> guard(containerLock);
             else
                 std::lock_guard<container_lock> guard(containerLock);
@@ -82,7 +82,7 @@ namespace HYDRA15::Foundation::labourer
         template<typename F, typename... Args>
         decltype(auto) call_unique(F&& f, Args&&... args)
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 std::unique_lock<container_lock> guard(containerLock);
             else
                 std::lock_guard<container_lock> guard(containerLock);
@@ -92,7 +92,7 @@ namespace HYDRA15::Foundation::labourer
         template<typename F, typename... Args>
         decltype(auto) static_call_unique(F&& f, Args&&... args)
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 std::unique_lock<container_lock> guard(containerLock);
             else
                 std::lock_guard<container_lock> guard(containerLock);
@@ -106,21 +106,21 @@ namespace HYDRA15::Foundation::labourer
 
         auto lock_shared()
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 return containerLock.lock_shared();
             else
                 return containerLock.lock();
         }
         auto unlock_shared()
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 return containerLock.unlock_shared();
             else
                 return containerLock.unlock();
         }
         auto try_lock_shared()
         {
-            if constexpr (concepts::shared_lockable<container_lock>)
+            if constexpr (framework::shared_lockable<container_lock>)
                 return containerLock.try_lock_shared();
             else
                 return containerLock.try_lock();

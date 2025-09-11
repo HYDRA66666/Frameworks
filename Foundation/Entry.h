@@ -124,13 +124,13 @@ namespace HYDRA15::Foundation::archivist
                     typeid(T).name(),
                     data
                 );
-            else if constexpr (concepts::can_be_transfer_to_string<T>)
+            else if constexpr (framework::can_be_transfer_to_string<T>)
                 return std::format(
                     vslz.entryWithKnownType.data(),
                     typeid(T).name(),
                     std::to_string(data)
                 );
-            else if constexpr (concepts::has_info_interface<T>)
+            else if constexpr (framework::has_info_interface<T>)
                 return std::format(
                     vslz.entryWithKnownType.data(),
                     typeid(T).name(),

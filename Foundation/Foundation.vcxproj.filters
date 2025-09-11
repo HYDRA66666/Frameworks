@@ -28,9 +28,6 @@
     <Filter Include="secretary">
       <UniqueIdentifier>{4fa52ffe-fb05-4cbc-8eda-a5bb11d795e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="concepts">
-      <UniqueIdentifier>{acc7b485-ffd2-40df-b77d-93d4dc309c42}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -56,9 +53,6 @@
     </ClInclude>
     <ClInclude Include="labourer_exception.h">
       <Filter>exceptions</Filter>
-    </ClInclude>
-    <ClInclude Include="libID.h">
-      <Filter>lib_info</Filter>
     </ClInclude>
     <ClInclude Include="index.h">
       <Filter>archivist</Filter>
@@ -109,7 +103,10 @@
       <Filter>expressman</Filter>
     </ClInclude>
     <ClInclude Include="concepts.h">
-      <Filter>concepts</Filter>
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="libID.h">
+      <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -22,7 +22,7 @@ namespace HYDRA15::Foundation::archivist
     /***************************** 基 类 *****************************/
     // 基础注册机模板，支持任意类型的键和值
     template<typename K, typename V>
-        requires concepts::hash_key<K>
+        requires framework::hash_key<K>
     class basic_registry
     {
         // 类型定义

@@ -2,7 +2,7 @@
 #include "framework.h"
 #include "pch.h"
 
-namespace HYDRA15::Foundation::concepts
+namespace HYDRA15::Foundation::framework
 {
     // 信息输出相关概念
     template<typename T>
