@@ -52,10 +52,17 @@ namespace HYDRA15::Foundation::archivist
         }
         virtual bool operator<(const index_base& other) const override
         {
-            const auto* otherImpl = dynamic_cast<const index_impl<T>*>(&other);
-            if(!otherImpl)
-                throw Exceptions::archivist::IndexTypeMismatch();
-            return data < otherImpl->data;
+            const index_impl<T>* otherIndexImpl = dynamic_cast<const index_impl<T>*>(&other);
+            const entry_base* otherEntryImpl = dynamic_cast<const entry_base*>(&other);
+
+            if (otherIndexImpl) // 相同数据类型
+                return data < otherIndexImpl->data;
+
+            if (otherEntryImpl) // 不同数据类型
+                return std::hash<std::string>()(this->type().name()) <
+                std::hash<std::string>()(otherEntryImpl->type().name());
+
+            throw Exceptions::archivist::IndexTypeMismatch();
         }
         virtual size_t hash() const override
         {
