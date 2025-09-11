@@ -28,6 +28,9 @@
     <Filter Include="secretary">
       <UniqueIdentifier>{4fa52ffe-fb05-4cbc-8eda-a5bb11d795e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="concepts">
+      <UniqueIdentifier>{acc7b485-ffd2-40df-b77d-93d4dc309c42}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="Messager.h">
       <Filter>expressman</Filter>
+    </ClInclude>
+    <ClInclude Include="concepts.h">
+      <Filter>concepts</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

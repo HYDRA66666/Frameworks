@@ -5,6 +5,7 @@
 #include "archivist_exception.h"
 #include "entry.h"
 #include "index.h"
+#include "concepts.h"
 
 namespace HYDRA15::Foundation::archivist
 {
@@ -15,19 +16,13 @@ namespace HYDRA15::Foundation::archivist
     // 如果不需要上锁，可以使用 NotALock 作为锁类型，其满足锁约束，但不会进行任何实际操作
 
     /***************************** 概 念 *****************************/
-    // 哈希键约束
-    template<typename K>
-    concept hash_key = requires(K k) {
-        { std::hash<K>()(k) } -> std::same_as<size_t>;
-    } && requires(K a, K b) {
-        { a == b } -> std::same_as<bool>;
-    };
+
 
 
     /***************************** 基 类 *****************************/
     // 基础注册机模板，支持任意类型的键和值
     template<typename K, typename V>
-        requires hash_key<K>
+        requires concepts::hash_key<K>
     class basic_registry
     {
         // 类型定义

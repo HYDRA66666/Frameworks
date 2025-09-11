@@ -146,6 +146,7 @@
     <ClInclude Include="archivist_exception.h" />
     <ClInclude Include="assistant_exception.h" />
     <ClInclude Include="background.h" />
+    <ClInclude Include="concepts.h" />
     <ClInclude Include="datetime.h" />
     <ClInclude Include="entry.h" />
     <ClInclude Include="expressman_exception.h" />

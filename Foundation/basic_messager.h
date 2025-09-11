@@ -7,6 +7,7 @@
 #include "index.h"
 #include "shared_container_base.h"
 #include "expressman_exception.h"
+#include "concepts.h"
 
 namespace HYDRA15::Foundation::expressman
 {
@@ -21,7 +22,7 @@ namespace HYDRA15::Foundation::expressman
         struct msgque_ctrlblk
         {
             int token = 0;
-            std::shared_ptr<msg_queue> queue = nullptr;
+            std::shared_ptr<msg_queue<std::mutex>> queue = nullptr;
         };
 
         using msg_tab = archivist::basic_registry<archivist::index, msgque_ctrlblk>;
@@ -38,7 +39,7 @@ namespace HYDRA15::Foundation::expressman
         bool post(const archivist::index& idx, const msg_list& msgs);
 
         message fetch_one(const archivist::index& idx, int token);
-        std::shared_ptr<msg_queue> fetch(const archivist::index& idx, int token);
+        std::shared_ptr<msg_queue<std::mutex>> fetch(const archivist::index& idx, int token);
 
         bool contains(const archivist::index& idx);
 

@@ -3,6 +3,7 @@
 #include "pch.h"
 
 #include "archivist_exception.h"
+#include "concepts.h"
 
 namespace HYDRA15::Foundation::archivist
 {
@@ -81,20 +82,6 @@ namespace HYDRA15::Foundation::archivist
         virtual std::string info() const = 0;
     };
 
-    // 信息输出相关概念
-    template<typename T>
-    concept can_be_transfer_to_string = requires(std::remove_cvref_t<T> a) {
-        { std::to_string(a) } -> std::convertible_to<std::string>;
-    } || requires(std::remove_cvref_t<T> a) {
-        { to_string(a) } -> std::convertible_to<std::string>;
-    };
-
-    template<class T>
-    concept has_info_interface = requires(std::remove_cvref_t<T> a) {
-        { a.info() } -> std::convertible_to<std::string>;
-    };
-
-
     /***************************** 派生类 *****************************/
     // 存储数据
     template<typename T>
@@ -137,13 +124,13 @@ namespace HYDRA15::Foundation::archivist
                     typeid(T).name(),
                     data
                 );
-            else if constexpr (can_be_transfer_to_string<T>)
+            else if constexpr (concepts::can_be_transfer_to_string<T>)
                 return std::format(
                     vslz.entryWithKnownType.data(),
                     typeid(T).name(),
                     std::to_string(data)
                 );
-            else if constexpr (has_info_interface<T>)
+            else if constexpr (concepts::has_info_interface<T>)
                 return std::format(
                     vslz.entryWithKnownType.data(),
                     typeid(T).name(),

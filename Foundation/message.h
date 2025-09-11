@@ -22,11 +22,14 @@ namespace HYDRA15::Foundation::expressman
     // 提供单消息操作和批量消息操作
     class msg_queue :protected labourer::shared_container_base<msg_list, std::mutex>
     {
+        std::condition_variable cv;
+
     public:
         void push(message msg);
         void push(msg_list msgs);
 
         message pop();
+        message try_pop();
         msg_list pop_all();
 
         size_t size();
