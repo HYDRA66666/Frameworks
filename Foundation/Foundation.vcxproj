@@ -155,13 +155,13 @@
     <ClInclude Include="iMutexies.h" />
     <ClInclude Include="labourer_exception.h" />
     <ClInclude Include="libID.h" />
-    <ClInclude Include="Log.h" />
+    <ClInclude Include="log.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="basic_messager.h" />
     <ClInclude Include="Messager.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="PrintCenter.h" />
-    <ClInclude Include="Progress.h" />
+    <ClInclude Include="progress.h" />
     <ClInclude Include="registry.h" />
     <ClInclude Include="secretary_exception.h" />
     <ClInclude Include="shared_container_base.h" />
@@ -180,7 +180,7 @@
     <ClCompile Include="iMutexies.cpp" />
     <ClCompile Include="index.cpp" />
     <ClCompile Include="labourer_exception.cpp" />
-    <ClCompile Include="Log.cpp" />
+    <ClCompile Include="log.cpp" />
     <ClCompile Include="message.cpp" />
     <ClCompile Include="Messager.cpp" />
     <ClCompile Include="pch.cpp">
@@ -190,7 +190,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="PrintCenter.cpp" />
-    <ClCompile Include="Progress.cpp" />
+    <ClCompile Include="progress.cpp" />
     <ClCompile Include="registry.cpp" />
     <ClCompile Include="secretary_exception.cpp" />
     <ClCompile Include="tablet.cpp" />

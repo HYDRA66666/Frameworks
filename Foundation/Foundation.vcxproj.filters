@@ -75,7 +75,7 @@
     <ClInclude Include="PrintCenter.h">
       <Filter>secretary</Filter>
     </ClInclude>
-    <ClInclude Include="Log.h">
+    <ClInclude Include="log.h">
       <Filter>secretary</Filter>
     </ClInclude>
     <ClInclude Include="secretary_exception.h">
@@ -87,7 +87,7 @@
     <ClInclude Include="assistant_exception.h">
       <Filter>exceptions</Filter>
     </ClInclude>
-    <ClInclude Include="Progress.h">
+    <ClInclude Include="progress.h">
       <Filter>secretary</Filter>
     </ClInclude>
     <ClInclude Include="utility.h">
@@ -146,7 +146,7 @@
     <ClCompile Include="secretary_exception.cpp">
       <Filter>exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Log.cpp">
+    <ClCompile Include="log.cpp">
       <Filter>secretary</Filter>
     </ClCompile>
     <ClCompile Include="datetime.cpp">
@@ -155,7 +155,7 @@
     <ClCompile Include="assistant_exception.cpp">
       <Filter>exceptions</Filter>
     </ClCompile>
-    <ClCompile Include="Progress.cpp">
+    <ClCompile Include="progress.cpp">
       <Filter>secretary</Filter>
     </ClCompile>
     <ClCompile Include="utility.cpp">

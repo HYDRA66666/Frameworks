@@ -17,7 +17,7 @@ namespace HYDRA15::Foundation::labourer
 
     void background::start()
     {
-        auto t = checkpoint.arrive();
+        checkpoint.arrive_and_wait();
     }
 
     void background::wait_for_end()

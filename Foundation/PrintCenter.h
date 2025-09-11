@@ -16,6 +16,13 @@ namespace HYDRA15::Foundation::secretary
     // 提交消息之后，调用 notify() 方法通知后台线程处理，这在连续提交消息时可以解约开销
     class PrintCenter :labourer::background
     {
+        /***************************** 快速接口 *****************************/
+    public:
+        static size_t print(const std::string& str);
+        static unsigned long long set(const std::string& str, int token = 0, bool forceDisplay = false, bool neverExpire = false);
+        static bool update(unsigned long long id, const std::string& str, int token = 0);
+        static bool remove(unsigned long long id, int token = 0);
+
         /***************************** 公有单例 *****************************/
     private:
         // 禁止外部构造
@@ -69,10 +76,10 @@ namespace HYDRA15::Foundation::secretary
 
         // 接口
     public:
-        void notify();  // 刷新
+        void flush();  // 刷新
         PrintCenter& operator<<(const std::string& content);    // 快速输出，滚动消息+文件+刷新
         void pause();   // 暂停输出，所有内容都将暂存
-        void unpause(); // 允许输出，调用之后需要调用 notify() 方法刷新
+        void unpause(); // 允许输出，调用之后需要调用 flush() 方法刷新
 
 
         /***************************** 滚动消息相关 *****************************/
@@ -117,9 +124,9 @@ namespace HYDRA15::Foundation::secretary
         // 接口
     public:
         ID new_bottom(int token = 0, bool forceDisplay = false, bool neverExpire = false);
-        void update_bottom(ID id, int token, const std::string& content);
+        bool update_bottom(ID id, const std::string& content, int token = 0);
         bool check_bottom(ID id);
-        bool remove_bottom(ID id, int token);
+        bool remove_bottom(ID id, int token = 0);
 
 
         /***************************** 写入文件相关 *****************************/

@@ -15,8 +15,6 @@ namespace HYDRA15::Foundation::referee
 		static_string baseWhatStrFormat = "iException: {0} ( 0x{1:08X} : 0x{2:08X} )\n";
 
 	protected:
-		
-
 		// what字符串缓存
 		mutable std::string whatStr;
 
@@ -38,10 +36,12 @@ namespace HYDRA15::Foundation::referee
 		// 启用栈跟踪支持
 #ifdef LIB_IEXPT_STACKTRACE_ENABLE
 	private:
-		
 		static_string baseStackTraceFormat = "Stack Trace: \n{0}";
+    protected:
+        mutable std::string stackTraceStr;
 	public:
         const std::stacktrace stackTrace;
+        const char* stack_trace() const;
 #endif // LIB_IEXPT_STACKTRACE_ENABLE
 	};
 }

@@ -1,9 +1,9 @@
 ﻿#include "pch.h"
-#include "Progress.h"
+#include "progress.h"
 
 namespace HYDRA15::Foundation::secretary
 {
-    std::string Progress::digital(std::string title, float progress)
+    std::string progress::digital(std::string title, float progress)
     {
         if (progress < 0.0f) progress = 0.0f;
         if (progress > 1.0f) progress = 1.0f;
@@ -14,7 +14,7 @@ namespace HYDRA15::Foundation::secretary
         );
     }
 
-    std::string Progress::simple_bar(std::string title, float progress, unsigned int barWidth, char barChar)
+    std::string progress::simple_bar(std::string title, float progress, unsigned int barWidth, char barChar)
     {
         if (progress < 0.0f) progress = 0.0f;
         if (progress > 1.0f) progress = 1.0f;

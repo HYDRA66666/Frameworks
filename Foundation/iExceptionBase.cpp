@@ -15,23 +15,28 @@ namespace HYDRA15::Foundation::referee
 
 	const char* iExceptionBase::what() const noexcept
 	{
-		whatStr = std::format(
-			baseWhatStrFormat,
-			description,
-			libID,
-			exptCode
-		);
-
-		// 启用栈跟踪支持
-#ifdef LIB_IEXPT_STACKTRACE_ENABLE
-		whatStr += std::format(
-			baseStackTraceFormat,
-			stackTrace
-		);
-#endif // LIB_IEXPT_STACKTRACE_ENABLE
+        if (whatStr.empty())
+            whatStr = std::format(
+                baseWhatStrFormat,
+                description,
+                libID,
+                exptCode
+            );
 
 		return whatStr.c_str();
 	}
 
+#ifdef LIB_IEXPT_STACKTRACE_ENABLE
+    const char* iExceptionBase::stack_trace() const
+    {
+        if (stackTraceStr.empty())
+            stackTraceStr = std::format(
+                baseStackTraceFormat,
+                stackTrace
+            );
+
+        return stackTraceStr.c_str();
+    }
+#endif // LIB_IEXPT_STACKTRACE_ENABLE
 
 }

@@ -3,6 +3,36 @@
 
 namespace HYDRA15::Foundation::secretary
 {
+    size_t PrintCenter::print(const std::string& str)
+    {
+        PrintCenter& instance = get_instance();
+        size_t ret = instance.rolling(str);
+        instance.flush();
+        return ret;
+    }
+
+    unsigned long long PrintCenter::set(const std::string& str, int token, bool forceDisplay, bool neverExpire)
+    {
+        PrintCenter& instance = get_instance();
+        ID ret = instance.new_bottom(token, forceDisplay, neverExpire);
+        instance.update_bottom(ret, str, token);
+        instance.flush();
+        return ret;
+    }
+
+    bool PrintCenter::update(unsigned long long id, const std::string& str, int token)
+    {
+        PrintCenter& instance = get_instance();
+        bool ret = instance.update_bottom(id, str, token);
+        instance.flush();
+        return ret;
+    }
+
+    bool PrintCenter::remove(unsigned long long id, int token)
+    {
+        return get_instance().remove_bottom(id, token);
+    }
+
     PrintCenter::PrintCenter()
         :labourer::background(1),
         logFile(
@@ -179,7 +209,7 @@ namespace HYDRA15::Foundation::secretary
         }
     }
 
-    void PrintCenter::notify()
+    void PrintCenter::flush()
     {
         sleepcv.notify_all();
     }
@@ -188,7 +218,7 @@ namespace HYDRA15::Foundation::secretary
     {
         rolling(content);
         file(content);
-        notify();
+        flush();
         return *this;
     }
 
@@ -224,7 +254,7 @@ namespace HYDRA15::Foundation::secretary
         }
     }
 
-    void PrintCenter::update_bottom(ID id, int token, const std::string& content)
+    bool PrintCenter::update_bottom(ID id, const std::string& content, int token)
     {
         btmmsg_ctrlblock* pMsgCtrl;
         std::lock_guard lk(btmMsgTabLock);
@@ -236,7 +266,7 @@ namespace HYDRA15::Foundation::secretary
         catch (Exceptions::archivist& e)
         {
             if (e.exptCode == Exceptions::archivist::iException_codes::registryKeyNotFound)
-                throw Exceptions::secretary::PrintCenterBtmMsgNotFound();
+                return false;
             else throw e;
         }
 
@@ -245,6 +275,7 @@ namespace HYDRA15::Foundation::secretary
 
         pMsgCtrl->msg = content;
         pMsgCtrl->lastUpdate = time_point::clock::now();
+        return true;
     }
 
     bool PrintCenter::check_bottom(ID id)

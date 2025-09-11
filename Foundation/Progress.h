@@ -6,13 +6,13 @@ namespace HYDRA15::Foundation::secretary
 {
     // 格式化进度条
     // 返回格式化后的字符串，用户需要自行处理输出
-    class Progress
+    class progress
     {
         // 禁止构造
     private:
-        Progress() = delete;
-        Progress(const Progress&) = delete;
-        ~Progress() = delete;
+        progress() = delete;
+        progress(const progress&) = delete;
+        ~progress() = delete;
 
         // 公有数据
     private:
