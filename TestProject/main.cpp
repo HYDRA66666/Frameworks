@@ -6,11 +6,15 @@
 #include "Foundation/PrintCenter.h"
 #include "Foundation/log.h"
 #include "Foundation/registry.h"
+#include "Foundation/utility.h"
 
 using namespace HYDRA15::Foundation::secretary;
+using namespace HYDRA15::Foundation::assistant;
+using namespace HYDRA15::Foundation::archivist;
 
 
 
 int main() {
-    HYDRA15::Foundation::archivist::registry reg;
+    registry reg[20];
+    PrintCenter::print(hex_heap((unsigned char*)&reg, sizeof(registry) * 30));
 }

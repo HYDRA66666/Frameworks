@@ -69,6 +69,7 @@ namespace HYDRA15::Foundation::archivist
         // 类型擦除支持
         virtual std::shared_ptr<entry_base> clone() const = 0;
         virtual const std::type_info& type() const = 0;
+        virtual size_t size() const = 0;
 
         // 信息输出支持
     protected:
@@ -103,17 +104,19 @@ namespace HYDRA15::Foundation::archivist
             return data;
         }
 
+        // 类型擦除支持
         virtual const std::type_info& type() const override
         {
             return typeid(T);
         }
-
-        // 类型擦除状态下的拷贝支持
         virtual std::shared_ptr<entry_base> clone() const override
         {
             return std::make_shared<entry_impl<T>>(data);
         }
-
+        virtual size_t size() const override
+        {
+            return sizeof(entry_impl<T>);
+        }
 
         // 信息输出支持
         virtual std::string info() const override
@@ -148,6 +151,7 @@ namespace HYDRA15::Foundation::archivist
     // 包装，用户接口
     class entry
     {
+    protected:
         std::shared_ptr<entry_base> pImpl;
 
         // 构造、析构、复制和数据获取
@@ -220,6 +224,12 @@ namespace HYDRA15::Foundation::archivist
     public:
         std::string info() const;
         std::ostream& operator<<(std::ostream& os) const;
+
+        // 高级接口
+        std::shared_ptr<entry_base> get_ptr() const
+        {
+            return pImpl;
+        }
     };
 
 

@@ -35,6 +35,7 @@
 #include <condition_variable>
 #include <sstream>
 #include <atomic>
+#include <array>
 //#include <print>
 
 
