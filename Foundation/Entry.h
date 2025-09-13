@@ -105,13 +105,13 @@ namespace HYDRA15::Foundation::archivist
         }
 
         // 类型擦除支持
-        virtual const std::type_info& type() const override
-        {
-            return typeid(T);
-        }
         virtual std::shared_ptr<entry_base> clone() const override
         {
             return std::make_shared<entry_impl<T>>(data);
+        }
+        virtual const std::type_info& type() const override
+        {
+            return typeid(T);
         }
         virtual size_t size() const override
         {
@@ -224,12 +224,6 @@ namespace HYDRA15::Foundation::archivist
     public:
         std::string info() const;
         std::ostream& operator<<(std::ostream& os) const;
-
-        // 高级接口
-        std::shared_ptr<entry_base> get_ptr() const
-        {
-            return pImpl;
-        }
     };
 
 
